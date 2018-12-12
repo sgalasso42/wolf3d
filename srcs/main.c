@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/12 10:10:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/12 11:20:18 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int		main(int argc, char **argv)
 		"Usage : ./wolf3d [map_name]");
 		return (0);
 	}
-	(void)argv;
-	ft_init_data(&data);
+	ft_init_data(argv[1], &data);
 	ft_game_loop(&data);
 	return (0);
 }

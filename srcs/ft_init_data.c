@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/12 10:13:13 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/12 11:20:40 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	ft_init_sdl(t_data *data)
 	if (TTF_Init() < 0)
 		ft_sdl_err_exit(data);
 	if (!(data->sdl.window = SDL_CreateWindow("WOLF_3D", SDL_WINDOWPOS_CENTERED,
-	SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, SDL_WINDOW_OPENGL)))
+					SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, SDL_WINDOW_OPENGL)))
 		ft_sdl_err_exit(data);
 	if (!(data->sdl.renderer = SDL_CreateRenderer(data->sdl.window, -1,
-	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
+					SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
 		ft_sdl_err_exit(data);
 	if (SDL_SetRenderDrawBlendMode(data->sdl.renderer, SDL_BLENDMODE_BLEND) < 0)
 		ft_sdl_err_exit(data);
@@ -53,24 +53,37 @@ void	ft_init_fonts(t_data *data)
 }
 
 /*void	ft_make_texture(t_btn *btn, char *path, char *path_h, t_data *data)
+  {
+  SDL_Surface		*surface;
+  SDL_Surface		*surface_hover;
+
+  surface = IMG_Load(path);
+  surface_hover = IMG_Load(path_h);
+
+  btn->txtr_btn =
+  SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
+  btn->txtr_btn_hover =
+  SDL_CreateTextureFromSurface(data->sdl.renderer, surface_hover);
+
+  free(surface);
+  free(surface_hover);
+  }*/
+
+void	ft_init_data(char *map, t_data *data)
 {
-	SDL_Surface		*surface;
-	SDL_Surface		*surface_hover;
-
-	surface = IMG_Load(path);
-	surface_hover = IMG_Load(path_h);
-
-	btn->txtr_btn =
-	SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
-	btn->txtr_btn_hover =
-	SDL_CreateTextureFromSurface(data->sdl.renderer, surface_hover);
-
-	free(surface);
-	free(surface_hover);
-}*/
-
-void	ft_init_data(t_data *data)
-{
+	ft_bzero(data, sizeof(t_data));
 	ft_init_sdl(data);
 	ft_init_fonts(data);
+	ft_get_map(map, data);
+	// demo ---------------------
+	int i = -1;
+	int	j = -1;
+	while (++i < data->map_sz.h)
+	{
+		j = -1;
+		while (++j < data->map_sz.w)
+			printf("%d ", data->map[i][j]);
+		printf("\n");
+	}
+	// --------------------------
 }

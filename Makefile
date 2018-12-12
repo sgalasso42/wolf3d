@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/12 10:08:25 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/12 10:56:24 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ APPK 		= AppKit
 endif
 
 SRC_NAME 	= main.c \
+			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
 
