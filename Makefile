@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/11/27 14:42:22 by fmadura          ###   ########.fr        #
+#    Updated: 2018/12/12 10:08:25 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ ID_UN 		= $(shell id -un)
 SRC_PATH 	= ./srcs/
 OBJ_PATH 	= ./objs/
 INC_PATH	= ./includes/ \
-			  ./libft/includes/ 
+			  ./libft/
 
 UNAME := $(shell uname)
 
@@ -55,27 +55,8 @@ APPK 		= AppKit
 endif
 
 SRC_NAME 	= main.c \
-			  sdl_hook.c \
-			  raycasting.c \
-			  thread.c \
-			  checkerrors.c \
-			  parser.c \
-			  ui.c \
-			  portal.c \
-			  struct_line.c \
-			  struct_sdl.c \
-			  struct_env.c \
-			  struct_obj.c \
-			  utils_tab.c \
-			  utils_sdl.c \
-			  utils_maths.c \
-			  utils_point.c \
-			  utils_textures.c \
-			  struct_img.c \
-			  musics.c		\
-			  sdl_mouse.c	\
-			  objects_walls.c \
-			  weapons.c
+			  ft_init_data.c \
+			  ft_get_events.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
