@@ -6,7 +6,7 @@
 /*   By: jsauron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 12:03:09 by jsauron           #+#    #+#             */
-/*   Updated: 2018/12/16 14:28:19 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/16 15:10:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_free_map(t_data *data)
 	i = 0;
 	while (i < data->map_sz.h)
 	{
+		printf("addr : %p\n", data->map);
 		free(data->map[i]);
 		i++;
 	}
@@ -53,7 +54,8 @@ void	ft_map_invalid(void)
 
 void	ft_map_invalid_free(char *line, int fd, t_data *data)
 {
-	ft_free_map(data);
+	if (data->map)
+		ft_free_map(data);
 	if (line)
 		free(line);
 	close(fd);
