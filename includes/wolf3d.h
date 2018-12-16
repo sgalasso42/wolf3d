@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 13:15:07 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/16 14:26:50 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ void					ft_get_map(char *map, t_data *data);
 int						ft_get_events(t_data *data);
 void					ft_rc_wolfcalc(t_data *data);
 void	ft_err_malloc(void);
-void	ft_err_malloc_free(char *line, int fd);
+void	ft_err_malloc_free(char *line, int fd, t_data *data);
 void	ft_arg_invalid(void);
 void	ft_map_invalid(void);
-void	ft_map_invalid_free(char *line, int fd);
+void	ft_map_invalid_free(char *line, int fd, t_data *data);
 int		ft_isspace(int c);
 void	ft_check_valid_map(char *line, int fd);
 
