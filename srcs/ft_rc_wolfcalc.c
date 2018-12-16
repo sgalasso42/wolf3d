@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 00:36:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:51:33 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,20 @@ double		ft_pythagore(int a, int b)
 
 int			ft_is_inwall(t_pos *pos, t_data *data)
 {
-	int		x2;
-	int		y2;
+	//int		x2;
+	//int		y2;
 
-	x2 = pos->x / BLOC_SIZE;
+	/*x2 = pos->x / BLOC_SIZE;
 	y2 = pos->y / BLOC_SIZE;
 	if (data->map[y2][x2] > 0 && data->map[y2][x2] != 2)
 	{
 		data->current_color = data->map[y2][x2];
 		return (1);
 	}
+	return (0);*/
+	if (data->map[(int)pos->y][(int)pos->x] > 0
+	&& data->map[(int)pos->y][(int)pos->x] != 2)
+		return (1);
 	return (0);
 }
 
@@ -36,28 +40,31 @@ int			ft_calc_distance(int x, t_data *data)
 {
 	double	angle;
 	double	distance;
+	double	start_angle;
 	t_pos	pos;
 
 	distance = 0;
-	angle = data->player.direction + (x * (60.0 / WIN_W));
-	printf("angle : %f\n", angle);
-	pos.x = data->player.position.x * BLOC_SIZE;
-	pos.y = data->player.position.y * BLOC_SIZE;
-	while (pos.x > 0 && pos.x < data->map_sz.w * BLOC_SIZE
-	&& pos.y > 0 && pos.y < data->map_sz.h * BLOC_SIZE)
+	start_angle = data->player.direction - 30;
+	angle = start_angle + (x * (60.0 / WIN_W));
+	//printf("angle : %f\n", angle);	
+	pos.x = data->player.position.x;
+	pos.y = data->player.position.y;
+	while (pos.x > 0 && pos.x < data->map_sz.w
+	&& pos.y > 0 && pos.y < data->map_sz.h)
 	{
 		if (ft_is_inwall(&pos, data))
 		{
-			distance = ft_pythagore(pos.x - data->player.position.x,
+			distance = ft_pythagore(
+			pos.x - data->player.position.x,
 			pos.y - data->player.position.y);
 			printf("distance : %f\n", distance);
 			return (distance);
 		}
-		//printf("angle : %f\n", angle);
 		//printf("pos.x : %f\n", pos.x);
 		//printf("pos.y : %f\n", pos.y);
-		pos.x += 1.0 * cos(angle); // 1.0 a changer pour opti
-		pos.y += 1.0 * sin(angle); // 1.0 a changer pour opti
+
+		pos.x += -sin(angle);
+		pos.y += /*-(tan(angle) * 1)*/ cos(angle);
 	}
 	return (-1);
 }
@@ -70,12 +77,11 @@ t_ray		ft_calc_ray(int x, t_data *data)
 
 	height = 0;
 	distance = ft_calc_distance(x, data);
+	//printf("%d : distance : %f\n", x, distance);
 	if (distance > 0)
 	{
-		//printf("%d : distance : %f\n", x, distance);
-		height = (BLOC_SIZE / distance) * 277; // 277 trouve sur internet
+		height = (BLOC_SIZE / distance)/* * 277*/; // 277 trouve sur internet
 		//printf("height : %f\n", height);
-		//printf("hauteur mur : %f\n", height);
 	}
 
 	ray.wall_top = (WIN_H - height) / 2;
