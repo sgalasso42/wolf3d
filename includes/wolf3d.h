@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 11:35:20 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/16 13:15:07 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,23 @@
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_ttf.h>
 # include <SDL2/SDL_image.h>
+
+/*
+ * ** Color text
+ * */
+
+# define C_NONE         "\033[0m"
+# define C_BOLD         "\033[1m"
+# define C_BLACK        "\033[30m"
+# define C_RED          "\033[31m"
+# define C_GREEN        "\033[32m"
+# define C_BROWN        "\033[33m"
+# define C_BLUE         "\033[34m"
+# define C_MAGENTA      "\033[35m"
+# define C_CYAN         "\033[36m"
+# define C_GRAY         "\033[37m"
+
+
 
 # define WIN_H 500
 # define WIN_W 800
@@ -94,5 +111,12 @@ void					ft_get_map(char *map, t_data *data);
 
 int						ft_get_events(t_data *data);
 void					ft_rc_wolfcalc(t_data *data);
+void	ft_err_malloc(void);
+void	ft_err_malloc_free(char *line, int fd);
+void	ft_arg_invalid(void);
+void	ft_map_invalid(void);
+void	ft_map_invalid_free(char *line, int fd);
+int		ft_isspace(int c);
+void	ft_check_valid_map(char *line, int fd);
 
 #endif
