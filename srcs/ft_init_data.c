@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/14 19:18:23 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:06:19 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	ft_init_fonts(t_data *data)
 void	ft_init_data(char *map, t_data *data)
 {
 	ft_bzero(data, sizeof(t_data));
+	data->player.position.x = -1;
+	data->player.position.y = -1;
 	ft_init_sdl(data);
 	ft_init_fonts(data);
 	ft_get_map(map, data);

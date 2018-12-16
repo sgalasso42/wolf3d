@@ -6,13 +6,13 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/16 12:33:43 by jsauron          ###   ########.fr        #
+#    Updated: 2018/12/16 14:20:04 by jsauron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= wolf3d
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT 		= ./libft
 
 #color
