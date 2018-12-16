@@ -6,13 +6,13 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/12 10:56:24 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/16 00:36:09 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= wolf3d
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g
+CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
 LIBFT 		= ./libft
 
 #color
@@ -58,6 +58,7 @@ SRC_NAME 	= main.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
+			  ft_rc_wolfcalc.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer

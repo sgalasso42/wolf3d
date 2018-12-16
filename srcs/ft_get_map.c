@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/12 11:20:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/15 22:16:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,31 @@ static void		ft_get_size_map(char *map, t_data *data)
 
 static void		ft_parse_line(int index, char *line, t_data *data)
 {
+	int		val;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
+	val = 0;
 	while (line[i])
 	{
 		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 			i++;
 		if (line[i])
-			data->map[index][j++] = ft_atoi(&(line[i++]));
+		{
+			val = ft_atoi(&(line[i]));
+			if (val == 2)
+			{
+				data->player.position.x = j;
+				data->player.position.y = index;
+				printf("player x : %f\n", data->player.position.x);
+				printf("player y : %f\n", data->player.position.y);
+				i++;
+			}
+			data->map[index][j++] = val;
+			i++;
+		}
 	}
 }
 
