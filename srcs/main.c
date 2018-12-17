@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 13:54:47 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/17 01:30:25 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_exit(t_data *data)
 void	ft_game_loop(t_data *data)
 {
 	ft_rc_wolfcalc(data);
+	ft_minimap(data);
 	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
@@ -32,7 +33,7 @@ void	ft_game_loop(t_data *data)
 		{
 			SDL_RenderClear(data->sdl.renderer);
 			ft_rc_wolfcalc(data);
-			SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
+			ft_minimap(data);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
 	}

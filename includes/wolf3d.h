@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 16:12:59 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/16 19:16:35 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ struct					s_data
 
 	int					current_color;
 };
+
+void					ft_minimap(t_data *data);
 
 void					ft_exit(t_data *data);
 

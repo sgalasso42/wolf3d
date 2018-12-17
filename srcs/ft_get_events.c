@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 00:34:42 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 01:32:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static int		ft_keyboard(t_data *data)
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 	{ // ->
 		if (data->player.direction < 360)
-			data->player.direction++;
+			data->player.direction += 5;
 		else
 			data->player.direction = 0;
 		return (1);
@@ -127,7 +127,7 @@ static int		ft_keyboard(t_data *data)
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_LEFT)
 	{ // <-
 		if (data->player.direction > 0)
-			data->player.direction--;
+			data->player.direction -= 5;
 		else
 			data->player.direction = 360;
 		return (1);
