@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 15:12:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 01:30:34 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static void		ft_parse_line(int fd, int index, char *line, t_data *data)
 			data->map[index][j++] = val;
 			i++;
 		}
-		printf("i : %d\n", i);
 	}
 }
 
