@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 14:05:54 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 15:09:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	int		y2;
 
 	x2 = pos->x / BLOC_SIZE;
-	y2 = pos->y / BLOC_SIZE;
-	if (data->map[y2][x2] > 0 && data->map[y2][x2] != 2)
+	y2 = pos->y / BLOC_SIZE;	
+	if (data->map[y2][x2] == 1)
 		return (1);
 	return (0);
 }
@@ -115,7 +115,7 @@ t_ray		ft_calc_ray(int x, t_data *data)
 
 	height = 0;
 	ray = ft_calc_distance(x, data);
-	printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
+	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
 
 	if (ray.distance >= 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 14:03:54 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 14:21:12 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,22 @@ struct					s_data
 	t_player			player;	// position camera
 };
 
-void					ft_minimap(t_data *data);
-
-void					ft_exit(t_data *data);
-
 void					ft_init_data(char *map, t_data *data);
 void					ft_get_map(char *map, t_data *data);
 
+void					ft_exit(t_data *data);
+int						ft_is_inwall(t_pos *pos, t_data *data);
 int						ft_get_events(t_data *data);
 void					ft_rc_wolfcalc(t_data *data);
 
-void	ft_err_malloc(void);
-void	ft_err_malloc_free(char *line, int fd, t_data *data);
-void	ft_arg_invalid(void);
-void	ft_map_invalid(void);
-void	ft_map_invalid_free(char *line, int fd, t_data *data);
-int		ft_isspace(int c);
-void	ft_check_valid_map(char *line, int fd);
+void					ft_minimap(t_data *data);
+
+void					ft_err_malloc(void);
+void					ft_err_malloc_free(char *line, int fd, t_data *data);
+void					ft_arg_invalid(void);
+void					ft_map_invalid(void);
+void					ft_map_invalid_free(char *line, int fd, t_data *data);
+int						ft_isspace(int c);
+void					ft_check_valid_map(char *line, int fd);
 
 #endif
