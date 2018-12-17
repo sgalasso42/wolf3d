@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 14:21:12 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 23:30:42 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_ttf.h>
 # include <SDL2/SDL_image.h>
-
-/*
-** Color text
-*/
+# include <pthread.h>
 
 # define C_NONE         "\033[0m"
 # define C_BOLD         "\033[1m"
@@ -36,17 +33,27 @@
 # define C_GRAY         "\033[37m"
 
 # define WIN_H 500
-# define WIN_W 500
+# define WIN_W 800
 # define BLOC_SIZE 50
 # define DIST_SCREEN 277
 
+typedef struct s_limit	t_limit;
 typedef struct s_pos	t_pos;
 typedef struct s_size	t_size;
 typedef struct s_coef	t_coef;
 typedef struct s_ray	t_ray;
+typedef struct s_thread	t_thread;
 typedef struct s_sdl	t_sdl;
 typedef struct s_player	t_player;
 typedef struct s_data	t_data;
+
+struct					s_limit
+{
+	int					t;
+	int					b;
+	int					l;
+	int					r;
+};
 
 struct					s_pos
 {
@@ -73,7 +80,16 @@ struct					s_ray
 	double				wall_top;
 	double				wall_bot;
 	double				wall_color;
-	int					color_index;
+	SDL_Color			color;
+};
+
+struct					s_thread
+{
+	pthread_t			th;
+	t_data				*data;
+	int					x_start;
+
+	t_ray				ray;
 };
 
 struct					s_sdl
@@ -98,10 +114,13 @@ struct					s_data
 	int					**map;	// map
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
+	t_thread			thread[8];
 };
 
 void					ft_init_data(char *map, t_data *data);
 void					ft_get_map(char *map, t_data *data);
+
+SDL_Color				ft_hex_to_rgb(int hexa);
 
 void					ft_exit(t_data *data);
 int						ft_is_inwall(t_pos *pos, t_data *data);

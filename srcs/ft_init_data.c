@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 17:04:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 21:21:43 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	ft_init_sdl(t_data *data)
 	if (TTF_Init() < 0)
 		ft_sdl_err_exit(data);
 	if (!(data->sdl.window = SDL_CreateWindow("WOLF_3D", SDL_WINDOWPOS_CENTERED,
-					SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, SDL_WINDOW_OPENGL)))
+	SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0)))
 		ft_sdl_err_exit(data);
 	if (!(data->sdl.renderer = SDL_CreateRenderer(data->sdl.window, -1,
-					SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
+	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
 		ft_sdl_err_exit(data);
 	if (SDL_SetRenderDrawBlendMode(data->sdl.renderer, SDL_BLENDMODE_BLEND) < 0)
 		ft_sdl_err_exit(data);

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 15:09:30 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 21:19:37 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,143 +29,159 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	return (0);
 }
 
-void		ft_get_color(int axis, t_ray *ray, t_data *data)
+void		ft_get_color(int axis, t_ray *ray)
 {
-	(void)data;
 	if (axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
-			ray->color_index = 0;
+			ray->color = ft_hex_to_rgb(0xB55044);
 		else
-			ray->color_index = 1;
+			ray->color = ft_hex_to_rgb(0x424FA5);
 	}
 	else if (axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
-			ray->color_index = 2;
+			ray->color = ft_hex_to_rgb(0x43B74B);
 		else
-			ray->color_index = 3;
+			ray->color = ft_hex_to_rgb(0xB460BA);
 	}
 }
 
-t_ray		ft_calc_distance(int x, t_data *data)
+void		ft_calc_distance(int x, t_thread *thread)
 {
-	double	alpha_d; // angle entre direction et ray en degres
-	double	alpha_r; // idem en radian
-	double	angle_r; // angle radian
-	t_ray	ray;
+	double	distance_x;
+	double	distance_y;
+	t_pos	player_pos;	// position calculee
+	double	alpha_d;	// angle entre direction et ray en degres
+	double	alpha_r;	// idem en radian
+	double	angle_r;	// angle radian
 	t_pos	pos;
 
+	player_pos.x = thread->data->player.position.x * BLOC_SIZE;
+	player_pos.y = thread->data->player.position.y * BLOC_SIZE;
+
 	// anle en fonction de x
-	ray.angle_d = (data->player.direction - 30) + (x * (60.0 / WIN_W));
+	thread->ray.angle_d =
+	(thread->data->player.direction - 30) + (x * (60.0 / WIN_W));
 	// passage en radian
-	angle_r = ray.angle_d * M_PI / 180;
-	
-	alpha_d = fabs(data->player.direction - ray.angle_d);
+	angle_r = thread->ray.angle_d * M_PI / 180;
+
+	alpha_d = fabs(thread->data->player.direction - thread->ray.angle_d);
 	alpha_r = alpha_d * M_PI / 180;
 
-	pos.x = data->player.position.x * BLOC_SIZE;
-	pos.y = data->player.position.y * BLOC_SIZE;;
+	pos.x = thread->data->player.position.x * BLOC_SIZE;
+	pos.y = thread->data->player.position.y * BLOC_SIZE;;
 
-	while (pos.x > 0 && pos.x < data->map_sz.w * BLOC_SIZE
-	&& pos.y > 0 && pos.y < data->map_sz.h * BLOC_SIZE)
+	while (pos.x > 0 && pos.x < thread->data->map_sz.w * BLOC_SIZE
+	&& pos.y > 0 && pos.y < thread->data->map_sz.h * BLOC_SIZE)
 	{
-		if (ft_is_inwall(&pos, data))
+		if (ft_is_inwall(&pos, thread->data)) // y
 		{
-			ray.distance = ft_pythagore(
-			pos.x - data->player.position.x * BLOC_SIZE,
-			pos.y - data->player.position.y * BLOC_SIZE);
+			distance_x = pos.x - player_pos.x;
+			distance_y = (int)pos.y - player_pos.y; //
+			thread->ray.distance = ft_pythagore(distance_x, distance_y);
 
-			// correction dish eye
-			ray.distance = ray.distance * cos(alpha_r);
-
+			// correction fisheye
+			thread->ray.distance = thread->ray.distance * cos(alpha_r);
 			// get color of wall
-			ft_get_color(1, &ray, data);
-			return (ray);
+			ft_get_color(1, &(thread->ray));
+			return ;
 		}
 
 		pos.x += -cos(angle_r) * 1;
 
-		if (ft_is_inwall(&pos, data))
+		if (ft_is_inwall(&pos, thread->data)) // x
 		{
-			ray.distance = ft_pythagore(
-			pos.x - data->player.position.x * BLOC_SIZE,
-			pos.y - data->player.position.y * BLOC_SIZE);
+			distance_x = (int)pos.x - player_pos.x;
+			distance_y = pos.y - player_pos.y;
+			thread->ray.distance = ft_pythagore(distance_x, distance_y);
 
-			// correction dish eye
-			ray.distance = ray.distance * cos(alpha_r);
-
+			// correction fisheye
+			thread->ray.distance = thread->ray.distance * cos(alpha_r);
 			// get color of wall
-			ft_get_color(2, &ray, data);
-			return (ray);
+			ft_get_color(2, &(thread->ray));
+			return ;
 		}
-
 		pos.y += -sin(angle_r) * 1;
-
 	}
 	// out of map
-	ray.distance = -1;
-	return (ray);
+	thread->ray.distance = -1;
 }
 
-t_ray		ft_calc_ray(int x, t_data *data)
+void		ft_calc_ray(int x, t_thread *thread)
 {
 	double	height;
-	t_ray	ray;
 
 	height = 0;
-	ray = ft_calc_distance(x, data);
+	ft_calc_distance(x, thread);
 	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
 
-	if (ray.distance >= 0)
+	if (thread->ray.distance >= 0)
 	{
-		height = (BLOC_SIZE / ray.distance) * DIST_SCREEN;
+		height = (BLOC_SIZE / thread->ray.distance) * DIST_SCREEN;
 		//printf("height : %f\n", height);
 	}
 
-	ray.wall_top = (WIN_H - height) / 2;
-	ray.wall_bot = WIN_H - ((WIN_H - height) / 2);
-	return (ray);
+	thread->ray.wall_top = (WIN_H - height) / 2;
+	thread->ray.wall_bot = WIN_H - ((WIN_H - height) / 2);
+}
+
+void		*ft_calc_frame(void *arg)
+{
+	t_thread	*thread;
+	double		x;
+	double		y;
+
+	thread = (t_thread *)arg;
+	x = thread->x_start;
+	while (x < WIN_W)
+	{
+		y = 0;
+		ft_calc_ray(x, thread);
+		while (y < WIN_H)
+		{
+			if (y < thread->ray.wall_top)
+			{
+				SDL_SetRenderDrawColor(thread->data->sdl.renderer, 0, 0, 0, 255);
+				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
+			}
+			else if (y >= thread->ray.wall_top && y <= thread->ray.wall_bot)
+			{
+				SDL_SetRenderDrawColor(thread->data->sdl.renderer,
+				thread->ray.color.r, thread->ray.color.g, thread->ray.color.b, 255);
+				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(thread->data->sdl.renderer, 0, 0, 0, 255);
+				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
+			}
+			y++;
+		}
+		ft_bzero(&(thread->ray), sizeof(t_ray));
+		x += 8;
+	}
+	pthread_exit(0);
 }
 
 void		ft_rc_wolfcalc(t_data *data)
 {
-	t_ray	ray;
-	double	y;
-	double	x;
+	int i;
 
-	x = 0;
-	while (x < WIN_W)
+	i = 0;
+	while (i < 1)
+	{	
+		data->thread[i].x_start = 0;
+		data->thread[i].data = data;
+		pthread_create(&(data->thread[i].th), NULL,
+		ft_calc_frame, (void *)&(data->thread[i]));
+		i++;
+	}
+	i = 0;
+	while (i < 1)
 	{
-		y = 0;
-		ray = ft_calc_ray(x, data);
-		while (y < WIN_H)
-		{
-			if (y < ray.wall_top)
-			{
-				SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
-				SDL_RenderDrawPoint(data->sdl.renderer, x, y);
-			}
-			else if (y >= ray.wall_top && y <= ray.wall_bot)
-			{
-				if (ray.color_index == 0)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 255, 255);
-				else if (ray.color_index == 1)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 0, 255, 0, 255);
-				else if (ray.color_index == 2)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 255, 0, 0, 255);
-				else
-					SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 255, 255);
-				SDL_RenderDrawPoint(data->sdl.renderer, x, y);
-			}
-			else
-			{
-				SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
-				SDL_RenderDrawPoint(data->sdl.renderer, x, y);
-			}
-			y++;
-		}
-		ft_bzero(&ray, sizeof(t_ray));
-		x++;
+		pthread_join(data->thread[i].th, 0);
+		pthread_join(data->thread[i].th, 0);
+		i++;
 	}
 }
