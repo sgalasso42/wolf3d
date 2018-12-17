@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 13:04:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 15:09:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,25 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	int		y2;
 
 	x2 = pos->x / BLOC_SIZE;
-	y2 = pos->y / BLOC_SIZE;
-	if (data->map[y2][x2] > 0 && data->map[y2][x2] != 2)
+	y2 = pos->y / BLOC_SIZE;	
+	if (data->map[y2][x2] == 1)
 		return (1);
 	return (0);
 }
 
 void		ft_get_color(int axis, t_ray *ray, t_data *data)
 {
+	(void)data;
 	if (axis == 1) // y
 	{
-		if (data->player.direction > 0 && data->player.direction < 180)
+		if (ray->angle_d >= 0 && ray->angle_d <= 180)
 			ray->color_index = 0;
 		else
 			ray->color_index = 1;
 	}
 	else if (axis == 2) // x
 	{
-		if (data->player.direction > 90 && data->player.direction < 270)
+		if (ray->angle_d >= 90 && ray->angle_d <= 270)
 			ray->color_index = 2;
 		else
 			ray->color_index = 3;
@@ -51,17 +52,16 @@ t_ray		ft_calc_distance(int x, t_data *data)
 {
 	double	alpha_d; // angle entre direction et ray en degres
 	double	alpha_r; // idem en radian
-	double	angle_d; // degres
-	double	angle_r; // radian
+	double	angle_r; // angle radian
 	t_ray	ray;
 	t_pos	pos;
 
 	// anle en fonction de x
-	angle_d = (data->player.direction - 30) + (x * (60.0 / WIN_W));
+	ray.angle_d = (data->player.direction - 30) + (x * (60.0 / WIN_W));
 	// passage en radian
-	angle_r = angle_d * M_PI / 180;
+	angle_r = ray.angle_d * M_PI / 180;
 	
-	alpha_d = fabs(data->player.direction - angle_d);
+	alpha_d = fabs(data->player.direction - ray.angle_d);
 	alpha_r = alpha_d * M_PI / 180;
 
 	pos.x = data->player.position.x * BLOC_SIZE;

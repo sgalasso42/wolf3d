@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 13:01:58 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 16:27:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,19 +113,36 @@ static int		ft_mouse_motion(t_data *data)
 static void		ft_movement(t_data *data)
 {
 	double		angle_r;
+	t_pos		pos;
 
 	// passage en radian
 	angle_r = data->player.direction * M_PI / 180;
 
 	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_UP)
 	{ // ^
-		data->player.position.x += -cos(angle_r) * 0.1;
-		data->player.position.y += -sin(angle_r) * 0.1;
+		pos.x = data->player.position.x * BLOC_SIZE + -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x += -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE + -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y += -sin(angle_r) * 0.1;
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_DOWN)
 	{ // v
-		data->player.position.x -= -cos(angle_r) * 0.1;
-		data->player.position.y -= -sin(angle_r) * 0.1;
+		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x -= -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y -= -sin(angle_r) * 0.1;
 	}
 }
 
@@ -137,18 +154,12 @@ static int		ft_keyboard(t_data *data)
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 	{ // >
-		if (data->player.direction < 360)
-			data->player.direction += 5;
-		else
-			data->player.direction = 0;
+		data->player.direction = (int)(data->player.direction + 5) % 360;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_LEFT)
 	{ // <
-		if (data->player.direction > 0)
-			data->player.direction -= 5;
-		else
-			data->player.direction = 360;
+		data->player.direction = (int)(data->player.direction - 5) % 360;
 		return (1);
 	}
 	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_UP
