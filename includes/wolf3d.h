@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 12:28:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 14:03:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ struct					s_coef
 
 struct					s_ray
 {
+	double				angle_d;
 	double				distance;
-	int					wall_top;
-	int					wall_bot;
-	int					wall_color;
+	double				wall_top;
+	double				wall_bot;
+	double				wall_color;
 	int					color_index;
 };
 
