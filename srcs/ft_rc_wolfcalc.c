@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 01:46:10 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 01:49:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ int			ft_calc_distance(int x, t_data *data)
 			distance = ft_pythagore(
 			pos.x - data->player.position.x * BLOC_SIZE,
 			pos.y - data->player.position.y * BLOC_SIZE);
-			//printf("%f - 1\n", distance);
-		
+
 			// correction dish eye
 			distance = distance * cos(alpha_r);
 			return (distance);
