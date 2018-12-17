@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 01:49:06 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 02:03:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	x2 = pos->x / BLOC_SIZE;
 	y2 = pos->y / BLOC_SIZE;
 	if (data->map[y2][x2] > 0 && data->map[y2][x2] != 2)
-	{
-		data->current_color = data->map[y2][x2];
 		return (1);
-	}
 	return (0);
 }
 
@@ -83,9 +80,18 @@ t_ray		ft_calc_ray(int x, t_data *data)
 	printf("dir : %f : dist : %f\n", data->player.direction, distance);
 	if (distance > 0)
 	{
-		height = (BLOC_SIZE / distance) * 277; // 277 trouve sur internet
+		height = (BLOC_SIZE / distance) * DIST_SCREEN;
 		//printf("height : %f\n", height);
 	}
+
+	if (data->player.direction > 0 && data->player.direction < 90)
+		ray.pole = 0;
+	else if (data->player.direction > 90 && data->player.direction < 180)
+		ray.pole = 1;
+	else if (data->player.direction > 180 && data->player.direction < 270)
+		ray.pole = 2;
+	else
+		ray.pole = 3;
 
 	ray.wall_top = (WIN_H - height) / 2;
 	ray.wall_bot = WIN_H - ((WIN_H - height) / 2);
@@ -112,11 +118,11 @@ void		ft_rc_wolfcalc(t_data *data)
 			}
 			else if (y >= ray.wall_top && y <= ray.wall_bot)
 			{
-				if (data->current_color == 3)
+				if (ray.pole == 3)
 					SDL_SetRenderDrawColor(data->sdl.renderer, 105, 105, 105, 255);
-				else if (data->current_color == 6)
+				else if (ray.pole == 6)
 					SDL_SetRenderDrawColor(data->sdl.renderer, 250, 100, 55, 255);
-				else if (data->current_color == 4)
+				else if (ray.pole == 4)
 					SDL_SetRenderDrawColor(data->sdl.renderer, 70, 44, 5, 255);
 				else
 					SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 255, 255);
