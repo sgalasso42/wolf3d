@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 12:37:01 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 13:04:03 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_ray		ft_calc_ray(int x, t_data *data)
 	ray = ft_calc_distance(x, data);
 	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
 
-	if (ray.distance > 0)
+	if (ray.distance >= 0)
 	{
 		height = (BLOC_SIZE / ray.distance) * DIST_SCREEN;
 		//printf("height : %f\n", height);
