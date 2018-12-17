@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 01:56:18 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 12:28:35 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define C_GRAY         "\033[37m"
 
 # define WIN_H 500
-# define WIN_W 800
+# define WIN_W 500
 # define BLOC_SIZE 50
 # define DIST_SCREEN 277
 
@@ -68,10 +68,11 @@ struct					s_coef
 
 struct					s_ray
 {
+	double				distance;
 	int					wall_top;
 	int					wall_bot;
 	int					wall_color;
-	int					pole; // Nord Est Sud Ouest
+	int					color_index;
 };
 
 struct					s_sdl
