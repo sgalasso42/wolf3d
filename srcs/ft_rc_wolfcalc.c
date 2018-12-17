@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 01:49:06 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 13:04:03 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,35 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	x2 = pos->x / BLOC_SIZE;
 	y2 = pos->y / BLOC_SIZE;
 	if (data->map[y2][x2] > 0 && data->map[y2][x2] != 2)
-	{
-		data->current_color = data->map[y2][x2];
 		return (1);
-	}
 	return (0);
 }
 
-int			ft_calc_distance(int x, t_data *data)
+void		ft_get_color(int axis, t_ray *ray, t_data *data)
+{
+	if (axis == 1) // y
+	{
+		if (data->player.direction > 0 && data->player.direction < 180)
+			ray->color_index = 0;
+		else
+			ray->color_index = 1;
+	}
+	else if (axis == 2) // x
+	{
+		if (data->player.direction > 90 && data->player.direction < 270)
+			ray->color_index = 2;
+		else
+			ray->color_index = 3;
+	}
+}
+
+t_ray		ft_calc_distance(int x, t_data *data)
 {
 	double	alpha_d; // angle entre direction et ray en degres
 	double	alpha_r; // idem en radian
 	double	angle_d; // degres
 	double	angle_r; // radian
-	double	distance;
+	t_ray	ray;
 	t_pos	pos;
 
 	// anle en fonction de x
@@ -51,39 +66,60 @@ int			ft_calc_distance(int x, t_data *data)
 
 	pos.x = data->player.position.x * BLOC_SIZE;
 	pos.y = data->player.position.y * BLOC_SIZE;;
+
 	while (pos.x > 0 && pos.x < data->map_sz.w * BLOC_SIZE
 	&& pos.y > 0 && pos.y < data->map_sz.h * BLOC_SIZE)
 	{
 		if (ft_is_inwall(&pos, data))
 		{
-			distance = ft_pythagore(
+			ray.distance = ft_pythagore(
 			pos.x - data->player.position.x * BLOC_SIZE,
 			pos.y - data->player.position.y * BLOC_SIZE);
 
 			// correction dish eye
-			distance = distance * cos(alpha_r);
-			return (distance);
+			ray.distance = ray.distance * cos(alpha_r);
+
+			// get color of wall
+			ft_get_color(1, &ray, data);
+			return (ray);
 		}
 
 		pos.x += -cos(angle_r) * 1;
+
+		if (ft_is_inwall(&pos, data))
+		{
+			ray.distance = ft_pythagore(
+			pos.x - data->player.position.x * BLOC_SIZE,
+			pos.y - data->player.position.y * BLOC_SIZE);
+
+			// correction dish eye
+			ray.distance = ray.distance * cos(alpha_r);
+
+			// get color of wall
+			ft_get_color(2, &ray, data);
+			return (ray);
+		}
+
 		pos.y += -sin(angle_r) * 1;
 
 	}
-	return (-1);
+	// out of map
+	ray.distance = -1;
+	return (ray);
 }
 
 t_ray		ft_calc_ray(int x, t_data *data)
 {
-	double	distance;
 	double	height;
 	t_ray	ray;
 
 	height = 0;
-	distance = ft_calc_distance(x, data);
-	printf("dir : %f : dist : %f\n", data->player.direction, distance);
-	if (distance > 0)
+	ray = ft_calc_distance(x, data);
+	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
+
+	if (ray.distance >= 0)
 	{
-		height = (BLOC_SIZE / distance) * 277; // 277 trouve sur internet
+		height = (BLOC_SIZE / ray.distance) * DIST_SCREEN;
 		//printf("height : %f\n", height);
 	}
 
@@ -112,12 +148,12 @@ void		ft_rc_wolfcalc(t_data *data)
 			}
 			else if (y >= ray.wall_top && y <= ray.wall_bot)
 			{
-				if (data->current_color == 3)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 105, 105, 105, 255);
-				else if (data->current_color == 6)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 250, 100, 55, 255);
-				else if (data->current_color == 4)
-					SDL_SetRenderDrawColor(data->sdl.renderer, 70, 44, 5, 255);
+				if (ray.color_index == 0)
+					SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 255, 255);
+				else if (ray.color_index == 1)
+					SDL_SetRenderDrawColor(data->sdl.renderer, 0, 255, 0, 255);
+				else if (ray.color_index == 2)
+					SDL_SetRenderDrawColor(data->sdl.renderer, 255, 0, 0, 255);
 				else
 					SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 255, 255);
 				SDL_RenderDrawPoint(data->sdl.renderer, x, y);

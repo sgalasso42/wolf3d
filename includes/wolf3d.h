@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/16 19:16:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/17 12:28:35 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,9 @@
 # define C_CYAN         "\033[36m"
 # define C_GRAY         "\033[37m"
 
-
-
 # define WIN_H 500
-# define WIN_W 800
-
+# define WIN_W 500
 # define BLOC_SIZE 50
-
 # define DIST_SCREEN 277
 
 typedef struct s_pos	t_pos;
@@ -72,10 +68,11 @@ struct					s_coef
 
 struct					s_ray
 {
+	double				distance;
 	int					wall_top;
 	int					wall_bot;
 	int					wall_color;
-	int					pole; // Nord Est Sud Ouest
+	int					color_index;
 };
 
 struct					s_sdl
@@ -100,8 +97,6 @@ struct					s_data
 	int					**map;	// map
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
-
-	int					current_color;
 };
 
 void					ft_minimap(t_data *data);
