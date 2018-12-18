@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 12:42:27 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 00:04:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ static void		ft_parse_line(int fd, int index, char *line, t_data *data)
 				ft_map_invalid_free(line, fd, data);
 			else if (val == 2)
 			{
-				data->player.position.x = j;
-				data->player.position.y = index;
+				data->player.position.x = j + 0.5;
+				data->player.position.y = index + 0.5;
 				printf("player x : %f\n", data->player.position.x);
 				printf("player y : %f\n", data->player.position.y);
 			}

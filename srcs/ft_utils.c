@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 22:07:14 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 23:41:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
 	else if (bpp == 3)
 	{
 		ret = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-			(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
+		(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
 	}
 	else if (bpp == 4)
 		ret = *(Uint32 *)p;
@@ -116,7 +116,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 }
 
 void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
-		t_limit *limit, t_data *data)
+t_limit *limit, t_data *data)
 {
 	int		i;
 	int		j;

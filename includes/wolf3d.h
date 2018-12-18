@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 22:05:59 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 00:05:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_size		t_size;
 typedef struct s_coef		t_coef;
 typedef struct s_ray		t_ray;
 typedef struct s_thread		t_thread;
+typedef struct s_object		t_object;
 typedef struct s_sdl		t_sdl;
 typedef struct s_player		t_player;
 typedef struct s_minimap	t_minimap;
@@ -77,8 +78,17 @@ struct						s_coef
 	int					y;
 };
 
+struct						s_sdl
+{
+	SDL_Event			event;
+	SDL_Window      	*window;
+	SDL_Renderer    	*renderer;
+};
+
 struct						s_ray
 {
+	int					x;
+	int					y;
 	double				angle_d;
 	double				distance;
 	double				dist_minimap;
@@ -96,11 +106,9 @@ struct						s_thread
 	t_ray				ray[WIN_W / 8];
 };
 
-struct						s_sdl
+struct						s_object
 {
-	SDL_Event			event;
-	SDL_Window      	*window;
-	SDL_Renderer    	*renderer;
+	SDL_Surface			*img_srf;
 };
 
 struct						s_player
@@ -127,6 +135,7 @@ struct						s_data
 	t_sdl				sdl;
 	TTF_Font			*font;
 	int					**map;	// map
+	t_object			object[4];
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
 	t_thread			thread[8];

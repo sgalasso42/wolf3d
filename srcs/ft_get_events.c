@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 22:10:42 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 23:55:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,9 @@ static int		ft_movement_normal(t_data *data)
 	{ // ^
 		pos.x = data->player.position.x * BLOC_SIZE + -cos(angle_r) * 10;
 		pos.y = data->player.position.y * BLOC_SIZE;
-
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.x += -cos(angle_r) * 0.2;
-
 		pos.y = data->player.position.y * BLOC_SIZE + -sin(angle_r) * 10;
-
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.y += -sin(angle_r) * 0.2;
 		return (1);
@@ -122,12 +119,9 @@ static int		ft_movement_normal(t_data *data)
 	{ // v
 		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
 		pos.y = data->player.position.y * BLOC_SIZE;
-
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.x -= -cos(angle_r) * 0.2;
-
 		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
-
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.y -= -sin(angle_r) * 0.2;
 		return (1);
