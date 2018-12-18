@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 23:30:42 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 16:07:17 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define C_CYAN         "\033[36m"
 # define C_GRAY         "\033[37m"
 
-# define WIN_H 500
-# define WIN_W 800
+# define WIN_H 700
+# define WIN_W 1000
 # define BLOC_SIZE 50
 # define DIST_SCREEN 277
 
@@ -80,7 +80,7 @@ struct					s_ray
 	double				wall_top;
 	double				wall_bot;
 	double				wall_color;
-	SDL_Color			color;
+	int					color;
 };
 
 struct					s_thread
@@ -115,12 +115,16 @@ struct					s_data
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
 	t_thread			thread[8];
+
+	SDL_Surface			*surface;
+	SDL_Texture			*texture;
 };
 
 void					ft_init_data(char *map, t_data *data);
 void					ft_get_map(char *map, t_data *data);
 
-SDL_Color				ft_hex_to_rgb(int hexa);
+SDL_Color				ft_hex_to_rgb(int hexa); // to remove si non utilise
+void					ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 
 void					ft_exit(t_data *data);
 int						ft_is_inwall(t_pos *pos, t_data *data);
