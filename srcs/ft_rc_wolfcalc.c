@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:35:11 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 18:52:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void		ft_get_color(int axis, t_ray *ray)
 	if (axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
-			ray->color = 0xB55044FF;
+			ray->color = 0xFF4D56D6;
 		else
-			ray->color = 0x424FA5FF;
+			ray->color = 0xFF51DB6A;
 	}
 	else if (axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
-			ray->color = 0x43B74BFF;
+			ray->color = 0xFFDBAC51;
 		else
-			ray->color = 0xB460BAFF;
+			ray->color = 0xFFEFEFEF;
 	}
 }
 
@@ -192,8 +192,4 @@ void				ft_rc_wolfcalc(t_data *data)
 		pthread_join(data->thread[i].th, 0);
 		i++;
 	}
-	data->texture = SDL_CreateTextureFromSurface(
-	// free surface
-	data->sdl.renderer, data->surface);
-	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 }

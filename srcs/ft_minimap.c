@@ -6,37 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:29:04 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/18 18:53:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_draw_rect(int x, int y, int w, int h,
-		int r, int g, int b, t_limit limit, t_data *data)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < h)
-	{
-		j = 0;
-		while (j < w)
-		{
-			if (x + j > limit.l && x + j < limit.r
-					&& y + i > limit.t && y + i < limit.b)
-			{
-				SDL_SetRenderDrawColor(data->sdl.renderer, r, g, b, 180);
-				SDL_RenderDrawPoint(data->sdl.renderer, x + j, y + i);
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	bresenham_tab(int *tab, t_pos p1, t_pos p2)
+void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
 {
 	tab[0]	 = abs((int)p2.x - (int)p1.x);
 	tab[1] = (int)p1.x < (int)p2.x ? 1 : -1;
@@ -45,7 +21,7 @@ void	bresenham_tab(int *tab, t_pos p1, t_pos p2)
 	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
 }
 
-void	draw_line(t_data *data, t_pos p1, t_pos p2, int r, int g, int b)
+void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color)
 {
 	int e2;
 	int tab[5];
@@ -53,8 +29,8 @@ void	draw_line(t_data *data, t_pos p1, t_pos p2, int r, int g, int b)
 	bresenham_tab(tab, p1, p2);
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
-		SDL_SetRenderDrawColor(data->sdl.renderer, r, g, b, 255);
-		SDL_RenderDrawPoint(data->sdl.renderer, (int)p1.x, (int)p1.y);
+
+		ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
 		{
@@ -69,7 +45,28 @@ void	draw_line(t_data *data, t_pos p1, t_pos p2, int r, int g, int b)
 	}
 }
 
-void	ft_draw_border(t_data *data, int x, int y)
+void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
+			t_limit limit, t_data *data)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < h)
+	{
+		j = 0;
+		while (j < w)
+		{
+			if (x + j > limit.l && x + j < limit.r
+			&& y + i > limit.t && y + i < limit.b)
+				ft_setpixel(data->surface, x + j, y + i, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void		ft_draw_border(t_data *data, int x, int y)
 {
 	t_pos p1;
 	t_pos p2;
@@ -85,10 +82,10 @@ void	ft_draw_border(t_data *data, int x, int y)
 	p4.x = x + (WIN_W / 4);
 	p4.y = y + (WIN_H / 4);
 
-	draw_line(data, p1, p2, 255, 255, 255);
-	draw_line(data, p1, p3, 255, 255, 255);
-	draw_line(data, p2, p4, 255, 255, 255);
-	draw_line(data, p3, p4, 255, 255, 255);
+	draw_line(data, p1, p2, 0xFFFFFFFF);
+	draw_line(data, p1, p3, 0xFFFFFFFF);
+	draw_line(data, p2, p4, 0xFFFFFFFF);
+	draw_line(data, p3, p4, 0xFFFFFFFF);
 }
 
 void	ft_minimap(t_data *data)
@@ -119,11 +116,10 @@ void	ft_minimap(t_data *data)
 
 	// border
 	ft_draw_rect(WIN_W - map_size.w, 0,
-	map_size.w, map_size.h,
-	0, 0, 0, limit, data);
+	map_size.w, map_size.h, 0xFF000000, limit, data);
 
 	// background
-	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 250, 250, 250, limit, data);
+	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 0xFFADADAD, limit, data);
 
 	// walls
 	i = 0;
@@ -133,8 +129,11 @@ void	ft_minimap(t_data *data)
 		while (j < data->map_sz.w)
 		{
 			if (data->map[i][j] == 1)
-				ft_draw_rect(diff.x + (j * data->mnp_size), diff.y + (i * data->mnp_size),
-						data->mnp_size, data->mnp_size, 36, 68, 92, limit, data);
+				ft_draw_rect(
+				diff.x + (j * data->mnp_size),
+				diff.y + (i * data->mnp_size),
+				data->mnp_size, data->mnp_size,
+				0xFF5C4424, limit, data);
 			j++;
 		}
 		i++;
@@ -144,8 +143,8 @@ void	ft_minimap(t_data *data)
 	double	angle;
 	double	step_x;
 	double	step_y;
-
-	SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 153, 255);
+	t_pos	a;
+	t_pos	b;
 
 	i = 0;
 	while (i < 8)
@@ -159,12 +158,14 @@ void	ft_minimap(t_data *data)
 			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
 			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
 
-			SDL_RenderDrawLine(data->sdl.renderer,
-			centre.x, centre.y,
-			centre.x + step_x, centre.y + step_y);
+			a.x = centre.x;
+			a.y = centre.y;
+			b.x = centre.x + step_x;
+			b.y = centre.y + step_y;
+
+			draw_line(data, a, b, 0xFFBFFCFF);
 			j++;
 		}
 		i++;
 	}
-	SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
 }
