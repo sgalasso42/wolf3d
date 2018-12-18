@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 12:33:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 17:29:04 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,15 @@ void	ft_minimap(t_data *data)
 	t_pos	pos_play; // calculee
 	t_pos	centre;
 	t_pos	diff;
-	int		size = 30;
 	int		i;
 	int		j;
 
 	centre.x = (WIN_W - (WIN_W / 4) / 2);
 	centre.y = (WIN_H / 4) / 2;
-	map_size.w = size * data->map_sz.w;
-	map_size.h = size * data->map_sz.h;
-	pos_play.x = data->player.position.x * size;
-	pos_play.y = data->player.position.y * size;
+	map_size.w = data->mnp_size * data->map_sz.w;
+	map_size.h = data->mnp_size * data->map_sz.h;
+	pos_play.x = data->player.position.x * data->mnp_size;
+	pos_play.y = data->player.position.y * data->mnp_size;
 	diff.x = centre.x - pos_play.x;
 	diff.y = centre.y - pos_play.y;
 	limit.l = WIN_W - (WIN_W /4);
@@ -133,8 +132,8 @@ void	ft_minimap(t_data *data)
 		while (j < data->map_sz.w)
 		{
 			if (data->map[i][j] == 1)
-				ft_draw_rect(diff.x + (j * size), diff.y + (i * size),
-						size, size, 36, 68, 92, limit, data);
+				ft_draw_rect(diff.x + (j * data->mnp_size), diff.y + (i * data->mnp_size),
+						data->mnp_size, data->mnp_size, 36, 68, 92, limit, data);
 			j++;
 		}
 		i++;

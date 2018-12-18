@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 16:55:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 17:29:00 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,19 @@ static int		ft_keyboard(t_data *data)
 		data->player.direction = (int)(data->player.direction - 5) % 360;
 		return (1);
 	}
-	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_UP
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
+		&& data->mnp_size * ZOOM_P < 50)
+	{ // zoom plus
+		data->mnp_size *= ZOOM_P;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS
+		&& data->mnp_size * ZOOM_L > 10)
+	{ // zoom moins
+		data->mnp_size *= ZOOM_L;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_UP
 	|| data->sdl.event.key.keysym.scancode == SDL_SCANCODE_DOWN)
 	{
 		ft_movement(data);
