@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 18:53:10 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 19:08:47 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
 	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
 }
 
-void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color)
+void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 {
 	int e2;
 	int tab[5];
@@ -29,8 +29,9 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color)
 	bresenham_tab(tab, p1, p2);
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
-
-		ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
+		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
+		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
+			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
 		{
@@ -82,10 +83,10 @@ void		ft_draw_border(t_data *data, int x, int y)
 	p4.x = x + (WIN_W / 4);
 	p4.y = y + (WIN_H / 4);
 
-	draw_line(data, p1, p2, 0xFFFFFFFF);
-	draw_line(data, p1, p3, 0xFFFFFFFF);
-	draw_line(data, p2, p4, 0xFFFFFFFF);
-	draw_line(data, p3, p4, 0xFFFFFFFF);
+	draw_line(data, p1, p2, 0xFFFFFFFF, 0);
+	draw_line(data, p1, p3, 0xFFFFFFFF, 0);
+	draw_line(data, p2, p4, 0xFFFFFFFF, 0);
+	draw_line(data, p3, p4, 0xFFFFFFFF, 0);
 }
 
 void	ft_minimap(t_data *data)
@@ -155,15 +156,17 @@ void	ft_minimap(t_data *data)
 			// angle en radian
 			angle = (data->thread[i].ray[j].angle_d) * M_PI / 180;
 
-			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
-			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
+			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap)
+			* data->mnp_size / 50;
+			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap)
+			* data->mnp_size / 50;
 
 			a.x = centre.x;
 			a.y = centre.y;
 			b.x = centre.x + step_x;
 			b.y = centre.y + step_y;
 
-			draw_line(data, a, b, 0xFFBFFCFF);
+			draw_line(data, a, b, 0xFFBFFCFF, &limit);
 			j++;
 		}
 		i++;
