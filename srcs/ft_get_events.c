@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:00:21 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 20:24:39 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,19 +269,18 @@ static int		ft_keyboard(t_data *data)
 
 static int		ft_mouse_motion(t_data *data)
 {
-	if (data->mouse.x > data->last_mouse.x)
+	if (data->mouse.x > 0)
 	{ // mouse left
 		data->player.direction = (int)(data->player.direction
-		+ abs(data->mouse.x - data->last_mouse.x) / 4) % 360;
+		+ abs(data->mouse.x) / 4) % 360;
 	}
-	else if (data->mouse.x < data->last_mouse.x)
+	else if (data->mouse.x < 0)
 	{ // mouse_right
 		data->player.direction = (int)(data->player.direction
-		- abs(data->mouse.x - data->last_mouse.x) / 4) % 360;
+		- abs(data->mouse.x) / 4) % 360;
 	}
 	else
 		return (0);
-	data->last_mouse.x = data->mouse.x;
 	return (1);
 }
 
@@ -289,7 +288,7 @@ int				ft_get_events(t_data *data)
 {
 	if (SDL_PollEvent(&(data->sdl.event)) == 1)
 	{
-		SDL_GetMouseState(&(data->mouse.x), &(data->mouse.y));
+		SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 		if (data->sdl.event.type == SDL_QUIT)
 			ft_exit(data);
 		else if (data->sdl.event.type == SDL_KEYDOWN && ft_keyboard(data))
