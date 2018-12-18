@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 16:07:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 17:34:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ struct					s_ray
 {
 	double				angle_d;
 	double				distance;
+	double				dist_minimap;
 	double				wall_top;
 	double				wall_bot;
 	double				wall_color;
@@ -88,8 +89,7 @@ struct					s_thread
 	pthread_t			th;
 	t_data				*data;
 	int					x_start;
-
-	t_ray				ray;
+	t_ray				ray[WIN_W / 8];
 };
 
 struct					s_sdl
@@ -115,7 +115,6 @@ struct					s_data
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
 	t_thread			thread[8];
-
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 };
