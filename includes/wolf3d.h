@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 18:57:55 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 19:53:27 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,10 @@ struct					s_data
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 	double				mnp_size;
+
+	int					gamemode;
+	t_coef				last_mouse;
+	t_coef				mouse;
 };
 
 void					ft_init_data(char *map, t_data *data);
