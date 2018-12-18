@@ -6,49 +6,51 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:54:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 21:22:15 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+void	ft_init_minimap(t_data *data)
+{
+	data->minimap.origin.x = WIN_W - (WIN_W / 4) - 10;
+	data->minimap.origin.y = 10;
+	data->minimap.centre.x = (WIN_W - (WIN_W / 4) / 2) - 10;
+	data->minimap.centre.y = (WIN_H / 4) / 2 + 10;
+	data->minimap.map_size.w = data->minimap.mnp_size * data->map_sz.w;
+	data->minimap.map_size.h = data->minimap.mnp_size * data->map_sz.h;
+	data->minimap.pos_play.x = data->player.position.x * data->minimap.mnp_size;
+	data->minimap.pos_play.y = data->player.position.y * data->minimap.mnp_size;
+	data->minimap.diff.x = data->minimap.centre.x - data->minimap.pos_play.x;
+	data->minimap.diff.y = data->minimap.centre.y - data->minimap.pos_play.y;
+	data->minimap.limit.l = data->minimap.origin.x;
+	data->minimap.limit.r = WIN_W - data->minimap.origin.y;
+	data->minimap.limit.t = 10;
+	data->minimap.limit.b = WIN_H / 4 + 10;
+}
+
 void	ft_minimap(t_data *data)
 {
-	t_pos	origin;
-	t_limit	limit;
-	t_size	map_size; // calculee
-	t_pos	pos_play; // calculee
-	t_pos	centre;
-	t_pos	diff;
 	int		i;
 	int		j;
 
-	origin.x = WIN_W - (WIN_W / 4) - 10;
-	origin.y = 10;
-	centre.x = (WIN_W - (WIN_W / 4) / 2) - 10;
-	centre.y = (WIN_H / 4) / 2 + 10;
-	map_size.w = data->mnp_size * data->map_sz.w;
-	map_size.h = data->mnp_size * data->map_sz.h;
-	pos_play.x = data->player.position.x * data->mnp_size;
-	pos_play.y = data->player.position.y * data->mnp_size;
-	diff.x = centre.x - pos_play.x;
-	diff.y = centre.y - pos_play.y;
-	limit.l = origin.x;
-	limit.r = WIN_W - origin.y;
-	limit.t = 10;
-	limit.b = WIN_H / 4 + 10;
+	ft_init_minimap(data);
 
 	// border rect
-	ft_draw_border(data, origin.x, origin.y);
+	ft_draw_border(data, data->minimap.origin.x, data->minimap.origin.y);
 
 	// border
-	ft_draw_rect(WIN_W - map_size.w - 10, 10,
-	map_size.w, map_size.h, 0xFF000000, &limit, data);
+	ft_draw_rect(WIN_W - data->minimap.map_size.w - 10, 10,
+	data->minimap.map_size.w, data->minimap.map_size.h,
+	0xFF000000, &(data->minimap.limit), data);
 
 	// background
-	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 0xFFADADAD, &limit, data);
+	//ft_draw_rect(data->minimap.diff.x, data->minimap.diff.y,
+	//data->minimap.map_size.w, data->minimap.map_size.h,
+	//0xFFADADAD, &(data->minimap.limit), data);
 
-	// walls
+	// map
 	i = 0;
 	while (i < data->map_sz.h)
 	{
@@ -57,10 +59,16 @@ void	ft_minimap(t_data *data)
 		{
 			if (data->map[i][j] == 1)
 				ft_draw_rect(
-				diff.x + (j * data->mnp_size),
-				diff.y + (i * data->mnp_size),
-				data->mnp_size, data->mnp_size,
-				0xFF5C4424, &limit, data);
+				data->minimap.diff.x + (j * data->minimap.mnp_size),
+				data->minimap.diff.y + (i * data->minimap.mnp_size),
+				data->minimap.mnp_size, data->minimap.mnp_size,
+				0xFF5C4424, &(data->minimap.limit), data);
+			else if (data->map[i][j] == 0 || data->map[i][j] == 2)
+				ft_draw_rect(
+				data->minimap.diff.x + (j * data->minimap.mnp_size),
+				data->minimap.diff.y + (i * data->minimap.mnp_size),
+				data->minimap.mnp_size, data->minimap.mnp_size,
+				0xFFADADAD, &(data->minimap.limit), data);
 			j++;
 		}
 		i++;
@@ -83,20 +91,21 @@ void	ft_minimap(t_data *data)
 			angle = (data->thread[i].ray[j].angle_d) * M_PI / 180;
 
 			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap)
-			* data->mnp_size / 50;
+			* data->minimap.mnp_size / 50;
 			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap)
-			* data->mnp_size / 50;
+			* data->minimap.mnp_size / 50;
 
-			a.x = centre.x;
-			a.y = centre.y;
-			b.x = centre.x + step_x;
-			b.y = centre.y + step_y;
+			a.x = data->minimap.centre.x;
+			a.y = data->minimap.centre.y;
+			b.x = data->minimap.centre.x + step_x;
+			b.y = data->minimap.centre.y + step_y;
 
-			draw_line(data, a, b, 0xFFBFFCFF, &limit);
+			draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
 			j++;
 		}
 		i++;
 	}
 	// player
-	ft_draw_rect(centre.x - 5, centre.y - 5, 10, 10, 0x0, 0, data);
+	ft_draw_rect(data->minimap.centre.x - 5,
+	data->minimap.centre.y - 5, 10, 10, 0x0, 0, data);
 }

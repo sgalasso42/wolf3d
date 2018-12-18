@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:28:47 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 21:20:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,15 +243,15 @@ static int		ft_keyboard(t_data *data)
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
-	&& data->mnp_size * ZOOM_P < 50)
+	&& data->minimap.mnp_size * ZOOM_P < 50)
 	{ // minimap +
-		data->mnp_size *= ZOOM_P;
+		data->minimap.mnp_size *= ZOOM_P;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS
-	&& data->mnp_size * ZOOM_L > 10)
+	&& data->minimap.mnp_size * ZOOM_L > 10)
 	{ // minimap -
-		data->mnp_size *= ZOOM_L;
+		data->minimap.mnp_size *= ZOOM_L;
 		return (1);
 	}
 	else if (data->gamemode == 0)
