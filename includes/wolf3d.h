@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 21:32:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 00:05:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define WIN_H 700
 # define WIN_W 1000
 # define BLOC_SIZE 50
-# define DIST_SCREEN 277
+# define DIST_SCREEN 900
 
 # define ZOOM_P 1.1
 # define ZOOM_L 0.9
@@ -46,6 +46,7 @@ typedef struct s_size		t_size;
 typedef struct s_coef		t_coef;
 typedef struct s_ray		t_ray;
 typedef struct s_thread		t_thread;
+typedef struct s_object		t_object;
 typedef struct s_sdl		t_sdl;
 typedef struct s_player		t_player;
 typedef struct s_minimap	t_minimap;
@@ -77,15 +78,24 @@ struct						s_coef
 	int					y;
 };
 
+struct						s_sdl
+{
+	SDL_Event			event;
+	SDL_Window      	*window;
+	SDL_Renderer    	*renderer;
+};
+
 struct						s_ray
 {
+	int					x;
+	int					y;
 	double				angle_d;
 	double				distance;
 	double				dist_minimap;
 	double				wall_top;
 	double				wall_bot;
 	double				wall_color;
-	int					color;
+	Uint32				color;
 };
 
 struct						s_thread
@@ -96,11 +106,9 @@ struct						s_thread
 	t_ray				ray[WIN_W / 8];
 };
 
-struct						s_sdl
+struct						s_object
 {
-	SDL_Event			event;
-	SDL_Window      	*window;
-	SDL_Renderer    	*renderer;
+	SDL_Surface			*img_srf;
 };
 
 struct						s_player
@@ -127,6 +135,7 @@ struct						s_data
 	t_sdl				sdl;
 	TTF_Font			*font;
 	int					**map;	// map
+	t_object			object[4];
 	t_size				map_sz;	// map size
 	t_player			player;	// position camera
 	t_thread			thread[8];
@@ -148,6 +157,7 @@ void						ft_draw_border(t_data *data, int x, int y);
 SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);
+Uint32						ft_getpixel(SDL_Surface *surface, int x, int y);
 
 void						ft_exit(t_data *data);
 int							ft_is_inwall(t_pos *pos, t_data *data);

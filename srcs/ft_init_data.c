@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 21:18:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 23:16:09 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,11 @@ void	ft_init_fonts(t_data *data)
 		exit(EXIT_FAILURE); // exit proprement todo
 }
 
-/*void	ft_make_texture(t_btn *btn, char *path, char *path_h, t_data *data)
-  {
-  SDL_Surface		*surface;
-  SDL_Surface		*surface_hover;
-
-  surface = IMG_Load(path);
-  surface_hover = IMG_Load(path_h);
-
-  btn->txtr_btn =
-  SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
-  btn->txtr_btn_hover =
-  SDL_CreateTextureFromSurface(data->sdl.renderer, surface_hover);
-
-  free(surface);
-  free(surface_hover);
-  }*/
+void	ft_make_texture(t_data *data)
+{
+	if (!(data->object[0].img_srf = IMG_Load("ressources/img/crate.png")))
+		exit(EXIT_FAILURE); // recup exit
+}
 
 void	ft_init_data(char *map, t_data *data)
 {
@@ -82,6 +71,7 @@ void	ft_init_data(char *map, t_data *data)
 	ft_init_sdl(data);
 	ft_init_fonts(data);
 	ft_get_map(map, data);
+	ft_make_texture(data);
 	// demo ---------------------
 	int i = -1;
 	int	j = -1;

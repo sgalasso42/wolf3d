@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:29:47 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 00:04:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,48 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	int		y2;
 
 	x2 = pos->x / BLOC_SIZE;
-	y2 = pos->y / BLOC_SIZE;	
+	y2 = pos->y / BLOC_SIZE;
 	if (data->map[y2][x2] == 1)
 		return (1);
 	return (0);
 }
 
-void		ft_get_color(int axis, t_ray *ray)
+void		ft_get_color(int axis, t_ray *ray, t_data *data)
 {
 	if (axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
-			ray->color = 0xFF4D56D6;
+		{
+			ray->color = ft_getpixel(data->object[0].img_srf,
+			ray->x % BLOC_SIZE, ray->y % BLOC_SIZE);
+			ray->color |= 0xFF000000;
+		}
 		else
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFF51DB6A;
+		}
 	}
 	else if (axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFFDBAC51;
+		}
 		else
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFFEFEFEF;
+		}
 	}
 }
 
 void		ft_calc_distance(int i, int x, t_thread *thread)
 {
+	t_pos	player_pos;	// position calculee
 	double	distance_x;
 	double	distance_y;
-	t_pos	player_pos;	// position calculee
 	double	alpha_d;	// angle entre direction et ray en degres
 	double	alpha_r;	// idem en radian
 	double	angle_r;	// angle radian
@@ -83,8 +96,11 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].dist_minimap = thread->ray[i].distance;
 			// correction fisheye
 			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
+
 			// get color of wall
-			ft_get_color(1, &(thread->ray[i]));
+			thread->ray[i].x = pos.x;
+			thread->ray[i].y = pos.y;
+			ft_get_color(1, &(thread->ray[i]), thread->data);
 			return ;
 		}
 
@@ -98,8 +114,11 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].dist_minimap = thread->ray[i].distance;
 			// correction fisheye
 			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
+
 			// get color of wall
-			ft_get_color(2, &(thread->ray[i]));
+			thread->ray[i].x = (int)pos.x;
+			thread->ray[i].y = (int)pos.y;
+			ft_get_color(2, &(thread->ray[i]), thread->data);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
@@ -108,7 +127,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	thread->ray[i].distance = -1;
 }
 
-void		ft_calc_ray(int i, int x, t_thread *thread)
+void					ft_calc_ray(int i, int x, t_thread *thread)
 {
 	double	height;
 
@@ -123,7 +142,7 @@ void		ft_calc_ray(int i, int x, t_thread *thread)
 	thread->ray[i].wall_bot = WIN_H - ((WIN_H - height) / 2);
 }
 
-void		*ft_calc_frame(void *arg)
+void					*ft_calc_frame(void *arg)
 {
 	t_thread	*thread;
 	double		x;
@@ -152,7 +171,8 @@ void		*ft_calc_frame(void *arg)
 	}
 	pthread_exit(0);
 }
-static SDL_Surface	*ft_new_surface(int height, int width)
+
+static SDL_Surface		*ft_new_surface(int height, int width)
 {
 	SDL_Surface *surface;
 	Uint32 r, g, b, a;
@@ -161,7 +181,6 @@ static SDL_Surface	*ft_new_surface(int height, int width)
 	g = 0x0000ff00;
 	b = 0x00ff0000;
 	a = 0xff000000;
-
 	if (!(surface = SDL_CreateRGBSurface(0, width, height, 32, r, g, b, a)))
 	{
 		SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
@@ -169,6 +188,7 @@ static SDL_Surface	*ft_new_surface(int height, int width)
 	}
 	return (surface);
 }
+
 void				ft_rc_wolfcalc(t_data *data)
 {
 	int i;

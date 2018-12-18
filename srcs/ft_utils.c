@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:53:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 23:41:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,34 @@ void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	}
 }
 
+Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
+{
+	int				bpp;
+	Uint8			*p;
+	Uint32			ret;
+
+	SDL_LockSurface(surface);
+	x = ft_abs(--x);
+	y = ft_abs(--y);
+	bpp = surface->format->BytesPerPixel;
+	p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	if (bpp == 1)
+		ret = *p;
+	else if (bpp == 2)
+		ret = *(Uint16 *)p;
+	else if (bpp == 3)
+	{
+		ret = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
+		(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
+	}
+	else if (bpp == 4)
+		ret = *(Uint32 *)p;
+	else
+		ret = 0;
+	SDL_UnlockSurface(surface);
+	return (ret);
+}
+
 static void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
 {
 	tab[0]	 = abs((int)p2.x - (int)p1.x);
@@ -71,7 +99,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
 		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
+					&& (int)p1.y > limit->t && (int)p1.y < limit->b))
 			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
@@ -88,7 +116,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 }
 
 void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
-			t_limit *limit, t_data *data)
+t_limit *limit, t_data *data)
 {
 	int		i;
 	int		j;
@@ -100,7 +128,7 @@ void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
 		while (j < w)
 		{
 			if (!limit || (x + j > limit->l && x + j < limit->r
-			&& y + i > limit->t && y + i < limit->b))
+						&& y + i > limit->t && y + i < limit->b))
 				ft_setpixel(data->surface, x + j, y + i, color);
 			j++;
 		}

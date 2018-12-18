@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 21:22:15 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 21:43:52 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_init_minimap(t_data *data)
+static void		ft_init_minimap(t_data *data)
 {
 	data->minimap.origin.x = WIN_W - (WIN_W / 4) - 10;
 	data->minimap.origin.y = 10;
@@ -30,6 +30,43 @@ void	ft_init_minimap(t_data *data)
 	data->minimap.limit.b = WIN_H / 4 + 10;
 }
 
+static void		ft_set_player(t_data *data)
+{
+	double	angle_r;
+	double	step_x;
+	double	step_y;
+	int		i;
+	int		j;
+	t_pos	a;
+	t_pos	b;
+
+	i = 0;
+	while (i < 8)
+	{
+		j = 0;
+		while (j < WIN_W / 8)
+		{
+			angle_r = (data->thread[i].ray[j].angle_d) * M_PI / 180;
+
+			step_x = -cos(angle_r) * (data->thread[i].ray[j].dist_minimap)
+			* data->minimap.mnp_size / 50;
+			step_y = -sin(angle_r) * (data->thread[i].ray[j].dist_minimap)
+			* data->minimap.mnp_size / 50;
+
+			a.x = data->minimap.centre.x;
+			a.y = data->minimap.centre.y;
+			b.x = data->minimap.centre.x + step_x;
+			b.y = data->minimap.centre.y + step_y;
+
+			draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
+			j++;
+		}
+		i++;
+	}
+	ft_draw_rect(data->minimap.centre.x - 5,
+	data->minimap.centre.y - 5, 10, 10, 0x0, 0, data);
+}
+
 void	ft_minimap(t_data *data)
 {
 	int		i;
@@ -44,11 +81,6 @@ void	ft_minimap(t_data *data)
 	ft_draw_rect(WIN_W - data->minimap.map_size.w - 10, 10,
 	data->minimap.map_size.w, data->minimap.map_size.h,
 	0xFF000000, &(data->minimap.limit), data);
-
-	// background
-	//ft_draw_rect(data->minimap.diff.x, data->minimap.diff.y,
-	//data->minimap.map_size.w, data->minimap.map_size.h,
-	//0xFFADADAD, &(data->minimap.limit), data);
 
 	// map
 	i = 0;
@@ -73,39 +105,5 @@ void	ft_minimap(t_data *data)
 		}
 		i++;
 	}
-
-	// player
-	double	angle;
-	double	step_x;
-	double	step_y;
-	t_pos	a;
-	t_pos	b;
-
-	i = 0;
-	while (i < 8)
-	{
-		j = 0;
-		while (j < WIN_W / 8)
-		{
-			// angle en radian
-			angle = (data->thread[i].ray[j].angle_d) * M_PI / 180;
-
-			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap)
-			* data->minimap.mnp_size / 50;
-			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap)
-			* data->minimap.mnp_size / 50;
-
-			a.x = data->minimap.centre.x;
-			a.y = data->minimap.centre.y;
-			b.x = data->minimap.centre.x + step_x;
-			b.y = data->minimap.centre.y + step_y;
-
-			draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
-			j++;
-		}
-		i++;
-	}
-	// player
-	ft_draw_rect(data->minimap.centre.x - 5,
-	data->minimap.centre.y - 5, 10, 10, 0x0, 0, data);
+	ft_set_player(data);	
 }
