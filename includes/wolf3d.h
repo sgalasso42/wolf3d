@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 16:07:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 17:29:02 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define BLOC_SIZE 50
 # define DIST_SCREEN 277
 
+# define ZOOM_P 1.1
+# define ZOOM_L 0.9
 typedef struct s_limit	t_limit;
 typedef struct s_pos	t_pos;
 typedef struct s_size	t_size;
@@ -118,6 +120,7 @@ struct					s_data
 
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
+	double				mnp_size;
 };
 
 void					ft_init_data(char *map, t_data *data);
