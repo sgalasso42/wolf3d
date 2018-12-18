@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/17 21:19:37 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 16:04:50 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void		ft_get_color(int axis, t_ray *ray)
 	if (axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
-			ray->color = ft_hex_to_rgb(0xB55044);
+			ray->color = 0xB55044FF;
 		else
-			ray->color = ft_hex_to_rgb(0x424FA5);
+			ray->color = 0x424FA5FF;
 	}
 	else if (axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
-			ray->color = ft_hex_to_rgb(0x43B74B);
+			ray->color = 0x43B74BFF;
 		else
-			ray->color = ft_hex_to_rgb(0xB460BA);
+			ray->color = 0xB460BAFF;
 	}
 }
 
@@ -117,10 +117,7 @@ void		ft_calc_ray(int x, t_thread *thread)
 	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
 
 	if (thread->ray.distance >= 0)
-	{
 		height = (BLOC_SIZE / thread->ray.distance) * DIST_SCREEN;
-		//printf("height : %f\n", height);
-	}
 
 	thread->ray.wall_top = (WIN_H - height) / 2;
 	thread->ray.wall_bot = WIN_H - ((WIN_H - height) / 2);
@@ -141,21 +138,11 @@ void		*ft_calc_frame(void *arg)
 		while (y < WIN_H)
 		{
 			if (y < thread->ray.wall_top)
-			{
-				SDL_SetRenderDrawColor(thread->data->sdl.renderer, 0, 0, 0, 255);
-				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
-			}
+				ft_setpixel(thread->data->surface, x, y, 0x0);
 			else if (y >= thread->ray.wall_top && y <= thread->ray.wall_bot)
-			{
-				SDL_SetRenderDrawColor(thread->data->sdl.renderer,
-				thread->ray.color.r, thread->ray.color.g, thread->ray.color.b, 255);
-				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
-			}
+				ft_setpixel(thread->data->surface, x, y, thread->ray.color);
 			else
-			{
-				SDL_SetRenderDrawColor(thread->data->sdl.renderer, 0, 0, 0, 255);
-				SDL_RenderDrawPoint(thread->data->sdl.renderer, x, y);
-			}
+				ft_setpixel(thread->data->surface, x, y, 0x0);
 			y++;
 		}
 		ft_bzero(&(thread->ray), sizeof(t_ray));
@@ -163,25 +150,46 @@ void		*ft_calc_frame(void *arg)
 	}
 	pthread_exit(0);
 }
+static SDL_Surface	*ft_new_surface(int height, int width)
+{
+	SDL_Surface *surface;
+	Uint32 r, g, b, a;
 
-void		ft_rc_wolfcalc(t_data *data)
+	r = 0x000000ff;
+	g = 0x0000ff00;
+	b = 0x00ff0000;
+	a = 0xff000000;
+
+	if (!(surface = SDL_CreateRGBSurface(0, width, height, 32, r, g, b, a)))
+	{
+		SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
+		exit(EXIT_FAILURE); // recup exit
+	}
+	return (surface);
+}
+void				ft_rc_wolfcalc(t_data *data)
 {
 	int i;
 
 	i = 0;
-	while (i < 1)
+	data->surface = ft_new_surface(WIN_H, WIN_W);
+	while (i < 8)
 	{	
-		data->thread[i].x_start = 0;
+		data->thread[i].x_start = i;
 		data->thread[i].data = data;
 		pthread_create(&(data->thread[i].th), NULL,
 		ft_calc_frame, (void *)&(data->thread[i]));
 		i++;
 	}
 	i = 0;
-	while (i < 1)
+	while (i < 8)
 	{
 		pthread_join(data->thread[i].th, 0);
 		pthread_join(data->thread[i].th, 0);
 		i++;
 	}
+	data->texture = SDL_CreateTextureFromSurface(
+	// free surface
+	data->sdl.renderer, data->surface);
+	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 }
