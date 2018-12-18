@@ -6,91 +6,15 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 19:23:36 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 20:54:26 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
-{
-	tab[0]	 = abs((int)p2.x - (int)p1.x);
-	tab[1] = (int)p1.x < (int)p2.x ? 1 : -1;
-	tab[2] = abs((int)p2.y - (int)p1.y);
-	tab[3] = (int)p1.y < (int)p2.y ? 1 : -1;
-	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
-}
-
-void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
-{
-	int e2;
-	int tab[5];
-
-	bresenham_tab(tab, p1, p2);
-	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
-	{
-		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
-			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
-		e2 = tab[4];
-		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
-		{
-			tab[4] -= tab[2];
-			p1.x = (int)p1.x + tab[1];
-		}
-		if (e2 < tab[2] && (int)p1.y != (int)p2.y)
-		{
-			tab[4] += tab[0];
-			p1.y = (int)p1.y + tab[3];
-		}
-	}
-}
-
-void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
-			t_limit limit, t_data *data)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < h)
-	{
-		j = 0;
-		while (j < w)
-		{
-			if (x + j > limit.l && x + j < limit.r
-			&& y + i > limit.t && y + i < limit.b)
-				ft_setpixel(data->surface, x + j, y + i, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void		ft_draw_border(t_data *data, int x, int y)
-{
-	t_pos p1;
-	t_pos p2;
-	t_pos p3;
-	t_pos p4;
-
-	p1.x = x + 0;
-	p1.y = y + 0;
-	p2.x = x + (WIN_W / 4);
-	p2.y = y + 0;
-	p3.x = x + 0;
-	p3.y = y + (WIN_H / 4);
-	p4.x = x + (WIN_W / 4);
-	p4.y = y + (WIN_H / 4);
-
-	draw_line(data, p1, p2, 0xFFFFFFFF, 0);
-	draw_line(data, p1, p3, 0xFFFFFFFF, 0);
-	draw_line(data, p2, p4, 0xFFFFFFFF, 0);
-	draw_line(data, p3, p4, 0xFFFFFFFF, 0);
-}
-
 void	ft_minimap(t_data *data)
 {
+	t_pos	origin;
 	t_limit	limit;
 	t_size	map_size; // calculee
 	t_pos	pos_play; // calculee
@@ -99,28 +23,30 @@ void	ft_minimap(t_data *data)
 	int		i;
 	int		j;
 
-	centre.x = (WIN_W - (WIN_W / 4) / 2);
-	centre.y = (WIN_H / 4) / 2;
+	origin.x = WIN_W - (WIN_W / 4) - 10;
+	origin.y = 10;
+	centre.x = (WIN_W - (WIN_W / 4) / 2) - 10;
+	centre.y = (WIN_H / 4) / 2 + 10;
 	map_size.w = data->mnp_size * data->map_sz.w;
 	map_size.h = data->mnp_size * data->map_sz.h;
 	pos_play.x = data->player.position.x * data->mnp_size;
 	pos_play.y = data->player.position.y * data->mnp_size;
 	diff.x = centre.x - pos_play.x;
 	diff.y = centre.y - pos_play.y;
-	limit.l = WIN_W - (WIN_W / 4);
-	limit.r = WIN_W;
-	limit.t = 0;
-	limit.b = WIN_H / 4;
+	limit.l = origin.x;
+	limit.r = WIN_W - origin.y;
+	limit.t = 10;
+	limit.b = WIN_H / 4 + 10;
 
-	//border rect
-	ft_draw_border(data, WIN_W - (WIN_W / 4), 0);
+	// border rect
+	ft_draw_border(data, origin.x, origin.y);
 
 	// border
-	ft_draw_rect(WIN_W - map_size.w, 0,
-	map_size.w, map_size.h, 0xFF000000, limit, data);
+	ft_draw_rect(WIN_W - map_size.w - 10, 10,
+	map_size.w, map_size.h, 0xFF000000, &limit, data);
 
 	// background
-	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 0xFFADADAD, limit, data);
+	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 0xFFADADAD, &limit, data);
 
 	// walls
 	i = 0;
@@ -134,7 +60,7 @@ void	ft_minimap(t_data *data)
 				diff.x + (j * data->mnp_size),
 				diff.y + (i * data->mnp_size),
 				data->mnp_size, data->mnp_size,
-				0xFF5C4424, limit, data);
+				0xFF5C4424, &limit, data);
 			j++;
 		}
 		i++;
@@ -171,4 +97,6 @@ void	ft_minimap(t_data *data)
 		}
 		i++;
 	}
+	// player
+	ft_draw_rect(centre.x - 5, centre.y - 5, 10, 10, 0x0, 0, data);
 }
