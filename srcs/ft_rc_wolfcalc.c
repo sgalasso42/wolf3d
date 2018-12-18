@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 20:29:47 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 22:05:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,28 @@ void		ft_get_color(int axis, t_ray *ray)
 	if (axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFF4D56D6;
+		}
 		else
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFF51DB6A;
+		}
 	}
 	else if (axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFFDBAC51;
+		}
 		else
+		{
+			//ray->color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
 			ray->color = 0xFFEFEFEF;
+		}
 	}
 }
 

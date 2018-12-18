@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 21:32:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 22:05:59 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define WIN_H 700
 # define WIN_W 1000
 # define BLOC_SIZE 50
-# define DIST_SCREEN 277
+# define DIST_SCREEN 900
 
 # define ZOOM_P 1.1
 # define ZOOM_L 0.9
@@ -85,7 +85,7 @@ struct						s_ray
 	double				wall_top;
 	double				wall_bot;
 	double				wall_color;
-	int					color;
+	Uint32				color;
 };
 
 struct						s_thread
@@ -148,6 +148,7 @@ void						ft_draw_border(t_data *data, int x, int y);
 SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);
+Uint32						ft_getpixel(SDL_Surface *surface, int x, int y);
 
 void						ft_exit(t_data *data);
 int							ft_is_inwall(t_pos *pos, t_data *data);
