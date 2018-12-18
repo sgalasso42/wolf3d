@@ -109,17 +109,18 @@ void	ft_minimap(t_data *data)
 	pos_play.y = data->player.position.y * data->mnp_size;
 	diff.x = centre.x - pos_play.x;
 	diff.y = centre.y - pos_play.y;
-	limit.l = WIN_W - (WIN_W /4);
+	limit.l = WIN_W - (WIN_W / 4);
 	limit.r = WIN_W;
 	limit.t = 0;
-	limit.b = (WIN_H / 4);
+	limit.b = WIN_H / 4;
 
 	//border rect
 	ft_draw_border(data, WIN_W - (WIN_W / 4), 0);
 
 	// border
 	ft_draw_rect(WIN_W - map_size.w, 0,
-			map_size.w, map_size.h, 0, 0, 0, limit, data);
+	map_size.w, map_size.h,
+	0, 0, 0, limit, data);
 
 	// background
 	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 250, 250, 250, limit, data);
@@ -140,29 +141,30 @@ void	ft_minimap(t_data *data)
 	}
 
 	// player
-	double	rayon = 25;
 	double	angle;
 	double	step_x;
 	double	step_y;
 
-	// angle en radian
-	angle = (data->player.direction - 30) * M_PI / 180;
-	step_x = -cos(angle) * rayon;
-	step_y = -sin(angle) * rayon;
+	SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 153, 255);
 
-	SDL_SetRenderDrawColor(data->sdl.renderer, 255, 0, 0, 255);
+	i = 0;
+	while (i < 8)
+	{
+		j = 0;
+		while (j < WIN_W / 8)
+		{
+			// angle en radian
+			angle = (data->thread[i].ray[j].angle_d) * M_PI / 180;
 
-	SDL_RenderDrawLine(data->sdl.renderer,
+			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
+			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
+
+			SDL_RenderDrawLine(data->sdl.renderer,
 			centre.x, centre.y,
 			centre.x + step_x, centre.y + step_y);
-
-	angle = (data->player.direction + 30) * M_PI / 180;
-	step_x = -cos(angle) * rayon;
-	step_y = -sin(angle) * rayon;
-
-	SDL_RenderDrawLine(data->sdl.renderer,
-			centre.x, centre.y,
-			centre.x + step_x, centre.y + step_y);
-
+			j++;
+		}
+		i++;
+	}
 	SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
 }

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 16:04:50 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 17:35:11 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		ft_get_color(int axis, t_ray *ray)
 	}
 }
 
-void		ft_calc_distance(int x, t_thread *thread)
+void		ft_calc_distance(int i, int x, t_thread *thread)
 {
 	double	distance_x;
 	double	distance_y;
@@ -61,12 +61,12 @@ void		ft_calc_distance(int x, t_thread *thread)
 	player_pos.y = thread->data->player.position.y * BLOC_SIZE;
 
 	// anle en fonction de x
-	thread->ray.angle_d =
+	thread->ray[i].angle_d =
 	(thread->data->player.direction - 30) + (x * (60.0 / WIN_W));
 	// passage en radian
-	angle_r = thread->ray.angle_d * M_PI / 180;
+	angle_r = thread->ray[i].angle_d * M_PI / 180;
 
-	alpha_d = fabs(thread->data->player.direction - thread->ray.angle_d);
+	alpha_d = fabs(thread->data->player.direction - thread->ray[i].angle_d);
 	alpha_r = alpha_d * M_PI / 180;
 
 	pos.x = thread->data->player.position.x * BLOC_SIZE;
@@ -79,12 +79,12 @@ void		ft_calc_distance(int x, t_thread *thread)
 		{
 			distance_x = pos.x - player_pos.x;
 			distance_y = (int)pos.y - player_pos.y; //
-			thread->ray.distance = ft_pythagore(distance_x, distance_y);
-
+			thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
+			thread->ray[i].dist_minimap = thread->ray[i].distance;
 			// correction fisheye
-			thread->ray.distance = thread->ray.distance * cos(alpha_r);
+			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
 			// get color of wall
-			ft_get_color(1, &(thread->ray));
+			ft_get_color(1, &(thread->ray[i]));
 			return ;
 		}
 
@@ -94,33 +94,33 @@ void		ft_calc_distance(int x, t_thread *thread)
 		{
 			distance_x = (int)pos.x - player_pos.x;
 			distance_y = pos.y - player_pos.y;
-			thread->ray.distance = ft_pythagore(distance_x, distance_y);
-
+			thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
+			thread->ray[i].dist_minimap = thread->ray[i].distance;
 			// correction fisheye
-			thread->ray.distance = thread->ray.distance * cos(alpha_r);
+			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
 			// get color of wall
-			ft_get_color(2, &(thread->ray));
+			ft_get_color(2, &(thread->ray[i]));
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
 	}
 	// out of map
-	thread->ray.distance = -1;
+	thread->ray[i].distance = -1;
 }
 
-void		ft_calc_ray(int x, t_thread *thread)
+void		ft_calc_ray(int i, int x, t_thread *thread)
 {
 	double	height;
 
 	height = 0;
-	ft_calc_distance(x, thread);
+	ft_calc_distance(i, x, thread);
 	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
 
-	if (thread->ray.distance >= 0)
-		height = (BLOC_SIZE / thread->ray.distance) * DIST_SCREEN;
+	if (thread->ray[i].distance >= 0)
+		height = (BLOC_SIZE / thread->ray[i].distance) * DIST_SCREEN;
 
-	thread->ray.wall_top = (WIN_H - height) / 2;
-	thread->ray.wall_bot = WIN_H - ((WIN_H - height) / 2);
+	thread->ray[i].wall_top = (WIN_H - height) / 2;
+	thread->ray[i].wall_bot = WIN_H - ((WIN_H - height) / 2);
 }
 
 void		*ft_calc_frame(void *arg)
@@ -128,25 +128,27 @@ void		*ft_calc_frame(void *arg)
 	t_thread	*thread;
 	double		x;
 	double		y;
+	int			i;
 
+	i = 0;
 	thread = (t_thread *)arg;
 	x = thread->x_start;
 	while (x < WIN_W)
 	{
 		y = 0;
-		ft_calc_ray(x, thread);
+		ft_calc_ray(i, x, thread);
 		while (y < WIN_H)
 		{
-			if (y < thread->ray.wall_top)
+			if (y < thread->ray[i].wall_top)
 				ft_setpixel(thread->data->surface, x, y, 0x0);
-			else if (y >= thread->ray.wall_top && y <= thread->ray.wall_bot)
-				ft_setpixel(thread->data->surface, x, y, thread->ray.color);
+			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
+				ft_setpixel(thread->data->surface, x, y, thread->ray[i].color);
 			else
 				ft_setpixel(thread->data->surface, x, y, 0x0);
 			y++;
 		}
-		ft_bzero(&(thread->ray), sizeof(t_ray));
 		x += 8;
+		i++;
 	}
 	pthread_exit(0);
 }
@@ -177,6 +179,8 @@ void				ft_rc_wolfcalc(t_data *data)
 	{	
 		data->thread[i].x_start = i;
 		data->thread[i].data = data;
+		ft_bzero(data->thread[i].ray,
+		sizeof(t_ray) * (WIN_W / 8));
 		pthread_create(&(data->thread[i].th), NULL,
 		ft_calc_frame, (void *)&(data->thread[i]));
 		i++;
