@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:29:00 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/18 21:20:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,6 @@ int				ft_mouseleave(t_data *data)
 			data->mouse_in = 0;
 			return (1);
 		}
-	}
-	return (0);
-}
-
-static int		ft_mouse_motion(t_data *data)
-{
-	if (ft_mouseenter(data))
-		return (1);
-	else if (ft_mouseleave(data))
-		return (1);
-	if (data->drag == 1)
-	{
-		ft_grid_event(data);
-		return (1);
 	}
 	return (0);
 }*/
@@ -110,7 +96,7 @@ static int		ft_mouse_motion(t_data *data)
 	return (0);
 }*/
 
-static void		ft_movement(t_data *data)
+static int		ft_movement_normal(t_data *data)
 {
 	double		angle_r;
 	t_pos		pos;
@@ -130,6 +116,7 @@ static void		ft_movement(t_data *data)
 
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.y += -sin(angle_r) * 0.1;
+		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_DOWN)
 	{ // v
@@ -143,16 +130,90 @@ static void		ft_movement(t_data *data)
 
 		if (!ft_is_inwall(&pos, data))
 			data->player.position.y -= -sin(angle_r) * 0.1;
+		return (1);
 	}
+	return (0);
 }
 
-static int		ft_keyboard(t_data *data)
+static int		ft_movement_gaming(t_data *data)
 {
-	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-	{ // esc
-		ft_exit(data);
+	double		angle_r;
+	t_pos		pos;
+
+	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
+	{ // w
+		// passage en radian
+		angle_r = data->player.direction * M_PI / 180;
+
+		pos.x = data->player.position.x * BLOC_SIZE + -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x += -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE + -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y += -sin(angle_r) * 0.1;
+		return (1);
 	}
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
+	{ // s
+		// passage en radian
+		angle_r = data->player.direction * M_PI / 180;
+
+		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x -= -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y -= -sin(angle_r) * 0.1;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
+	{ // a
+		// passage en radian
+		angle_r = (data->player.direction + 90) * M_PI / 180;
+
+		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x -= -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y -= -sin(angle_r) * 0.1;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_D)
+	{ // d
+		// passage en radian
+		angle_r = (data->player.direction - 90) * M_PI / 180;
+
+		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
+		pos.y = data->player.position.y * BLOC_SIZE;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.x -= -cos(angle_r) * 0.1;
+
+		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
+
+		if (!ft_is_inwall(&pos, data))
+			data->player.position.y -= -sin(angle_r) * 0.1;
+		return (1);
+	}
+	return (0);
+}
+
+static int		ft_rotation_normal(t_data *data)
+{
+	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 	{ // >
 		data->player.direction = (int)(data->player.direction + 5) % 360;
 		return (1);
@@ -162,41 +223,80 @@ static int		ft_keyboard(t_data *data)
 		data->player.direction = (int)(data->player.direction - 5) % 360;
 		return (1);
 	}
+	return (0);
+}
+
+static int		ft_keyboard(t_data *data)
+{
+	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+	{ // esc
+		ft_exit(data);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_1)
+	{ // 1
+		data->gamemode = 0;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_2)
+	{ // 2
+		data->gamemode = 1;
+		return (1);
+	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
-		&& data->mnp_size * ZOOM_P < 50)
-	{ // zoom plus
-		data->mnp_size *= ZOOM_P;
+	&& data->minimap.mnp_size * ZOOM_P < 50)
+	{ // minimap +
+		data->minimap.mnp_size *= ZOOM_P;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS
-		&& data->mnp_size * ZOOM_L > 10)
-	{ // zoom moins
-		data->mnp_size *= ZOOM_L;
+	&& data->minimap.mnp_size * ZOOM_L > 10)
+	{ // minimap -
+		data->minimap.mnp_size *= ZOOM_L;
 		return (1);
 	}
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_UP
-	|| data->sdl.event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+	else if (data->gamemode == 0)
 	{
-		ft_movement(data);
-		return (1);
+		if (ft_movement_normal(data) || ft_rotation_normal(data))
+			return (1);
+	}
+	else if (data->gamemode == 1)
+	{
+		if (ft_movement_gaming(data))
+			return (1);
 	}
 	return (0);
 }
 
-int		ft_get_events(t_data *data)
+static int		ft_mouse_motion(t_data *data)
+{
+	if (data->mouse.x > 0)
+	{ // mouse left
+		data->player.direction = (int)(data->player.direction
+		+ abs(data->mouse.x) / 4) % 360;
+	}
+	else if (data->mouse.x < 0)
+	{ // mouse_right
+		data->player.direction = (int)(data->player.direction
+		- abs(data->mouse.x) / 4) % 360;
+	}
+	else
+		return (0);
+	return (1);
+}
+
+int				ft_get_events(t_data *data)
 {
 	if (SDL_PollEvent(&(data->sdl.event)) == 1)
 	{
+		SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 		if (data->sdl.event.type == SDL_QUIT)
 			ft_exit(data);
-		else if (data->sdl.event.type == SDL_KEYDOWN
-		&& ft_keyboard(data))
+		else if (data->sdl.event.type == SDL_KEYDOWN && ft_keyboard(data))
 			return (1);
-		/*SDL_GetMouseState(&(data->mouse.x), &(data->mouse.y));
-		if (data->sdl.event.type == SDL_MOUSEMOTION
-		&& ft_mouse_motion(data))
+		if (data->gamemode == 1
+		&& data->sdl.event.type == SDL_MOUSEMOTION && ft_mouse_motion(data))
 			return (1);
-		else if (data->sdl.event.type == SDL_MOUSEBUTTONDOWN
+		/*else if (data->sdl.event.type == SDL_MOUSEBUTTONDOWN
 		&& ft_mouse_button_down(data))
 			return (1);
 		else if (data->sdl.event.type == SDL_MOUSEBUTTONUP

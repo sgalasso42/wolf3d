@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:34:36 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/18 21:32:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,19 @@
 
 # define ZOOM_P 1.1
 # define ZOOM_L 0.9
-typedef struct s_limit	t_limit;
-typedef struct s_pos	t_pos;
-typedef struct s_size	t_size;
-typedef struct s_coef	t_coef;
-typedef struct s_ray	t_ray;
-typedef struct s_thread	t_thread;
-typedef struct s_sdl	t_sdl;
-typedef struct s_player	t_player;
-typedef struct s_data	t_data;
 
-struct					s_limit
+typedef struct s_limit		t_limit;
+typedef struct s_pos		t_pos;
+typedef struct s_size		t_size;
+typedef struct s_coef		t_coef;
+typedef struct s_ray		t_ray;
+typedef struct s_thread		t_thread;
+typedef struct s_sdl		t_sdl;
+typedef struct s_player		t_player;
+typedef struct s_minimap	t_minimap;
+typedef struct s_data		t_data;
+
+struct						s_limit
 {
 	int					t;
 	int					b;
@@ -57,25 +59,25 @@ struct					s_limit
 	int					r;
 };
 
-struct					s_pos
+struct						s_pos
 {
 	double				x;
 	double				y;
 };
 
-struct					s_size
+struct						s_size
 {
 	int					h;
 	int					w;
 };
 
-struct					s_coef
+struct						s_coef
 {
 	int					x;
 	int					y;
 };
 
-struct					s_ray
+struct						s_ray
 {
 	double				angle_d;
 	double				distance;
@@ -86,7 +88,7 @@ struct					s_ray
 	int					color;
 };
 
-struct					s_thread
+struct						s_thread
 {
 	pthread_t			th;
 	t_data				*data;
@@ -94,14 +96,14 @@ struct					s_thread
 	t_ray				ray[WIN_W / 8];
 };
 
-struct					s_sdl
+struct						s_sdl
 {
 	SDL_Event			event;
 	SDL_Window      	*window;
 	SDL_Renderer    	*renderer;
 };
 
-struct					s_player
+struct						s_player
 {
 	t_pos				position;
 	double				direction;
@@ -109,7 +111,18 @@ struct					s_player
 	int					visual_field;
 };
 
-struct					s_data
+struct						s_minimap
+{
+	double				mnp_size;
+	t_pos				origin;
+	t_limit				limit;
+	t_size				map_size; // calculee
+	t_pos				pos_play; // calculee
+	t_pos				centre;
+	t_pos				diff;
+};
+
+struct						s_data
 {
 	t_sdl				sdl;
 	TTF_Font			*font;
@@ -119,28 +132,36 @@ struct					s_data
 	t_thread			thread[8];
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
-	double				mnp_size;
+	t_minimap			minimap;
+	int					gamemode;
+	t_coef				mouse;
 };
 
-void					ft_init_data(char *map, t_data *data);
-void					ft_get_map(char *map, t_data *data);
+void						ft_init_data(char *map, t_data *data);
+void						ft_get_map(char *map, t_data *data);
 
-SDL_Color				ft_hex_to_rgb(int hexa); // to remove si non utilise
-void					ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+void						draw_line(t_data *data, t_pos p1, t_pos p2,
+							Uint32 color, t_limit *limit);
+void						ft_draw_rect(int x, int y, int w, int h, Uint32 color,
+							t_limit *limit, t_data *data);
+void						ft_draw_border(t_data *data, int x, int y);
+SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
+void						ft_setpixel(SDL_Surface *surface,
+							int x, int y, Uint32 pixel);
 
-void					ft_exit(t_data *data);
-int						ft_is_inwall(t_pos *pos, t_data *data);
-int						ft_get_events(t_data *data);
-void					ft_rc_wolfcalc(t_data *data);
+void						ft_exit(t_data *data);
+int							ft_is_inwall(t_pos *pos, t_data *data);
+int							ft_get_events(t_data *data);
+void						ft_rc_wolfcalc(t_data *data);
 
-void					ft_minimap(t_data *data);
+void						ft_minimap(t_data *data);
 
-void					ft_err_malloc(void);
-void					ft_err_malloc_free(char *line, int fd, t_data *data);
-void					ft_arg_invalid(void);
-void					ft_map_invalid(void);
-void					ft_map_invalid_free(char *line, int fd, t_data *data);
-int						ft_isspace(int c);
-void					ft_check_valid_map(char *line, int fd);
+void						ft_err_malloc(void);
+void						ft_err_malloc_free(char *line, int fd, t_data *data);
+void						ft_arg_invalid(void);
+void						ft_map_invalid(void);
+void						ft_map_invalid_free(char *line, int fd, t_data *data);
+int							ft_isspace(int c);
+void						ft_check_valid_map(char *line, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:21:16 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/18 21:18:35 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ void	ft_init_sdl(t_data *data)
 		ft_sdl_err_exit(data);
 	if (TTF_Init() < 0)
 		ft_sdl_err_exit(data);
-	if (!(data->sdl.window = SDL_CreateWindow("WOLF_3D", SDL_WINDOWPOS_CENTERED,
-	SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0)))
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	if (!(data->sdl.window = SDL_CreateWindow("WOLF_3D",
+	SDL_WINDOWPOS_UNDEFINED,
+	SDL_WINDOWPOS_UNDEFINED,
+	WIN_W, WIN_H, 0)))
 		ft_sdl_err_exit(data);
 	if (!(data->sdl.renderer = SDL_CreateRenderer(data->sdl.window, -1,
 	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
@@ -75,7 +78,7 @@ void	ft_init_data(char *map, t_data *data)
 	data->player.position.x = -1;
 	data->player.position.y = -1;
 	data->player.direction = 90;
-	data->mnp_size = 20;
+	data->minimap.mnp_size = 20;
 	ft_init_sdl(data);
 	ft_init_fonts(data);
 	ft_get_map(map, data);

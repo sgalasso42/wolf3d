@@ -6,126 +6,51 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 17:29:04 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/18 21:22:15 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_draw_rect(int x, int y, int w, int h,
-		int r, int g, int b, t_limit limit, t_data *data)
+void	ft_init_minimap(t_data *data)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < h)
-	{
-		j = 0;
-		while (j < w)
-		{
-			if (x + j > limit.l && x + j < limit.r
-					&& y + i > limit.t && y + i < limit.b)
-			{
-				SDL_SetRenderDrawColor(data->sdl.renderer, r, g, b, 180);
-				SDL_RenderDrawPoint(data->sdl.renderer, x + j, y + i);
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	bresenham_tab(int *tab, t_pos p1, t_pos p2)
-{
-	tab[0]	 = abs((int)p2.x - (int)p1.x);
-	tab[1] = (int)p1.x < (int)p2.x ? 1 : -1;
-	tab[2] = abs((int)p2.y - (int)p1.y);
-	tab[3] = (int)p1.y < (int)p2.y ? 1 : -1;
-	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
-}
-
-void	draw_line(t_data *data, t_pos p1, t_pos p2, int r, int g, int b)
-{
-	int e2;
-	int tab[5];
-
-	bresenham_tab(tab, p1, p2);
-	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
-	{
-		SDL_SetRenderDrawColor(data->sdl.renderer, r, g, b, 255);
-		SDL_RenderDrawPoint(data->sdl.renderer, (int)p1.x, (int)p1.y);
-		e2 = tab[4];
-		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
-		{
-			tab[4] -= tab[2];
-			p1.x = (int)p1.x + tab[1];
-		}
-		if (e2 < tab[2] && (int)p1.y != (int)p2.y)
-		{
-			tab[4] += tab[0];
-			p1.y = (int)p1.y + tab[3];
-		}
-	}
-}
-
-void	ft_draw_border(t_data *data, int x, int y)
-{
-	t_pos p1;
-	t_pos p2;
-	t_pos p3;
-	t_pos p4;
-
-	p1.x = x + 0;
-	p1.y = y + 0;
-	p2.x = x + (WIN_W / 4);
-	p2.y = y + 0;
-	p3.x = x + 0;
-	p3.y = y + (WIN_H / 4);
-	p4.x = x + (WIN_W / 4);
-	p4.y = y + (WIN_H / 4);
-
-	draw_line(data, p1, p2, 255, 255, 255);
-	draw_line(data, p1, p3, 255, 255, 255);
-	draw_line(data, p2, p4, 255, 255, 255);
-	draw_line(data, p3, p4, 255, 255, 255);
+	data->minimap.origin.x = WIN_W - (WIN_W / 4) - 10;
+	data->minimap.origin.y = 10;
+	data->minimap.centre.x = (WIN_W - (WIN_W / 4) / 2) - 10;
+	data->minimap.centre.y = (WIN_H / 4) / 2 + 10;
+	data->minimap.map_size.w = data->minimap.mnp_size * data->map_sz.w;
+	data->minimap.map_size.h = data->minimap.mnp_size * data->map_sz.h;
+	data->minimap.pos_play.x = data->player.position.x * data->minimap.mnp_size;
+	data->minimap.pos_play.y = data->player.position.y * data->minimap.mnp_size;
+	data->minimap.diff.x = data->minimap.centre.x - data->minimap.pos_play.x;
+	data->minimap.diff.y = data->minimap.centre.y - data->minimap.pos_play.y;
+	data->minimap.limit.l = data->minimap.origin.x;
+	data->minimap.limit.r = WIN_W - data->minimap.origin.y;
+	data->minimap.limit.t = 10;
+	data->minimap.limit.b = WIN_H / 4 + 10;
 }
 
 void	ft_minimap(t_data *data)
 {
-	t_limit	limit;
-	t_size	map_size; // calculee
-	t_pos	pos_play; // calculee
-	t_pos	centre;
-	t_pos	diff;
 	int		i;
 	int		j;
 
-	centre.x = (WIN_W - (WIN_W / 4) / 2);
-	centre.y = (WIN_H / 4) / 2;
-	map_size.w = data->mnp_size * data->map_sz.w;
-	map_size.h = data->mnp_size * data->map_sz.h;
-	pos_play.x = data->player.position.x * data->mnp_size;
-	pos_play.y = data->player.position.y * data->mnp_size;
-	diff.x = centre.x - pos_play.x;
-	diff.y = centre.y - pos_play.y;
-	limit.l = WIN_W - (WIN_W / 4);
-	limit.r = WIN_W;
-	limit.t = 0;
-	limit.b = WIN_H / 4;
+	ft_init_minimap(data);
 
-	//border rect
-	ft_draw_border(data, WIN_W - (WIN_W / 4), 0);
+	// border rect
+	ft_draw_border(data, data->minimap.origin.x, data->minimap.origin.y);
 
 	// border
-	ft_draw_rect(WIN_W - map_size.w, 0,
-	map_size.w, map_size.h,
-	0, 0, 0, limit, data);
+	ft_draw_rect(WIN_W - data->minimap.map_size.w - 10, 10,
+	data->minimap.map_size.w, data->minimap.map_size.h,
+	0xFF000000, &(data->minimap.limit), data);
 
 	// background
-	ft_draw_rect(diff.x, diff.y, map_size.w, map_size.h, 250, 250, 250, limit, data);
+	//ft_draw_rect(data->minimap.diff.x, data->minimap.diff.y,
+	//data->minimap.map_size.w, data->minimap.map_size.h,
+	//0xFFADADAD, &(data->minimap.limit), data);
 
-	// walls
+	// map
 	i = 0;
 	while (i < data->map_sz.h)
 	{
@@ -133,8 +58,17 @@ void	ft_minimap(t_data *data)
 		while (j < data->map_sz.w)
 		{
 			if (data->map[i][j] == 1)
-				ft_draw_rect(diff.x + (j * data->mnp_size), diff.y + (i * data->mnp_size),
-						data->mnp_size, data->mnp_size, 36, 68, 92, limit, data);
+				ft_draw_rect(
+				data->minimap.diff.x + (j * data->minimap.mnp_size),
+				data->minimap.diff.y + (i * data->minimap.mnp_size),
+				data->minimap.mnp_size, data->minimap.mnp_size,
+				0xFF5C4424, &(data->minimap.limit), data);
+			else if (data->map[i][j] == 0 || data->map[i][j] == 2)
+				ft_draw_rect(
+				data->minimap.diff.x + (j * data->minimap.mnp_size),
+				data->minimap.diff.y + (i * data->minimap.mnp_size),
+				data->minimap.mnp_size, data->minimap.mnp_size,
+				0xFFADADAD, &(data->minimap.limit), data);
 			j++;
 		}
 		i++;
@@ -144,8 +78,8 @@ void	ft_minimap(t_data *data)
 	double	angle;
 	double	step_x;
 	double	step_y;
-
-	SDL_SetRenderDrawColor(data->sdl.renderer, 255, 255, 153, 255);
+	t_pos	a;
+	t_pos	b;
 
 	i = 0;
 	while (i < 8)
@@ -156,15 +90,22 @@ void	ft_minimap(t_data *data)
 			// angle en radian
 			angle = (data->thread[i].ray[j].angle_d) * M_PI / 180;
 
-			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
-			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap) / 1.7;
+			step_x = -cos(angle) * (data->thread[i].ray[j].dist_minimap)
+			* data->minimap.mnp_size / 50;
+			step_y = -sin(angle) * (data->thread[i].ray[j].dist_minimap)
+			* data->minimap.mnp_size / 50;
 
-			SDL_RenderDrawLine(data->sdl.renderer,
-			centre.x, centre.y,
-			centre.x + step_x, centre.y + step_y);
+			a.x = data->minimap.centre.x;
+			a.y = data->minimap.centre.y;
+			b.x = data->minimap.centre.x + step_x;
+			b.y = data->minimap.centre.y + step_y;
+
+			draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
 			j++;
 		}
 		i++;
 	}
-	SDL_SetRenderDrawColor(data->sdl.renderer, 0, 0, 0, 255);
+	// player
+	ft_draw_rect(data->minimap.centre.x - 5,
+	data->minimap.centre.y - 5, 10, 10, 0x0, 0, data);
 }
