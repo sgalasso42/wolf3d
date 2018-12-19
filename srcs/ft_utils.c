@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 16:51:09 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 18:02:18 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,38 @@ SDL_Color	ft_hex_to_rgb(int hexa)
 	color.b = hexa >> 8;
 	color.a = hexa;
 	return (color);
+}
+
+static void		ft_remove_light(Uint8 *component, double delta, int arg)
+{
+	if (*component > 0)
+		*component = (*component * (1 - delta) + ((0x0 >> arg) * delta));
+}
+
+static int		ft_apply_shade(Uint32 c, double delta)
+{
+	SDL_Color color;
+
+	delta > 0.9 ? delta = 0.9 : 0;
+	delta /= 1.50;
+	c |= 0xFF000000;
+	color.r = c >> 24;
+	color.g = c >> 16;
+	color.b = c >> 8;
+	color.a = c;
+	ft_remove_light(&color.r, delta, 24);
+	ft_remove_light(&color.g, delta, 16);
+	ft_remove_light(&color.b, delta, 8);
+	ft_remove_light(&color.a, delta, 0);
+	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
+}
+
+void		ft_light_shade(t_ray *ray)
+{
+	double  delta;
+
+	delta = ray->distance / 300;
+	ray->color = ft_apply_shade(ray->color, delta);
 }
 
 void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
@@ -84,7 +116,7 @@ Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
 	else if (bpp == 3)
 	{
 		ret = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-		(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
+			(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
 	}
 	else if (bpp == 4)
 		ret = *(Uint32 *)p;
@@ -112,7 +144,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
 		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
+					&& (int)p1.y > limit->t && (int)p1.y < limit->b))
 			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
@@ -140,7 +172,7 @@ void		ft_draw_rect(SDL_Rect rect, Uint32 color, t_limit *limit, t_data *data)
 		while (j < rect.w)
 		{
 			if (!limit || (rect.x + j > limit->l && rect.x + j < limit->r
-			&& rect.y + i > limit->t && rect.y + i < limit->b))
+						&& rect.y + i > limit->t && rect.y + i < limit->b))
 				ft_setpixel(data->surface, rect.x + j, rect.y + i, color);
 			j++;
 		}

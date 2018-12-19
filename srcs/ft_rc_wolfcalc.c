@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 14:57:29 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 18:03:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = pos.x;
 			thread->ray[i].y = pos.y;
 			thread->ray[i].axis = 1;
-			if (thread->data->map[
-			(int)(pos.y / BLOC_SIZE)][(int)(pos.x / BLOC_SIZE)] == 3)
-				thread->ray->color = 0xFFFFFFFF;
-			else
-				ft_get_color(&(thread->ray[i]), thread->data);
+			//printf("x : %d\n ", thread->ray[i].x);
 			return ;
 		}
 
@@ -125,11 +121,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = (int)pos.x;
 			thread->ray[i].y = (int)pos.y;
 			thread->ray[i].axis = 2;
-			if (thread->data->map[
-			(int)(pos.y / BLOC_SIZE)][(int)(pos.x / BLOC_SIZE)] == 3)
-				thread->ray->color = 0xFFFFFFFF;
-			else
-			ft_get_color(&(thread->ray[i]), thread->data);
+			//printf("x : %d\n ", thread->ray[i].x);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
@@ -177,14 +169,17 @@ void					*ft_calc_frame(void *arg)
 				double b = thread->data->object[0].img_srf->h;
 				double o = thread->ray[i].wall_bot - thread->ray[i].wall_top;
 				thread->ray[i].y = b * a / o;
-				if (y == 400)
-					printf("x : %f || %d\n ",x, thread->ray[i].x);
+				//printf("x : %f || %d\n ", x, thread->ray[i].x);
 				a = (thread->ray[i].x) % BLOC_SIZE;
 				b = thread->data->object[0].img_srf->w;
 				o = BLOC_SIZE;
-				thread->ray[i].x = a * b / o;
+				thread->ray[i].x = a /* * b / o*/;
 				ft_get_color(&(thread->ray[i]), thread->data);
 				//thread->ray[i].color -= (int)thread->ray[i].distance * 0xFF010101;
+				
+				// light shading
+				if (thread->data->lightshade == 1)
+					ft_light_shade(&(thread->ray[i]));
 				ft_setpixel(thread->data->surface, x, y, thread->ray[i].color);
 			}
 			else
