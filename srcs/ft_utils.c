@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 13:51:19 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 16:51:09 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
 		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-					&& (int)p1.y > limit->t && (int)p1.y < limit->b))
+		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
 			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 12:06:09 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 14:57:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 
 	x2 = pos->x / BLOC_SIZE;
 	y2 = pos->y / BLOC_SIZE;
-	if (data->map[y2][x2] == 1)
+	if (data->map[y2][x2] == 1 || data->map[y2][x2] == 3)
 		return (1);
 	return (0);
 }
@@ -102,7 +102,11 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = pos.x;
 			thread->ray[i].y = pos.y;
 			thread->ray[i].axis = 1;
-			//ft_get_color(&(thread->ray[i]), thread->data);
+			if (thread->data->map[
+			(int)(pos.y / BLOC_SIZE)][(int)(pos.x / BLOC_SIZE)] == 3)
+				thread->ray->color = 0xFFFFFFFF;
+			else
+				ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 
@@ -121,7 +125,11 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = (int)pos.x;
 			thread->ray[i].y = (int)pos.y;
 			thread->ray[i].axis = 2;
-			//ft_get_color(&(thread->ray[i]), thread->data);
+			if (thread->data->map[
+			(int)(pos.y / BLOC_SIZE)][(int)(pos.x / BLOC_SIZE)] == 3)
+				thread->ray->color = 0xFFFFFFFF;
+			else
+			ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;

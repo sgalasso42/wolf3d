@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 13:52:00 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 16:49:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int							ft_get_events(t_data *data);
 void						ft_rc_wolfcalc(t_data *data);
 void						ft_minimap(t_data *data);
 void						ft_set_infos(t_data *data);
+void						ft_set_interface(t_data *data);
 
 void						ft_err_malloc(void);
 void						ft_err_malloc_free(char *line, int fd, t_data *data);

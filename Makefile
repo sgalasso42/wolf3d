@@ -6,14 +6,14 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 15:26:14 by fmadura          ###   ########.fr        #
+#    Updated: 2018/12/19 16:48:50 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= wolf3d
 
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT 		= ./libft
 
 ID_UN 		= $(shell id -un)
@@ -42,6 +42,7 @@ SRC_NAME 	= main.c \
 			  ft_minimap.c \
 			  ft_utils.c \
 			  ft_set_infos.c \
+			  ft_set_interface.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 14:01:13 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 16:21:34 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ft_minimap(t_data *data)
 	border.h = WIN_H / 4;
 
 	// border rect
-	ft_draw_border(border, 0xFFFFFF, data);
+	ft_draw_border(border, 0xFFFFFFFF, data);
 
 	// background
 	ft_draw_rect(border, 0xFF000000, &(data->minimap.limit), data);
