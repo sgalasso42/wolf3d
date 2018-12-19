@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 19:38:00 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 21:23:49 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,14 +172,18 @@ void					*ft_calc_frame(void *arg)
 				double a = (y - thread->ray[i].wall_top);
 				double b = thread->data->object[0].img_srf->h;
 				double o = thread->ray[i].wall_bot - thread->ray[i].wall_top;
+				int		x1;
+				int		y1;
+
+				x1 = (thread->ray[i].x) % (BLOC_SIZE);
+				y1 = b * a / o;
 
 				color = ft_get_color(thread->ray[i].axis, thread->ray[i].angle_d,
-				(thread->ray[i].x) % (BLOC_SIZE),
-				b * a / o, thread->data);
+				x1, y1, thread->data);
 				
 				// light shading
 				if (thread->data->lightshade == 1)
-					ft_light_shade(&(thread->ray[i]));
+					color = ft_light_shade(thread->ray[i].distance, color);
 
 				ft_setpixel(thread->data->surface, x, y, color);
 			}

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 18:02:18 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 21:24:34 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
 }
 
-void		ft_light_shade(t_ray *ray)
+Uint32		ft_light_shade(double distance, Uint32 color)
 {
 	double  delta;
 
-	delta = ray->distance / 300;
-	ray->color = ft_apply_shade(ray->color, delta);
+	delta = distance / 300;
+	return (ft_apply_shade(color, delta));
 }
 
 void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
