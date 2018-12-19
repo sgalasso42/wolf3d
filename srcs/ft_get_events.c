@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 11:59:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 21:21:39 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,11 @@ static int		ft_keyboard(t_data *data)
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_2)
 	{ // 2
 		data->gamemode = 1;
+		return (1);
+	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_L)
+	{ // light
+		data->lightshade = (data->lightshade) ? 0 : 1;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
