@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 16:51:09 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 18:59:03 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,26 @@ void		ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 	t_pos p3;
 	t_pos p4;
 
-	p1.x = rect.x + 0;
-	p1.y = rect.y + 0;
+	p1.x = rect.x;
+	p1.y = rect.y;
+
 	p2.x = rect.x + rect.w;
-	p2.y = rect.y + 0;
-	p3.x = rect.x + 0;
+	p2.y = rect.y;
+
+	p3.x = rect.x;
 	p3.y = rect.y + rect.h;
+
 	p4.x = rect.x + rect.w;
 	p4.y = rect.y + rect.h;
 
+	printf("p1.x : %d\n", (int)p1.x);
+	printf("p1.y : %d\n", (int)p1.y);
+	printf("p2.x : %d\n", (int)p2.x);
+	printf("p2.y : %d\n", (int)p2.y);
+	printf("p3.x : %d\n", (int)p3.x);
+	printf("p3.y : %d\n", (int)p3.y);
+	printf("p4.x : %d\n", (int)p4.x);
+	printf("p4.y : %d\n", (int)p4.y);
 	draw_line(data, p1, p2, color, 0);
 	draw_line(data, p1, p3, color, 0);
 	draw_line(data, p2, p4, color, 0);
