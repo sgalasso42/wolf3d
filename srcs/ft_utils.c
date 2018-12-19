@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 11:17:08 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 12:16:53 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	}
 }
 
-void		ft_draw_rect(int x, int y, int w, int h, Uint32 color,
-t_limit *limit, t_data *data)
+void		ft_draw_rect(int x, int y, int w, int h,
+			Uint32 color, t_limit *limit, t_data *data)
 {
 	int		i;
 	int		j;
@@ -128,7 +128,7 @@ t_limit *limit, t_data *data)
 		while (j < w)
 		{
 			if (!limit || (x + j > limit->l && x + j < limit->r
-						&& y + i > limit->t && y + i < limit->b))
+			&& y + i > limit->t && y + i < limit->b))
 				ft_setpixel(data->surface, x + j, y + i, color);
 			j++;
 		}
@@ -136,7 +136,7 @@ t_limit *limit, t_data *data)
 	}
 }
 
-void		ft_draw_border(t_data *data, int x, int y)
+void		ft_draw_border(int x, int y, int w, int h, Uint32 color, t_data *data)
 {
 	t_pos p1;
 	t_pos p2;
@@ -145,15 +145,15 @@ void		ft_draw_border(t_data *data, int x, int y)
 
 	p1.x = x + 0;
 	p1.y = y + 0;
-	p2.x = x + (WIN_W / 4);
+	p2.x = x + w;
 	p2.y = y + 0;
 	p3.x = x + 0;
-	p3.y = y + (WIN_H / 4);
-	p4.x = x + (WIN_W / 4);
-	p4.y = y + (WIN_H / 4);
+	p3.y = y + h;
+	p4.x = x + w;
+	p4.y = y + h;
 
-	draw_line(data, p1, p2, 0xFFFFFFFF, 0);
-	draw_line(data, p1, p3, 0xFFFFFFFF, 0);
-	draw_line(data, p2, p4, 0xFFFFFFFF, 0);
-	draw_line(data, p3, p4, 0xFFFFFFFF, 0);
+	draw_line(data, p1, p2, color, 0);
+	draw_line(data, p1, p3, color, 0);
+	draw_line(data, p2, p4, color, 0);
+	draw_line(data, p3, p4, color, 0);
 }
