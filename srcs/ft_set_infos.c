@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 14:02:04 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 14:12:31 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_set_infos(t_data *data)
 
 	ft_set_string(rect, "Ceci est un test", color, data);
 
-	// ft_setft_draw_rect(SDL_Rect rect, Uint32 color,
+	// ft_draw_rect(SDL_Rect rect, Uint32 color,
 	// t_limit *limit, t_data *data);
 
 	// ft_draw_border(SDL_Rect rect, Uint32 color,
