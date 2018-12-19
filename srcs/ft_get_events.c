@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 10:32:41 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 11:51:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,6 @@ int				ft_mouseleave(t_data *data)
 			data->editor.preview_3d = 1;
 			return (1);
 		}
-	}
-	return (0);
-}*/
-
-/*static int		ft_mouse_button_up(t_data *data)
-{
-	if (data->drag == 1)
-	{
-		data->drag = 0;
-		return (1);
 	}
 	return (0);
 }*/
@@ -210,14 +200,17 @@ static int		ft_rotation_normal(t_data *data)
 	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
 	{ // >
 		data->player.direction = (int)(data->player.direction + 5) % 360;
-		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_LEFT)
 	{ // <
-		data->player.direction = (int)(data->player.direction - 5) % 360;
-		return (1);
+		if (data->player.direction - 5 > 0)
+			data->player.direction = (int)(data->player.direction - 5);
+		else
+			data->player.direction = 360;
 	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
 static int		ft_keyboard(t_data *data)
@@ -270,8 +263,11 @@ static int		ft_mouse_motion(t_data *data)
 	}
 	else if (data->mouse.x < 0)
 	{ // mouse_right
-		data->player.direction = (int)(data->player.direction
-		- abs(data->mouse.x) / 4) % 360;
+		if (data->player.direction - 5 > 0)
+			data->player.direction = (int)(data->player.direction
+			- abs(data->mouse.x) / 4);
+		else
+			data->player.direction = 360;
 	}
 	else
 		return (0);
@@ -292,9 +288,6 @@ int				ft_get_events(t_data *data)
 			return (1);
 		/*else if (data->sdl.event.type == SDL_MOUSEBUTTONDOWN
 		&& ft_mouse_button_down(data))
-			return (1);
-		else if (data->sdl.event.type == SDL_MOUSEBUTTONUP
-		&& ft_mouse_button_up(data))
 			return (1);*/
 	}
 	return (0);
