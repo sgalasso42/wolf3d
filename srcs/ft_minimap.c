@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 12:14:19 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 14:01:13 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void		ft_init_minimap(t_data *data)
 
 static void		ft_set_player(t_data *data)
 {
+	SDL_Rect	player;
 	double	angle_r;
 	double	step_x;
 	double	step_y;
@@ -63,25 +64,32 @@ static void		ft_set_player(t_data *data)
 		}
 		i++;
 	}
-	ft_draw_rect(data->minimap.centre.x - 5,
-	data->minimap.centre.y - 5, 10, 10, 0x0, 0, data);
+	player.x = data->minimap.centre.x - 5;
+	player.y = data->minimap.centre.y - 5;
+	player.w = 10;
+	player.h = 10;
+	ft_draw_rect(player, 0x0, 0, data);
 }
 
 void	ft_minimap(t_data *data)
 {
+	SDL_Rect	border;
+	SDL_Rect	bloc;
 	int		i;
 	int		j;
 
 	ft_init_minimap(data);
 
+	border.x = data->minimap.origin.x;
+	border.y = data->minimap.origin.y;
+	border.w = WIN_W / 4;
+	border.h = WIN_H / 4;
+
 	// border rect
-	ft_draw_border(data->minimap.origin.x, data->minimap.origin.y,
-	WIN_W / 4, WIN_H / 4, 0xFFFFFF, data);
+	ft_draw_border(border, 0xFFFFFF, data);
 
 	// background
-	ft_draw_rect(data->minimap.origin.x, data->minimap.origin.y,
-	WIN_W / 4, WIN_H / 4,
-	0xFF000000, &(data->minimap.limit), data);
+	ft_draw_rect(border, 0xFF000000, &(data->minimap.limit), data);
 
 	// map
 	i = 0;
@@ -90,18 +98,14 @@ void	ft_minimap(t_data *data)
 		j = 0;
 		while (j < data->map_sz.w)
 		{
+			bloc.x = data->minimap.diff.x + (j * data->minimap.mnp_size);
+			bloc.y = data->minimap.diff.y + (i * data->minimap.mnp_size);
+			bloc.w = data->minimap.mnp_size;
+			bloc.h = data->minimap.mnp_size;
 			if (data->map[i][j] == 1)
-				ft_draw_rect(
-				data->minimap.diff.x + (j * data->minimap.mnp_size),
-				data->minimap.diff.y + (i * data->minimap.mnp_size),
-				data->minimap.mnp_size, data->minimap.mnp_size,
-				0xFF5C4424, &(data->minimap.limit), data);
+				ft_draw_rect(bloc, 0xFF5C4424, &(data->minimap.limit), data);
 			else if (data->map[i][j] == 0 || data->map[i][j] == 2)
-				ft_draw_rect(
-				data->minimap.diff.x + (j * data->minimap.mnp_size),
-				data->minimap.diff.y + (i * data->minimap.mnp_size),
-				data->minimap.mnp_size, data->minimap.mnp_size,
-				0xFFADADAD, &(data->minimap.limit), data);
+				ft_draw_rect(bloc, 0xFFADADAD, &(data->minimap.limit), data);
 			j++;
 		}
 		i++;

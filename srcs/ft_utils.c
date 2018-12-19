@@ -6,11 +6,24 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 12:16:53 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 13:51:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+void	ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
+{
+	SDL_Surface			*surface;
+	SDL_Texture			*texture;
+
+	surface	= TTF_RenderText_Blended(data->font, text, color);
+	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
+	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
+	if (SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect)) < 0)
+		exit(EXIT_FAILURE); // exit proprement todo
+
+}
 
 SDL_Color	ft_hex_to_rgb(int hexa)
 {
@@ -115,42 +128,41 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	}
 }
 
-void		ft_draw_rect(int x, int y, int w, int h,
-			Uint32 color, t_limit *limit, t_data *data)
+void		ft_draw_rect(SDL_Rect rect, Uint32 color, t_limit *limit, t_data *data)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while (i < h)
+	while (i < rect.h)
 	{
 		j = 0;
-		while (j < w)
+		while (j < rect.w)
 		{
-			if (!limit || (x + j > limit->l && x + j < limit->r
-			&& y + i > limit->t && y + i < limit->b))
-				ft_setpixel(data->surface, x + j, y + i, color);
+			if (!limit || (rect.x + j > limit->l && rect.x + j < limit->r
+			&& rect.y + i > limit->t && rect.y + i < limit->b))
+				ft_setpixel(data->surface, rect.x + j, rect.y + i, color);
 			j++;
 		}
 		i++;
 	}
 }
 
-void		ft_draw_border(int x, int y, int w, int h, Uint32 color, t_data *data)
+void		ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 {
 	t_pos p1;
 	t_pos p2;
 	t_pos p3;
 	t_pos p4;
 
-	p1.x = x + 0;
-	p1.y = y + 0;
-	p2.x = x + w;
-	p2.y = y + 0;
-	p3.x = x + 0;
-	p3.y = y + h;
-	p4.x = x + w;
-	p4.y = y + h;
+	p1.x = rect.x + 0;
+	p1.y = rect.y + 0;
+	p2.x = rect.x + rect.w;
+	p2.y = rect.y + 0;
+	p3.x = rect.x + 0;
+	p3.y = rect.y + rect.h;
+	p4.x = rect.x + rect.w;
+	p4.y = rect.y + rect.h;
 
 	draw_line(data, p1, p2, color, 0);
 	draw_line(data, p1, p3, color, 0);

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 09:42:05 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 13:42:34 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_game_loop(t_data *data)
 	data->sdl.renderer, data->surface);
 	SDL_FreeSurface(data->surface);
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
+	ft_set_infos(data);
 	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
@@ -62,6 +63,7 @@ void	ft_game_loop(t_data *data)
 			data->sdl.renderer, data->surface);
 			SDL_FreeSurface(data->surface);
 			SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
+			ft_set_infos(data);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
 	}
