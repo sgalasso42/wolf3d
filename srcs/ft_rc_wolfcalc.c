@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 21:23:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 22:05:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,9 @@ void					*ft_calc_frame(void *arg)
 				ft_setpixel(thread->data->surface, x, y, 0xFFFFFED6);
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 			{
+
+				// ----------------------------------------------
+
 				Uint32	color;
 				double a = (y - thread->ray[i].wall_top);
 				double b = thread->data->object[0].img_srf->h;
@@ -178,9 +181,22 @@ void					*ft_calc_frame(void *arg)
 				x1 = (thread->ray[i].x) % (BLOC_SIZE);
 				y1 = b * a / o;
 
-				color = ft_get_color(thread->ray[i].axis, thread->ray[i].angle_d,
-				x1, y1, thread->data);
+
+				int		x2;
+
+				x2 = (thread->ray[i].distance / thread->data->object[0].img_srf->w);
+				x2 = ft_abs(thread->data->object[0].img_srf->w
+				- thread->ray[i].x - 1);
+				x2 = x2 % thread->data->object[0].img_srf->w;
+
+				color = ft_get_color(thread->ray[i].axis,
+				thread->ray[i].angle_d, x2, y1, thread->data);
 				
+				// ----------------------------------------------		
+
+				//color = ft_get_color(thread->ray[i].axis, thread->ray[i].angle_d,
+				//x1, y1, thread->data);
+
 				// light shading
 				if (thread->data->lightshade == 1)
 					color = ft_light_shade(thread->ray[i].distance, color);

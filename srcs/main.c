@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 20:00:18 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/19 21:45:11 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	ft_set_cursor(t_data *data)
 void	ft_game_loop(t_data *data)
 {
 	ft_rc_wolfcalc(data);
-	ft_minimap(data);
+	if (data->gamemode == 1 || data->dev_mode == 1)
+		ft_minimap(data);
 	ft_set_interface(data);
 	data->texture = SDL_CreateTextureFromSurface(
 	data->sdl.renderer, data->surface);
@@ -57,7 +58,8 @@ void	ft_game_loop(t_data *data)
 		{
 			SDL_RenderClear(data->sdl.renderer);
 			ft_rc_wolfcalc(data);
-			ft_minimap(data);
+			if (data->gamemode == 1 || data->dev_mode == 1)
+				ft_minimap(data);
 			ft_set_interface(data);
 			if (data->gamemode == 1)
 				ft_set_cursor(data);

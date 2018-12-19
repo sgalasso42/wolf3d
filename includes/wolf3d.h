@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 20:43:05 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/19 22:50:38 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <SDL2/SDL_ttf.h>
 # include <SDL2/SDL_image.h>
 # include <pthread.h>
+
+# define H_GREEN		0x00FF00FF
+# define H_RED			0xFF0000FF
 
 # define C_NONE         "\033[0m"
 # define C_BOLD         "\033[1m"
