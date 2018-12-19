@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 11:10:23 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/19 13:43:12 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC_NAME 	= main.c \
 			  ft_check_error.c \
 			  ft_minimap.c \
 			  ft_utils.c \
+			  ft_set_infos.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer

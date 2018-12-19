@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 12:15:30 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 13:52:00 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,21 +153,23 @@ void						ft_get_map(char *map, t_data *data);
 
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);
-void						ft_draw_rect(int x, int y, int w, int h, Uint32 color,
+void						ft_draw_rect(SDL_Rect rect, Uint32 color,
 							t_limit *limit, t_data *data);
-void						ft_draw_border(int x, int y, int w, int h, Uint32 color,
+void						ft_draw_border(SDL_Rect rect, Uint32 color,
 							t_data *data);
 SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);
 Uint32						ft_getpixel(SDL_Surface *surface, int x, int y);
+void    					ft_set_string(SDL_Rect rect, char *text,
+							SDL_Color color, t_data *data);
 
 void						ft_exit(t_data *data);
 int							ft_is_inwall(t_pos *pos, t_data *data);
 int							ft_get_events(t_data *data);
 void						ft_rc_wolfcalc(t_data *data);
-
 void						ft_minimap(t_data *data);
+void						ft_set_infos(t_data *data);
 
 void						ft_err_malloc(void);
 void						ft_err_malloc_free(char *line, int fd, t_data *data);
