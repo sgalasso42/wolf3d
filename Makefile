@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 13:43:12 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/19 15:26:14 by fmadura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,9 @@ clean:
 fclean: clean
 	make -C $(LIBFT) fclean
 	rm -f $(NAME)
+
+run : all
+	./wolf3d ./maps/map1
 
 re: fclean all
 

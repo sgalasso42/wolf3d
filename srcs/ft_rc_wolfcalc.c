@@ -36,7 +36,7 @@ void		ft_get_color(t_ray *ray, t_data *data)
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
 		{
 			ray->color = ft_getpixel(data->object[0].img_srf,
-			ray->x % BLOC_SIZE, ray->y % BLOC_SIZE);
+			ray->x, ray->y);
 			ray->color |= 0xFF000000;
 		}
 		else
@@ -102,7 +102,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = pos.x;
 			thread->ray[i].y = pos.y;
 			thread->ray[i].axis = 1;
-			ft_get_color(&(thread->ray[i]), thread->data);
+			//ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 
@@ -121,7 +121,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			thread->ray[i].x = (int)pos.x;
 			thread->ray[i].y = (int)pos.y;
 			thread->ray[i].axis = 2;
-			ft_get_color(&(thread->ray[i]), thread->data);
+			//ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
@@ -165,7 +165,17 @@ void					*ft_calc_frame(void *arg)
 				ft_setpixel(thread->data->surface, x, y, 0xFFFFFED6);
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 			{
-				//ft_get_color(y, &(thread->ray[i]), thread->data);
+				double a = (y - thread->ray[i].wall_top);
+				double b = thread->data->object[0].img_srf->h;
+				double o = thread->ray[i].wall_bot - thread->ray[i].wall_top;
+				thread->ray[i].y = b * a / o;
+				if (y == 400)
+					printf("x : %f || %d\n ",x, thread->ray[i].x);
+				a = (thread->ray[i].x) % BLOC_SIZE;
+				b = thread->data->object[0].img_srf->w;
+				o = BLOC_SIZE;
+				thread->ray[i].x = a * b / o;
+				ft_get_color(&(thread->ray[i]), thread->data);
 				//thread->ray[i].color -= (int)thread->ray[i].distance * 0xFF010101;
 				ft_setpixel(thread->data->surface, x, y, thread->ray[i].color);
 			}
