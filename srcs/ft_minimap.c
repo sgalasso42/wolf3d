@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/18 21:43:52 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 12:14:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,12 @@ void	ft_minimap(t_data *data)
 	ft_init_minimap(data);
 
 	// border rect
-	ft_draw_border(data, data->minimap.origin.x, data->minimap.origin.y);
+	ft_draw_border(data->minimap.origin.x, data->minimap.origin.y,
+	WIN_W / 4, WIN_H / 4, 0xFFFFFF, data);
 
-	// border
-	ft_draw_rect(WIN_W - data->minimap.map_size.w - 10, 10,
-	data->minimap.map_size.w, data->minimap.map_size.h,
+	// background
+	ft_draw_rect(data->minimap.origin.x, data->minimap.origin.y,
+	WIN_W / 4, WIN_H / 4,
 	0xFF000000, &(data->minimap.limit), data);
 
 	// map

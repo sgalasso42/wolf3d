@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 00:05:06 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 12:15:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,20 @@ struct						s_sdl
 	SDL_Window      	*window;
 	SDL_Renderer    	*renderer;
 };
-
+ 
 struct						s_ray
 {
-	int					x;
-	int					y;
+	int					x;		// intersection x
+	int					y;		// intersection y
+	int					axis;	// axe d'intersection
 	double				angle_d;
 	double				distance;
 	double				dist_minimap;
 	double				wall_top;
 	double				wall_bot;
-	double				wall_color;
-	Uint32				color;
+	double				wall_color; // to remove if not use
+	Uint32				color; // to remove if not use
+	int					column;
 };
 
 struct						s_thread
@@ -153,7 +155,8 @@ void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);
 void						ft_draw_rect(int x, int y, int w, int h, Uint32 color,
 							t_limit *limit, t_data *data);
-void						ft_draw_border(t_data *data, int x, int y);
+void						ft_draw_border(int x, int y, int w, int h, Uint32 color,
+							t_data *data);
 SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);

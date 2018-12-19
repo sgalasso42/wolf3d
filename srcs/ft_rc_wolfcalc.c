@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 00:04:29 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 12:06:09 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	return (0);
 }
 
-void		ft_get_color(int axis, t_ray *ray, t_data *data)
+void		ft_get_color(t_ray *ray, t_data *data)
 {
-	if (axis == 1) // y
+	if (ray->axis == 1) // y
 	{
 		if (ray->angle_d >= 0 && ray->angle_d <= 180)
 		{
@@ -45,7 +45,7 @@ void		ft_get_color(int axis, t_ray *ray, t_data *data)
 			ray->color = 0xFF51DB6A;
 		}
 	}
-	else if (axis == 2) // x
+	else if (ray->axis == 2) // x
 	{
 		if (ray->angle_d >= 90 && ray->angle_d <= 270)
 		{
@@ -76,6 +76,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	// anle en fonction de x
 	thread->ray[i].angle_d =
 	(thread->data->player.direction - 30) + (x * (60.0 / WIN_W));
+
 	// passage en radian
 	angle_r = thread->ray[i].angle_d * M_PI / 180;
 
@@ -100,7 +101,8 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			// get color of wall
 			thread->ray[i].x = pos.x;
 			thread->ray[i].y = pos.y;
-			ft_get_color(1, &(thread->ray[i]), thread->data);
+			thread->ray[i].axis = 1;
+			ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 
@@ -118,7 +120,8 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 			// get color of wall
 			thread->ray[i].x = (int)pos.x;
 			thread->ray[i].y = (int)pos.y;
-			ft_get_color(2, &(thread->ray[i]), thread->data);
+			thread->ray[i].axis = 2;
+			ft_get_color(&(thread->ray[i]), thread->data);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
@@ -159,9 +162,13 @@ void					*ft_calc_frame(void *arg)
 		while (y < WIN_H)
 		{
 			if (y < thread->ray[i].wall_top)
-				ft_setpixel(thread->data->surface, x, y, 0x0);
+				ft_setpixel(thread->data->surface, x, y, 0xFFFFFED6);
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
+			{
+				//ft_get_color(y, &(thread->ray[i]), thread->data);
+				//thread->ray[i].color -= (int)thread->ray[i].distance * 0xFF010101;
 				ft_setpixel(thread->data->surface, x, y, thread->ray[i].color);
+			}
 			else
 				ft_setpixel(thread->data->surface, x, y, 0x0);
 			y++;
