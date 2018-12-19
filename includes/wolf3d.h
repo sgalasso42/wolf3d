@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 21:24:23 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 20:43:05 by jsauron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ struct						s_data
 	t_minimap			minimap;
 	int					lightshade;
 	int					gamemode;
+	int					setting;
+	int					dev_mode;
 	t_coef				mouse;
 };
 
@@ -172,7 +174,9 @@ void						ft_rc_wolfcalc(t_data *data);
 void						ft_minimap(t_data *data);
 void						ft_set_infos(t_data *data);
 void						ft_set_interface(t_data *data);
-
+void						ft_set_config(t_data *data);
+void						ft_set_menu_config(t_data *data);
+void						ft_dev_mode(t_data *data);
 void						ft_err_malloc(void);
 void						ft_err_malloc_free(char *line, int fd, t_data *data);
 void						ft_arg_invalid(void);
