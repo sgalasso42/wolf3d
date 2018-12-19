@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 00:05:06 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 11:09:15 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,20 @@ struct						s_sdl
 	SDL_Window      	*window;
 	SDL_Renderer    	*renderer;
 };
-
+ 
 struct						s_ray
 {
-	int					x;
-	int					y;
+	int					x;		// intersection x
+	int					y;		// intersection y
+	int					axis;	// axe d'intersection
 	double				angle_d;
 	double				distance;
 	double				dist_minimap;
 	double				wall_top;
 	double				wall_bot;
-	double				wall_color;
-	Uint32				color;
+	double				wall_color; // to remove if not use
+	Uint32				color; // to remove if not use
+	int					column;
 };
 
 struct						s_thread
