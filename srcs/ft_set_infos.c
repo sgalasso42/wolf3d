@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:15:02 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 02:09:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,46 @@ void	ft_set_menu_config(t_data *data)
 void	ft_dev_mode(t_data *data)
 {
 	SDL_Rect	rect;
+	char		*fps_str;
+	char		*posx_str;
+	char		*posy_str;
+	char		*dir_str;
+
+	if (!(fps_str = ft_itoa(data->fps)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(posx_str = ft_itoa(data->player.position.x * BLOC_SIZE)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(posy_str = ft_itoa(data->player.position.y * BLOC_SIZE)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(dir_str = ft_itoa(data->player.direction)))
+		exit(EXIT_FAILURE); // recup exit
 
 	rect = (SDL_Rect){20,18,150,15};
 	ft_set_string(rect, "1 normal", ft_set_color(data, 0), data);
+	rect = (SDL_Rect){20,50,150,30};
+	ft_set_string(rect, "fps : ", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){80,50,150,30};
+	ft_set_string(rect, fps_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){20,100,150,30};
+	ft_set_string(rect, "position.x : ", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){160,100,150,30};
+	ft_set_string(rect, posx_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){20,140,150,30};
+	ft_set_string(rect, "position.y : ", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){160,140,150,30};
+	ft_set_string(rect, posy_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){20,180,150,30};
+	ft_set_string(rect, "direction : ", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){160,180,150,30};
+	ft_set_string(rect, dir_str, ft_hex_to_rgb(H_GREEN), data);
+	
+	ft_strdel(&fps_str);
+	ft_strdel(&posx_str);
+	ft_strdel(&posy_str);
+	ft_strdel(&dir_str);
 }
 
 void	ft_set_infos(t_data *data)
@@ -54,7 +91,7 @@ void	ft_set_infos(t_data *data)
 	rect = (SDL_Rect){20,18,150,15};
 	ft_set_string(rect, "1 normal", ft_set_color(data, 0), data);
 	rect = (SDL_Rect){87,18,150,15};
-	ft_set_string(rect, "2 gamimg", ft_set_color(data, 1), data);
+	ft_set_string(rect, "2 gaming", ft_set_color(data, 1), data);
 	rect = (SDL_Rect){WIN_W / 2 - 75,660,150,20};
 	ft_set_string(rect, "SETTINGS : [ i ]", ft_set_color(data, 3), data);
 	rect = (SDL_Rect){184,18,150,15};

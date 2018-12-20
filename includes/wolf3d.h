@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 00:26:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 01:34:31 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <SDL2/SDL_ttf.h>
 # include <SDL2/SDL_image.h>
 # include <pthread.h>
+# include <time.h>
 
 # define H_GREEN		0x00FF00FF
 # define H_RED			0xFF0000FF
@@ -138,10 +139,10 @@ struct						s_data
 {
 	t_sdl				sdl;
 	TTF_Font			*font;
-	int					**map;	// map
+	int					**map;
 	t_object			object[4];
-	t_size				map_sz;	// map size
-	t_player			player;	// position camera
+	t_size				map_sz;
+	t_player			player;
 	t_thread			thread[8];
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
@@ -151,6 +152,8 @@ struct						s_data
 	int					setting;
 	int					dev_mode;
 	t_coef				mouse;
+	clock_t				time_last;
+	int					fps;
 };
 
 void						ft_init_data(char *map, t_data *data);
