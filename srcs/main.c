@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 02:39:07 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 03:06:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,10 @@ void	ft_exit(t_data *data)
 	TTF_CloseFont(data->font);
 	TTF_Quit();
 	SDL_Quit();
-	//while (1)
-	//	;
 	exit(EXIT_SUCCESS);
 }
 
-void	ft_set_cursor(t_data *data)
-{
-	t_pos	a;
-	t_pos	b;
-
-	a = (t_pos){WIN_W / 2 - 10,WIN_H / 2};
-	b = (t_pos){WIN_W / 2 + 10,WIN_H / 2};
-	draw_line(data, a, b, 0xFF5BE50B, 0);
-	a = (t_pos){WIN_W / 2,WIN_H / 2 - 10};
-	b = (t_pos){WIN_W / 2,WIN_H / 2 + 10};
-	draw_line(data, a, b, 0xFF5BE50B, 0);
-}
-
-void	ft_make_frame(t_data *data)
+static void		ft_make_frame(t_data *data)
 {
 	data->time_last = clock();
 	ft_rc_wolfcalc(data);
@@ -58,7 +43,7 @@ void	ft_make_frame(t_data *data)
 	ft_set_infos(data);
 }
 
-void	ft_game_loop(t_data *data)
+static void		ft_game_loop(t_data *data)
 {
 	ft_make_frame(data);
 	SDL_RenderPresent(data->sdl.renderer);
