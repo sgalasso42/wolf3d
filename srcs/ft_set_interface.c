@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:46:59 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 02:08:25 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 20:38:13 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,10 @@ void	ft_bloc_devmode(t_data *data)
 
 	rect = (SDL_Rect){15,48,200,35};
 	ft_draw_rect(rect, 0x10000000, 0, data);
-
 	rect = (SDL_Rect){15,98,200,35};
 	ft_draw_rect(rect, 0x10000000, 0, data);
-
 	rect = (SDL_Rect){15,138,200,35};
 	ft_draw_rect(rect, 0x10000000, 0, data);
-
 	rect = (SDL_Rect){15,178,200,35};
 	ft_draw_rect(rect, 0x10000000, 0, data);
 }

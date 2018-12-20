@@ -6,7 +6,7 @@
 /*   By: jsauron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 12:03:09 by jsauron           #+#    #+#             */
-/*   Updated: 2018/12/20 19:14:54 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 19:28:42 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void		ft_freemap_exit(char *msg, t_data *data)
 	int		i;
 
 	i = 0;
-	while (data->map[i])
+	while (i < data->map_sz.h)
 	{
-		ft_memdel((void *)(data->map[i]));
+		ft_memdel((void *)(&(data->map[i])));
 		i++;
 	}
 	ft_memdel((void *)(data->map));

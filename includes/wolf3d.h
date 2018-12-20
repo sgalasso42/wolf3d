@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 19:16:12 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 20:30:49 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 typedef struct s_limit		t_limit;
 typedef struct s_pos		t_pos;
 typedef struct s_size		t_size;
+typedef struct s_vec		t_vec;
 typedef struct s_coef		t_coef;
 typedef struct s_ray		t_ray;
 typedef struct s_thread		t_thread;
@@ -68,6 +69,12 @@ struct						s_pos
 {
 	double				x;
 	double				y;
+};
+
+struct						s_vec
+{
+	t_pos				a;
+	t_pos				b;
 };
 
 struct						s_size

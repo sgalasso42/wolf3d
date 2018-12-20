@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:10:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 20:43:59 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ SDL_Color	ft_hex_to_rgb(int hexa)
 	return (color);
 }
 
-static void		ft_remove_light(Uint8 *component, double delta, int arg)
+static void		ft_remove_light(Uint8 *component, double delta)
 {
 	if (*component > 0)
-		*component = (*component * (1 - delta) + ((0x0 >> arg) * delta));
+		*component = (*component * (1 - delta));
 }
 
 static int		ft_apply_shade(Uint32 c, double delta)
@@ -62,14 +62,11 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	delta > 0.9 ? delta = 0.9 : 0;
 	delta /= 1.50;
 	c |= 0xFF000000;
-	color.r = c >> 24;
-	color.g = c >> 16;
-	color.b = c >> 8;
-	color.a = c;
-	ft_remove_light(&color.r, delta, 24);
-	ft_remove_light(&color.g, delta, 16);
-	ft_remove_light(&color.b, delta, 8);
-	ft_remove_light(&color.a, delta, 0);
+	color = (SDL_Color){c >> 24,c >> 16,c >> 8,c};
+	ft_remove_light(&color.r, delta);
+	ft_remove_light(&color.g, delta);
+	ft_remove_light(&color.b, delta);
+	ft_remove_light(&color.a, delta);
 	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
 }
 
@@ -201,16 +198,12 @@ void		ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 
 	p1.x = rect.x;
 	p1.y = rect.y;
-
 	p2.x = rect.x + rect.w;
 	p2.y = rect.y;
-
 	p3.x = rect.x;
 	p3.y = rect.y + rect.h;
-
 	p4.x = rect.x + rect.w;
 	p4.y = rect.y + rect.h;
-
 	draw_line(data, p1, p2, color, 0);
 	draw_line(data, p1, p3, color, 0);
 	draw_line(data, p2, p4, color, 0);
