@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 15:47:50 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 15:50:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,11 @@ static int		ft_movement_normal(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
-	// passage en radian
 	angle_r = data->player.direction * M_PI / 180;
-
 	if (state[SDL_SCANCODE_UP])
-	{ // ^
 		ft_movement(angle_r, 1, data);
-	}
 	else if (state[SDL_SCANCODE_DOWN])
-	{ // v
 		ft_movement(angle_r, 0, data);
-	}
 	else
 		return (0);
 	return (1);
@@ -72,9 +66,7 @@ static int		ft_movement_normal(const Uint8 *state, t_data *data)
 static int		ft_rotation_normal(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_RIGHT])
-	{ // >
 		data->player.direction = (int)(data->player.direction + 5) % 360;
-	}
 	else if (state[SDL_SCANCODE_LEFT])
 	{ // <
 		if (data->player.direction - 5 > 0)
@@ -94,13 +86,9 @@ static int		ft_movement_gaming(const Uint8 *state, t_data *data)
 	angle_r = data->player.direction * M_PI / 180;
 
 	if (state[SDL_SCANCODE_W])
-	{ // w
 		ft_movement(angle_r, 1, data);
-	}
 	else if (state[SDL_SCANCODE_S])
-	{ // s
 		ft_movement(angle_r, 0, data);
-	}
 	else
 		return (0);
 	return (1);
@@ -113,13 +101,9 @@ static int		ft_lateral_gaming(const Uint8 *state, t_data *data)
 	angle_r = (data->player.direction + 90) * M_PI / 180;
 
 	if (state[SDL_SCANCODE_D])
-	{ // a
 		ft_movement(angle_r, 1, data);
-	}
 	else if (state[SDL_SCANCODE_A])
-	{ // d
 		ft_movement(angle_r, 0, data);
-	}
 	else
 		return (0);
 	return (1);
