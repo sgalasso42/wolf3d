@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 12:04:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 15:02:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,50 @@ SDL_Color	ft_set_color(t_data *data, int i)
 void	ft_set_menu_config(t_data *data)
 {
 	SDL_Rect	rect;
+	char		*speed_str;
+	char		*sens_str;
+	char		*light_str;
+	char		*zoom_str;
 
-	rect = (SDL_Rect){230,300,500,30};
-	ft_set_string(rect, "Speed", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,350,500,30};
-	ft_set_string(rect, "[ * ] [ / ]   Sensibility", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,400,500,30};
-	ft_set_string(rect, "[ l ]         Light shading", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,450,500,30};
-	ft_set_string(rect, "[ + ] [ - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,500,500,30};
-	ft_set_string(rect, "[ Esc ]     Exit", ft_hex_to_rgb(H_GREEN), data);
+	if (!(speed_str = ft_itoa((int)(data->player.speed * 100))))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(sens_str = ft_itoa(data->player.sensibility)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(light_str = ft_itoa(data->lightshade)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(zoom_str = ft_itoa(data->minimap.mnp_size)))
+		exit(EXIT_FAILURE); // recup exit
+
 	rect = (SDL_Rect){230,230,500,50};
 	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,300,500,30};
+	ft_set_string(rect, "[ 8 9 ]  Speed", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,300,500,30};
+	ft_set_string(rect, speed_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,350,500,30};
+	ft_set_string(rect, "[ * / ]  Sensibility", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,350,500,30};
+	ft_set_string(rect, sens_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,400,500,30};
+	ft_set_string(rect, "[ l ]  Light shading", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,400,500,30};
+	ft_set_string(rect, light_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,450,500,30};
+	ft_set_string(rect, "[ + - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,450,500,30};
+	ft_set_string(rect, zoom_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,500,500,30};
+	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
+
+	ft_strdel(&speed_str);
+	ft_strdel(&sens_str);
+	ft_strdel(&light_str);
+	ft_strdel(&zoom_str);
 }
 
 void	ft_dev_mode(t_data *data)

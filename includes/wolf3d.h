@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 11:53:09 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:54:15 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ struct						s_player
 	double				direction;
 	int					cam_height;
 	int					visual_field;
+	int					sensibility;
+	double				speed;
 };
 
 struct						s_minimap
@@ -152,7 +154,7 @@ struct						s_data
 	int					setting;
 	int					dev_mode;
 	t_coef				mouse;
-	clock_t				time_last;
+	Uint32				time_last;
 	int					nb_frame;
 	int					fps;
 };

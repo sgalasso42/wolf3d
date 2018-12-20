@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 11:53:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 15:01:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void		ft_game_loop(t_data *data)
 			ft_make_frame(data);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
+		SDL_FlushEvent(SDL_KEYDOWN | SDL_KEYUP | SDL_MOUSEMOTION);
 	}
 }
 

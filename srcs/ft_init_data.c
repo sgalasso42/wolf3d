@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 02:39:45 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:08:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	ft_init_data(char *map, t_data *data)
 	data->player.position.x = -1;
 	data->player.position.y = -1;
 	data->player.direction = 90;
+	data->player.sensibility = 3;
+	data->player.speed = 0.12;
 	data->minimap.mnp_size = 20;
 	ft_init_sdl(data);
 	ft_init_fonts(data);
