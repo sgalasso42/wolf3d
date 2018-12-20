@@ -6,43 +6,67 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 15:39:45 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 15:47:50 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+void			ft_movement(double angle_r, int dir, t_data *data)
+{
+	t_pos		pos_h;
+	t_pos		pos_v;
+
+	if (dir == 1)
+	{ // ^
+		pos_h.x = (data->player.position.x * BLOC_SIZE)
+		- cos(angle_r) * (data->player.speed * 150);
+		pos_h.y = (data->player.position.y * BLOC_SIZE);
+
+		pos_v.x = (data->player.position.x * BLOC_SIZE);
+		pos_v.y = (data->player.position.y * BLOC_SIZE)
+		- sin(angle_r) * (data->player.speed * 150);
+
+		if (!ft_is_inwall(&pos_v, data))
+			data->player.position.y += -sin(angle_r) * data->player.speed;
+		if (!ft_is_inwall(&pos_h, data))
+			data->player.position.x += -cos(angle_r) * data->player.speed;
+	}
+	else
+	{ // v
+		pos_h.x = (data->player.position.x * BLOC_SIZE)
+		+ cos(angle_r) * (data->player.speed * 150);
+		pos_h.y = (data->player.position.y * BLOC_SIZE);
+
+		pos_v.x = (data->player.position.x * BLOC_SIZE);
+		pos_v.y = (data->player.position.y * BLOC_SIZE)
+		+ sin(angle_r) * (data->player.speed * 150);
+
+		if (!ft_is_inwall(&pos_v, data))
+			data->player.position.y += sin(angle_r) * data->player.speed;
+		if (!ft_is_inwall(&pos_h, data))
+			data->player.position.x += cos(angle_r) * data->player.speed;
+	}
+}
+
 static int		ft_movement_normal(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
-	t_pos		pos;
 
 	// passage en radian
 	angle_r = data->player.direction * M_PI / 180;
 
 	if (state[SDL_SCANCODE_UP])
 	{ // ^
-		pos.x = data->player.position.x * BLOC_SIZE + -cos(angle_r) * 10;
-		pos.y = data->player.position.y * BLOC_SIZE;
-		if (!ft_is_inwall(&pos, data))
-			data->player.position.x += -cos(angle_r) * data->player.speed;
-		pos.y = data->player.position.y * BLOC_SIZE + -sin(angle_r) * 10;
-		if (!ft_is_inwall(&pos, data))
-			data->player.position.y += -sin(angle_r) * data->player.speed;
-		return (1);
+		ft_movement(angle_r, 1, data);
 	}
 	else if (state[SDL_SCANCODE_DOWN])
 	{ // v
-		pos.x = data->player.position.x * BLOC_SIZE - -cos(angle_r) * 10;
-		pos.y = data->player.position.y * BLOC_SIZE;
-		if (!ft_is_inwall(&pos, data))
-			data->player.position.x -= -cos(angle_r) * data->player.speed;
-		pos.y = data->player.position.y * BLOC_SIZE - -sin(angle_r) * 10;
-		if (!ft_is_inwall(&pos, data))
-			data->player.position.y -= -sin(angle_r) * data->player.speed;
-		return (1);
+		ft_movement(angle_r, 0, data);
 	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
 static int		ft_rotation_normal(const Uint8 *state, t_data *data)
@@ -66,40 +90,16 @@ static int		ft_rotation_normal(const Uint8 *state, t_data *data)
 static int		ft_movement_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
-	t_pos		pos_h; // hori
-	t_pos		pos_v; // vert
 
 	angle_r = data->player.direction * M_PI / 180;
 
 	if (state[SDL_SCANCODE_W])
 	{ // w
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		- cos(angle_r) * (data->player.speed * 150);
-		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
-		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		- sin(angle_r) * (data->player.speed * 150);
-
-		if (!ft_is_inwall(&pos_v, data))
-			data->player.position.y += -sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
-			data->player.position.x += -cos(angle_r) * data->player.speed;
+		ft_movement(angle_r, 1, data);
 	}
 	else if (state[SDL_SCANCODE_S])
 	{ // s
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		+ cos(angle_r) * (data->player.speed * 150);
-		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
-		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		+ sin(angle_r) * (data->player.speed * 150);
-
-		if (!ft_is_inwall(&pos_v, data))
-			data->player.position.y += sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
-			data->player.position.x += cos(angle_r) * data->player.speed;
+		ft_movement(angle_r, 0, data);
 	}
 	else
 		return (0);
@@ -109,40 +109,16 @@ static int		ft_movement_gaming(const Uint8 *state, t_data *data)
 static int		ft_lateral_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
-	t_pos		pos_h; // hori
-	t_pos		pos_v; // vert
 
 	angle_r = (data->player.direction + 90) * M_PI / 180;
 
 	if (state[SDL_SCANCODE_D])
 	{ // a
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		- cos(angle_r) * (data->player.speed * 150);
-		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
-		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		- sin(angle_r) * (data->player.speed * 150);
-
-		if (!ft_is_inwall(&pos_v, data))
-			data->player.position.y += -sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
-			data->player.position.x += -cos(angle_r) * data->player.speed;
+		ft_movement(angle_r, 1, data);
 	}
 	else if (state[SDL_SCANCODE_A])
 	{ // d
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		+ cos(angle_r) * (data->player.speed * 150);
-		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
-		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		+ sin(angle_r) * (data->player.speed * 150);
-
-		if (!ft_is_inwall(&pos_v, data))
-			data->player.position.y += sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
-			data->player.position.x += cos(angle_r) * data->player.speed;
+		ft_movement(angle_r, 0, data);
 	}
 	else
 		return (0);
