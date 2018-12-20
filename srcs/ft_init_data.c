@@ -6,14 +6,16 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 14:08:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 19:15:55 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_sdl_err_exit(t_data *data)
+void	ft_sdl_err_exit(char *msg, t_data *data)
 {
+	if (msg)
+		ft_putendl_fd(msg, 2);
 	ft_putendl(SDL_GetError());
 	ft_putendl(TTF_GetError());
 	if (data->sdl.renderer)
@@ -24,7 +26,7 @@ void	ft_sdl_err_exit(t_data *data)
 		TTF_CloseFont(data->font);
 	TTF_Quit();
 	SDL_Quit();
-	exit(EXIT_FAILURE);
+	ft_err_exit(0);
 }
 
 void	ft_init_sdl(t_data *data)
@@ -32,39 +34,37 @@ void	ft_init_sdl(t_data *data)
 	data->sdl.window = 0;
 	data->sdl.renderer = 0;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		ft_sdl_err_exit(data);
+		ft_sdl_err_exit(0, data);
 	if (TTF_Init() < 0)
-		ft_sdl_err_exit(data);
+		ft_sdl_err_exit(0, data);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	if (!(data->sdl.window = SDL_CreateWindow("WOLF_3D",
-	SDL_WINDOWPOS_UNDEFINED,
-	SDL_WINDOWPOS_UNDEFINED,
-	WIN_W, WIN_H, 0)))
-		ft_sdl_err_exit(data);
+	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, 0)))
+		ft_sdl_err_exit(0, data);
 	if (!(data->sdl.renderer = SDL_CreateRenderer(data->sdl.window, -1,
 	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
-		ft_sdl_err_exit(data);
+		ft_sdl_err_exit(0, data);
 	if (SDL_SetRenderDrawBlendMode(data->sdl.renderer, SDL_BLENDMODE_BLEND) < 0)
-		ft_sdl_err_exit(data);
+		ft_sdl_err_exit(0, data);
 	SDL_RaiseWindow(data->sdl.window);
 }
 
 void	ft_init_fonts(t_data *data)
 {
 	if (!(data->font = TTF_OpenFont("ressources/fonts/Arial.ttf", 100)))
-		exit(EXIT_FAILURE); // exit proprement todo
+		ft_sdl_err_exit("wolf3d: error: font failure", data);
 }
 
 void	ft_make_texture(t_data *data)
 {
 	if (!(data->object[0].img_srf = IMG_Load("ressources/img/crate.png")))
-		exit(EXIT_FAILURE); // recup exit
+		ft_failure_exit("wolf3d: error: bad textures", data);
 	if (!(data->object[1].img_srf = IMG_Load("ressources/img/stone.png")))
-		exit(EXIT_FAILURE); // recup exit
-	if (!(data->object[2].img_srf = IMG_Load("ressources/img/brick1.png")))
-		exit(EXIT_FAILURE); // recup exit
+		ft_failure_exit("wolf3d: error: bad textures", data);
+	if (!(data->object[2].img_srf = IMG_Load("ressources/img/BrownFloor.png")))
+		ft_failure_exit("wolf3d: error: bad textures", data);
 	if (!(data->object[3].img_srf = IMG_Load("ressources/img/unnamed.png")))
-		exit(EXIT_FAILURE); // recup exit
+		ft_failure_exit("wolf3d: error: bad textures", data);
 }
 
 void	ft_init_data(char *map, t_data *data)

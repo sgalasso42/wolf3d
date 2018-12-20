@@ -6,14 +6,14 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 22:11:28 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/20 18:27:23 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= wolf3d
 
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT 		= ./libft
 
 ID_UN 		= $(shell id -un)
@@ -74,9 +74,6 @@ clean:
 fclean: clean
 	make -C $(LIBFT) fclean
 	rm -f $(NAME)
-
-run : all
-	./wolf3d ./maps/map1
 
 re: fclean all
 

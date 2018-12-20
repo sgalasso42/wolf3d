@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 18:02:27 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 18:19:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,10 +167,12 @@ void					*ft_calc_frame(void *arg)
 				y_textr = h_textr * y_pixel / h_wall;
 				if (thread->ray[i].axis == 1)
 				{
-					x_textr =
-					(thread->ray[i].x) % (thread->data->object[0].img_srf->w);
-					x_textr =
-					(x_textr * thread->data->object[0].img_srf->w) / (BLOC_SIZE);
+					x_textr = (thread->ray[i].x)
+					% (thread->data->object[0].img_srf->w);
+
+					x_textr = (x_textr * thread->data->object[0].img_srf->w)
+					/ (BLOC_SIZE);
+
 					x_textr /= 8;
 				}
 				else
@@ -205,14 +207,15 @@ void					*ft_calc_frame(void *arg)
 
 static SDL_Surface		*ft_new_surface(int height, int width)
 {
-	SDL_Surface *surface;
-	Uint32 r, g, b, a;
+	SDL_Surface		*surface;
+	Uint32			color[4];
 
-	r = 0x000000ff;
-	g = 0x0000ff00;
-	b = 0x00ff0000;
-	a = 0xff000000;
-	if (!(surface = SDL_CreateRGBSurface(0, width, height, 32, r, g, b, a)))
+	color[0] = 0x000000ff;
+	color[1] = 0x0000ff00;
+	color[2] = 0x00ff0000;
+	color[3] = 0xff000000;
+	if (!(surface = SDL_CreateRGBSurface(
+	0, width, height, 32, color[0], color[1], color[2], color[3])))
 	{
 		SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
 		exit(EXIT_FAILURE); // recup exit

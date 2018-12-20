@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 17:45:44 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 19:16:12 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,11 @@ Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_set_cursor(t_data *data);
 
 void						ft_exit(t_data *data);
+void						ft_err_exit(char *msg);
+void						ft_close_exit(char *msg, t_data *data);
+void						ft_freemap_exit(char *msg, t_data *data);
+void						ft_failure_exit(char *msg, t_data *data);
+
 int							ft_is_inwall(t_pos *pos, t_data *data);
 int							ft_get_events(t_data *data);
 void						ft_rc_wolfcalc(t_data *data);
@@ -187,12 +192,5 @@ void						ft_set_interface(t_data *data);
 void						ft_set_config(t_data *data);
 void						ft_set_menu_config(t_data *data);
 void						ft_dev_mode(t_data *data);
-void						ft_err_malloc(void);
-void						ft_err_malloc_free(char *line, int fd, t_data *data);
-void						ft_arg_invalid(void);
-void						ft_map_invalid(void);
-void						ft_map_invalid_free(char *line, int fd, t_data *data);
-int							ft_isspace(int c);
-void						ft_check_valid_map(char *line, int fd);
 
 #endif

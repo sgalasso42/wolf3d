@@ -6,83 +6,52 @@
 /*   By: jsauron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 12:03:09 by jsauron           #+#    #+#             */
-/*   Updated: 2018/12/16 15:10:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 19:14:54 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_err_malloc(void)
+void		ft_err_exit(char *msg)
 {
-	ft_putstr(C_RED"Malloc failled\n"C_NONE);
+	if (msg)
+		ft_putendl_fd(msg, 2);
 	exit(EXIT_FAILURE);
 }
 
-void	ft_free_map(t_data *data)
+void		ft_close_exit(char *msg, t_data *data)
 {
-	int i;
+	SDL_DestroyRenderer(data->sdl.renderer);
+	SDL_DestroyWindow(data->sdl.window);
+	TTF_CloseFont(data->font);
+	TTF_Quit();
+	SDL_Quit();
+	ft_err_exit(msg);
+}
+
+void		ft_freemap_exit(char *msg, t_data *data)
+{
+	int		i;
 
 	i = 0;
-	while (i < data->map_sz.h)
+	while (data->map[i])
 	{
-		printf("addr : %p\n", data->map);
-		free(data->map[i]);
+		ft_memdel((void *)(data->map[i]));
 		i++;
 	}
-	free(data->map);
+	ft_memdel((void *)(data->map));
+	ft_close_exit(msg, data);
 }
 
-void	ft_err_malloc_free(char *line, int fd, t_data *data)
+void		ft_failure_exit(char *msg, t_data *data)
 {
-	ft_free_map(data);
-	free(line);
-	close(fd);
-	ft_err_malloc();
+	if (data->object[0].img_srf)
+		SDL_FreeSurface(data->object[0].img_srf);
+	if (data->object[1].img_srf)
+		SDL_FreeSurface(data->object[1].img_srf);
+	if (data->object[2].img_srf)
+		SDL_FreeSurface(data->object[2].img_srf);
+	if (data->object[3].img_srf)
+		SDL_FreeSurface(data->object[3].img_srf);
+	ft_freemap_exit(msg, data);
 }
-
-void	ft_arg_invalid(void)
-{
-	ft_putstr(C_GREEN"./wolf3d <map>\n"C_NONE);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_map_invalid(void)
-{
-	ft_putstr(C_RED"Map invalid\n"C_NONE);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_map_invalid_free(char *line, int fd, t_data *data)
-{
-	if (data->map)
-		ft_free_map(data);
-	if (line)
-		free(line);
-	close(fd);
-	ft_putstr(C_RED"Map invalid\n"C_NONE);
-	exit(EXIT_FAILURE);
-}
-
-int		ft_isspace(int c)
-{
-	return (c == ' ' || c == '\v' || c == '\t'
-			|| c == '\n' || c == '\r' || c == '\f');
-}
-
-void	ft_check_valid_map(char *line, int fd)
-{
-	int i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!(ft_isdigit(line[i]) || ft_isspace(line[i]) || line[i]  == ','))
-		{
-			free(line);
-			close(fd);
-			ft_map_invalid();
-		}
-	i++;
-	}
-}
-

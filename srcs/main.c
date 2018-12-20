@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 15:56:52 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 18:38:41 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		main(int argc, char **argv)
 	t_data			data;
 
 	if (argc != 2)
-		ft_arg_invalid();
+		ft_err_exit("usage: ./wolf3d <map>");
 	ft_init_data(argv[1], &data);
 	ft_game_loop(&data);
 	return (0);
