@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 19:19:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 22:06:31 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,14 @@ static int		ft_get_size_map(char *map, t_data *data)
 	if ((fd = open(map, O_RDONLY)) == -1)
 		return (0);
 	if (get_next_line(fd, &line) > 0)
+	{
+		if (!ft_check_map(line))
+		{
+			close(fd);
+			return (0);
+		}
 		data->map_sz.w = ft_nbwords(line);
+	}
 	else
 	{
 		close(fd);

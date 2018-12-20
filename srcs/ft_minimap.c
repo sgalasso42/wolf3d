@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:17:09 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:58:07 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,23 @@ static void		ft_set_player(t_data *data)
 	ft_draw_rect(player, 0x0, 0, data);
 }
 
+static void		ft_set_bloc(int i, int j, t_data *data)
+{
+	SDL_Rect	bloc;
+
+	bloc.x = data->minimap.diff.x + (j * data->minimap.mnp_size);
+	bloc.y = data->minimap.diff.y + (i * data->minimap.mnp_size);
+	bloc.w = data->minimap.mnp_size;
+	bloc.h = data->minimap.mnp_size;
+	if (data->map[i][j] == 1)
+		ft_draw_rect(bloc, 0xFF5C4424, &(data->minimap.limit), data);
+	else if (data->map[i][j] == 0 || data->map[i][j] == 2)
+		ft_draw_rect(bloc, 0xFFADADAD, &(data->minimap.limit), data);
+}
+
 void			ft_minimap(t_data *data)
 {
 	SDL_Rect	border;
-	SDL_Rect	bloc;
 	int			i;
 	int			j;
 
@@ -88,14 +101,7 @@ void			ft_minimap(t_data *data)
 		j = 0;
 		while (j < data->map_sz.w)
 		{
-			bloc.x = data->minimap.diff.x + (j * data->minimap.mnp_size);
-			bloc.y = data->minimap.diff.y + (i * data->minimap.mnp_size);
-			bloc.w = data->minimap.mnp_size;
-			bloc.h = data->minimap.mnp_size;
-			if (data->map[i][j] == 1)
-				ft_draw_rect(bloc, 0xFF5C4424, &(data->minimap.limit), data);
-			else if (data->map[i][j] == 0 || data->map[i][j] == 2)
-				ft_draw_rect(bloc, 0xFFADADAD, &(data->minimap.limit), data);
+			ft_set_bloc(i, j, data);
 			j++;
 		}
 		i++;

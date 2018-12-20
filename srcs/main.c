@@ -6,15 +6,15 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 20:18:45 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:59:07 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_exit(t_data *data)
+void			ft_exit(t_data *data)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	SDL_FreeSurface(data->object[0].img_srf);
@@ -69,7 +69,7 @@ static void		ft_game_loop(t_data *data)
 	}
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_data			data;
 
