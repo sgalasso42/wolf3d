@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 14:49:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 00:56:25 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	ft_init_fonts(t_data *data)
 void	ft_make_texture(t_data *data)
 {
 	if (!(data->object[0].img_srf = IMG_Load("ressources/img/crate.png")))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(data->object[1].img_srf = IMG_Load("ressources/img/stone.png")))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(data->object[2].img_srf = IMG_Load("ressources/img/brick1.png")))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(data->object[3].img_srf = IMG_Load("ressources/img/unnamed.png")))
 		exit(EXIT_FAILURE); // recup exit
 }
 

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 23:20:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 00:06:33 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ void	ft_set_menu_config(t_data *data)
 {
 	SDL_Rect	rect;
 
-	rect = (SDL_Rect){230,280,500,40};
+	rect = (SDL_Rect){230,300,500,30};
 	ft_set_string(rect, "Speed", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,325,500,40};
-	ft_set_string(rect, "Sensibility", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,370,500,40};
-	ft_set_string(rect, "Light shading [L]", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,420,500,40};
-	ft_set_string(rect, "Minimap zoom [+][-]", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,470,500,40};
-	ft_set_string(rect, "Quit [esc]", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){380,230,500,40};
+	rect = (SDL_Rect){230,350,500,30};
+	ft_set_string(rect, "[ * ] [ / ]   Sensibility", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,400,500,30};
+	ft_set_string(rect, "[ l ]         Light shading", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,450,500,30};
+	ft_set_string(rect, "[ + ] [ - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,500,500,30};
+	ft_set_string(rect, "[ Esc ]     Exit", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,230,500,50};
 	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
 }
 
