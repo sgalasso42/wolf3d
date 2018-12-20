@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 15:50:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 16:48:05 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,25 @@ int				ft_get_events(t_data *data)
 	int			ok;
 	
 	ok = 0;
+	if (SDL_PollEvent(&(data->sdl.event)) == 1)
+	{
+		if (data->sdl.event.type == SDL_QUIT)
+		{
+			SDL_FlushEvent(SDL_KEYDOWN | SDL_KEYUP | SDL_MOUSEMOTION);
+			ft_exit(data);
+		}
+		else if (data->sdl.event.type == SDL_KEYDOWN && ft_keyboard(data))
+			ok = 1;
+		if (data->gamemode == 1)
+		{
+			SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
+			if (data->mouse.x || data->mouse.y)
+			{
+				ft_mouse_motion(data);
+				ok = 1;
+			}
+		}
+	}
 	state = SDL_GetKeyboardState(0);
 	if (data->gamemode == 0)
 	{
@@ -194,25 +213,6 @@ int				ft_get_events(t_data *data)
 			ft_lateral_gaming(state, data);
 			ok = 1;
 		}	
-	}
-	if (SDL_PollEvent(&(data->sdl.event)) == 1)
-	{
-		if (data->sdl.event.type == SDL_QUIT)
-		{
-			SDL_FlushEvent(SDL_KEYDOWN | SDL_KEYUP | SDL_MOUSEMOTION);
-			ft_exit(data);
-		}
-		else if (data->sdl.event.type == SDL_KEYDOWN && ft_keyboard(data))
-			ok = 1;
-		if (data->gamemode == 1)
-		{
-			SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
-			if (data->mouse.x || data->mouse.y)
-			{
-				ft_mouse_motion(data);
-				ok = 1;
-			}
-		}
 	}
 	if (ok == 1)
 		return (1);

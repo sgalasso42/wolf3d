@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 16:10:31 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 18:02:27 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void		ft_get_raydata(int axis, t_pos pos,
 	thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
 	thread->ray[i].dist_minimap = thread->ray[i].distance;
 	thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
-	thread->ray[i].x = pos.x;
-	thread->ray[i].y = pos.y;
+	thread->ray[i].x = pos.x * 8;
+	thread->ray[i].y = pos.y * 8;
 	thread->ray[i].axis = axis;
 }
 
@@ -164,24 +164,24 @@ void					*ft_calc_frame(void *arg)
 				y_pixel = (y - thread->ray[i].wall_top);
 				h_textr = thread->data->object[0].img_srf->h;
 				h_wall = thread->ray[i].wall_bot - thread->ray[i].wall_top;
-
 				y_textr = h_textr * y_pixel / h_wall;
-
-				/*x_textr = ft_abs(thread->data->object[0].img_srf->w
-				- thread->ray[i].x);
-				x_textr %= thread->data->object[0].img_srf->w;*/
-				
 				if (thread->ray[i].axis == 1)
 				{
-					x_textr = (thread->ray[i].x) % (BLOC_SIZE);
-					x_textr *= 5.5;
+					x_textr =
+					(thread->ray[i].x) % (thread->data->object[0].img_srf->w);
+					x_textr =
+					(x_textr * thread->data->object[0].img_srf->w) / (BLOC_SIZE);
+					x_textr /= 8;
 				}
 				else
 				{
-					x_textr = (thread->ray[i].y) % (BLOC_SIZE);
-					x_textr *= 5.5;
+					x_textr =
+					(thread->ray[i].y) % (thread->data->object[0].img_srf->w);
+					//x_textr =
+					//(x_textr * thread->data->object[0].img_srf->w) / (BLOC_SIZE);
+					/*x_textr = (thread->ray[i].y) % BLOC_SIZE;
+					x_textr *= 5.5;*/
 				}
-
 				color = ft_get_color(thread->ray[i].axis,
 				thread->ray[i].angle_d, x_textr, y_textr, thread->data);
 				
