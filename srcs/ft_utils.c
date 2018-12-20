@@ -6,11 +6,24 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:15:36 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 03:10:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+void		ft_set_cursor(t_data *data)
+{
+	t_pos	a;
+	t_pos	b;
+
+	a = (t_pos){WIN_W / 2 - 10,WIN_H / 2};
+	b = (t_pos){WIN_W / 2 + 10,WIN_H / 2};
+	draw_line(data, a, b, 0xFF5BE50B, 0);
+	a = (t_pos){WIN_W / 2,WIN_H / 2 - 10};
+	b = (t_pos){WIN_W / 2,WIN_H / 2 + 10};
+	draw_line(data, a, b, 0xFF5BE50B, 0);
+}
 
 void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 {

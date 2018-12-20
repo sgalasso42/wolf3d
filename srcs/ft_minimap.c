@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:04:31 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 03:03:55 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	ft_minimap(t_data *data)
 {
 	SDL_Rect	border;
 	SDL_Rect	bloc;
-	int		i;
-	int		j;
+	int			i;
+	int			j;
 
 	ft_init_minimap(data);
 
