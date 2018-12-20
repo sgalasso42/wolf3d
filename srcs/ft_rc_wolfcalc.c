@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 21:23:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 01:04:21 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,21 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 		}
 		else
 		{
-			//color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
-			color = 0xFF51DB6A;
+			color = ft_getpixel(data->object[1].img_srf, x, y);
+			color |= 0xFF000000;
 		}
 	}
 	else if (axis == 2) // x
 	{
 		if (angle_d >= 90 && angle_d <= 270)
 		{
-			//color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
-			color = 0xFFDBAC51;
+			color = ft_getpixel(data->object[2].img_srf, x, y);
+			color |= 0xFF000000;
 		}
 		else
 		{
-			//color = ft_getpixel(data->img_srf_n, /* x */, /* y */);
-			color = 0xFFEFEFEF;
+			color = ft_getpixel(data->object[3].img_srf, x, y);
+			color |= 0xFF000000;
 		}
 	}
 	return (color);
@@ -168,19 +168,42 @@ void					*ft_calc_frame(void *arg)
 				ft_setpixel(thread->data->surface, x, y, 0xFFFFFED6);
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 			{
+
+				// ----------------------------------------------
+
 				Uint32	color;
-				double a = (y - thread->ray[i].wall_top);
-				double b = thread->data->object[0].img_srf->h;
-				double o = thread->ray[i].wall_bot - thread->ray[i].wall_top;
-				int		x1;
-				int		y1;
+				double	y_pixel;
+				double	h_textr;
+				double	h_wall;
+				int		y_textr;
+				int		x_textr;
 
-				x1 = (thread->ray[i].x) % (BLOC_SIZE);
-				y1 = b * a / o;
+				y_pixel = (y - thread->ray[i].wall_top);
+				h_textr = thread->data->object[0].img_srf->h;
+				h_wall = thread->ray[i].wall_bot - thread->ray[i].wall_top;
 
-				color = ft_get_color(thread->ray[i].axis, thread->ray[i].angle_d,
-				x1, y1, thread->data);
+				y_textr = h_textr * y_pixel / h_wall;
+
+				/*x_textr = ft_abs(thread->data->object[0].img_srf->w
+				- thread->ray[i].x);
+				x_textr %= thread->data->object[0].img_srf->w;*/
 				
+				if (thread->ray[i].axis == 1)
+				{
+					x_textr = (thread->ray[i].x) % (BLOC_SIZE);
+					x_textr *= 5.5;
+				}
+				else
+				{
+					x_textr = (thread->ray[i].y) % (BLOC_SIZE);
+					x_textr *= 5.5;
+				}
+
+				color = ft_get_color(thread->ray[i].axis,
+				thread->ray[i].angle_d, x_textr, y_textr, thread->data);
+				
+				// ----------------------------------------------		
+
 				// light shading
 				if (thread->data->lightshade == 1)
 					color = ft_light_shade(thread->ray[i].distance, color);

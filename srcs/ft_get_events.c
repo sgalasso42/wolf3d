@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 11:59:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/19 22:02:21 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,14 +219,14 @@ static int		ft_keyboard(t_data *data)
 	{ // esc
 		ft_exit(data);
 	}
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_I)
+	{
+		data->setting = (data->setting) ? 0 : 1;
+		return (1);
+	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_1)
 	{ // 1
 		data->gamemode = 0;
-		return (1);
-	}
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_I)
-	{
-		data->setting = 1;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_2)
@@ -236,7 +236,7 @@ static int		ft_keyboard(t_data *data)
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_3)
 	{ // dev mide
-		data->dev_mode = 1;
+		data->dev_mode = (data->dev_mode) ? 0 : 1;
 		return (1);
 	}
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_L)

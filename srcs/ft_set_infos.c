@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 21:14:00 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/20 01:15:02 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,84 +14,53 @@
 
 SDL_Color	ft_set_color(t_data *data, int i)
 {
-	SDL_Color	green;
-	SDL_Color	red;
+	if ((data->gamemode == 0 && i == 0)
+	|| (data->gamemode == 1 && i == 1)
+	|| (data->dev_mode == 1  && i == 2))
+		return (ft_hex_to_rgb(H_RED));
+	return (ft_hex_to_rgb(H_GREEN));
+}
 
-	green.r = 0;
-	green.g = 255;
-	green.b = 0;
-	green.a = 255;
+void	ft_set_menu_config(t_data *data)
+{
+	SDL_Rect	rect;
 
-	red.r = 255;
-	red.g = 0;
-	red.b = 0;
-	red.a = 255;
+	rect = (SDL_Rect){230,300,500,30};
+	ft_set_string(rect, "Speed", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,350,500,30};
+	ft_set_string(rect, "[ * ] [ / ]   Sensibility", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,400,500,30};
+	ft_set_string(rect, "[ l ]         Light shading", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,450,500,30};
+	ft_set_string(rect, "[ + ] [ - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,500,500,30};
+	ft_set_string(rect, "[ Esc ]     Exit", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){230,230,500,50};
+	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
+}
 
-	// 0 normal
+void	ft_dev_mode(t_data *data)
+{
+	SDL_Rect	rect;
 
-	if ((data->gamemode == 0 && i == 0) 
-			|| (data->gamemode == 1 && i == 1)
-			|| (data->dev_mode == 1  && i == 2))
-		return (red);
-	return (green);
+	rect = (SDL_Rect){20,18,150,15};
+	ft_set_string(rect, "1 normal", ft_set_color(data, 0), data);
 }
 
 void	ft_set_infos(t_data *data)
 {
 	SDL_Rect	rect;
 
-	rect.y = 18;
-	rect.w = 150;
-	rect.h = 15;
-
-	rect.x = 20;
+	rect = (SDL_Rect){20,18,150,15};
 	ft_set_string(rect, "1 normal", ft_set_color(data, 0), data);
-	rect.x = 87;
+	rect = (SDL_Rect){87,18,150,15};
 	ft_set_string(rect, "2 gamimg", ft_set_color(data, 1), data);
-	rect.x = 460;
-	rect.y = 660;
-	rect.h = 20;
-	ft_set_string(rect, "SETTINGS : i", ft_set_color(data, 3), data);
-	ft_dev_mode(data);
-}
-
-void	ft_dev_mode(t_data *data)
-{
-	SDL_Rect	rect;
-	
-	rect.y = 18;
-	rect.w = 150;
-	rect.h = 15;
-	rect.x = 184;
-
+	rect = (SDL_Rect){WIN_W / 2 - 75,660,150,20};
+	ft_set_string(rect, "SETTINGS : [ i ]", ft_set_color(data, 3), data);
+	rect = (SDL_Rect){184,18,150,15};
 	ft_set_string(rect, "3 dev", ft_set_color(data, 2), data);
-}
-
-void	ft_set_menu_config(t_data *data)
-{
-	SDL_Rect	rect;
-	SDL_Color	green;
-
-	green.r = 0;
-	green.g = 255;
-	green.b = 0;
-	green.a = 255;
-
-	rect.x = 230;
-	rect.w = 500;
-	rect.h = 40;
-
-	rect.y = 280;
-	ft_set_string(rect, "Speed", green, data);
-	rect.y = 320;
-	ft_set_string(rect, "Sensibility", green, data);
-	rect.y = 370;
-	ft_set_string(rect, "Light shading [L]", green, data);
-	rect.y = 420;
-	ft_set_string(rect, "Minimap zoom [+][-]", green, data);
-	rect.y = 470;
-	ft_set_string(rect, "Quit [esc]", green, data);
-	rect.y = 230;
-	rect.x = 380;
-	ft_set_string(rect, "SETTINGS", green, data);
+	if (data->dev_mode == 1)
+		ft_dev_mode(data);
+	if (data->setting == 1)
+		ft_set_menu_config(data);
 }

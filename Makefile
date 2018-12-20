@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 18:20:28 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/19 22:11:28 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ $(OBJ) : | $(OBJ_PATH)
 $(OBJ_PATH) :
 	mkdir objs
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c Makefile 
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c Makefile
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 clean:

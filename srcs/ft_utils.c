@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 18:59:03 by jsauron          ###   ########.fr       */
+/*   Updated: 2018/12/20 01:15:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
+void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 {
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
@@ -20,16 +20,15 @@ void	ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	surface	= TTF_RenderText_Blended(data->font, text, color);
 	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
 	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
+	SDL_FreeSurface(surface);
 	if (SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect)) < 0)
 		exit(EXIT_FAILURE); // exit proprement todo
-
 }
 
 SDL_Color	ft_hex_to_rgb(int hexa)
 {
 	SDL_Color color;
 
-	hexa |= 0xFF000000;
 	color.r = hexa >> 24;
 	color.g = hexa >> 16;
 	color.b = hexa >> 8;
@@ -199,14 +198,6 @@ void		ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 	p4.x = rect.x + rect.w;
 	p4.y = rect.y + rect.h;
 
-	printf("p1.x : %d\n", (int)p1.x);
-	printf("p1.y : %d\n", (int)p1.y);
-	printf("p2.x : %d\n", (int)p2.x);
-	printf("p2.y : %d\n", (int)p2.y);
-	printf("p3.x : %d\n", (int)p3.x);
-	printf("p3.y : %d\n", (int)p3.y);
-	printf("p4.x : %d\n", (int)p4.x);
-	printf("p4.y : %d\n", (int)p4.y);
 	draw_line(data, p1, p2, color, 0);
 	draw_line(data, p1, p3, color, 0);
 	draw_line(data, p2, p4, color, 0);
