@@ -6,39 +6,40 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 20:43:59 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:22:46 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void		ft_set_cursor(t_data *data)
+void			ft_set_cursor(t_data *data)
 {
 	t_pos	a;
 	t_pos	b;
 
-	a = (t_pos){WIN_W / 2 - 10,WIN_H / 2};
-	b = (t_pos){WIN_W / 2 + 10,WIN_H / 2};
+	a = (t_pos){WIN_W / 2 - 10, WIN_H / 2};
+	b = (t_pos){WIN_W / 2 + 10, WIN_H / 2};
 	draw_line(data, a, b, 0xFF5BE50B, 0);
-	a = (t_pos){WIN_W / 2,WIN_H / 2 - 10};
-	b = (t_pos){WIN_W / 2,WIN_H / 2 + 10};
+	a = (t_pos){WIN_W / 2, WIN_H / 2 - 10};
+	b = (t_pos){WIN_W / 2, WIN_H / 2 + 10};
 	draw_line(data, a, b, 0xFF5BE50B, 0);
 }
 
-void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
+void			ft_set_string(SDL_Rect rect, char *text,
+				SDL_Color color, t_data *data)
 {
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 
-	surface	= TTF_RenderText_Blended(data->font, text, color);
-	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
+	surface = TTF_RenderText_Blended(data->font, text, color);
+	rect.w = (rect.h * surface->w) / surface->h;
 	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
 	SDL_FreeSurface(surface);
 	if (SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect)) < 0)
 		exit(EXIT_FAILURE); // exit proprement todo
 }
 
-SDL_Color	ft_hex_to_rgb(int hexa)
+SDL_Color		ft_hex_to_rgb(int hexa)
 {
 	SDL_Color color;
 
@@ -62,7 +63,7 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	delta > 0.9 ? delta = 0.9 : 0;
 	delta /= 1.50;
 	c |= 0xFF000000;
-	color = (SDL_Color){c >> 24,c >> 16,c >> 8,c};
+	color = (SDL_Color){c >> 24, c >> 16, c >> 8, c};
 	ft_remove_light(&color.r, delta);
 	ft_remove_light(&color.g, delta);
 	ft_remove_light(&color.b, delta);
@@ -70,15 +71,15 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
 }
 
-Uint32		ft_light_shade(double distance, Uint32 color)
+Uint32			ft_light_shade(double distance, Uint32 color)
 {
-	double  delta;
+	double	delta;
 
 	delta = distance / 300;
 	return (ft_apply_shade(color, delta));
 }
 
-void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+void			ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
 	int			bpp;
 	Uint8		*p;
@@ -107,7 +108,7 @@ void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	}
 }
 
-Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
+Uint32			ft_getpixel(SDL_Surface *surface, int x, int y)
 {
 	int				bpp;
 	Uint8			*p;
@@ -137,14 +138,15 @@ Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
 
 static void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
 {
-	tab[0]	 = abs((int)p2.x - (int)p1.x);
+	tab[0] = abs((int)p2.x - (int)p1.x);
 	tab[1] = (int)p1.x < (int)p2.x ? 1 : -1;
 	tab[2] = abs((int)p2.y - (int)p1.y);
 	tab[3] = (int)p1.y < (int)p2.y ? 1 : -1;
 	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
 }
 
-void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
+void			draw_line(t_data *data, t_pos p1,
+				t_pos p2, Uint32 color, t_limit *limit)
 {
 	int e2;
 	int tab[5];
@@ -169,7 +171,8 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	}
 }
 
-void		ft_draw_rect(SDL_Rect rect, Uint32 color, t_limit *limit, t_data *data)
+void			ft_draw_rect(SDL_Rect rect, Uint32 color,
+				t_limit *limit, t_data *data)
 {
 	int		i;
 	int		j;
@@ -189,7 +192,7 @@ void		ft_draw_rect(SDL_Rect rect, Uint32 color, t_limit *limit, t_data *data)
 	}
 }
 
-void		ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
+void			ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 {
 	t_pos p1;
 	t_pos p2;
