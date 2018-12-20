@@ -6,28 +6,17 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:35:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:48:04 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-SDL_Color	ft_set_color(t_data *data, int i)
-{
-	if ((data->gamemode == 0 && i == 0)
-	|| (data->gamemode == 1 && i == 1)
-	|| (data->dev_mode == 1 && i == 2))
-		return (ft_hex_to_rgb(H_RED));
-	return (ft_hex_to_rgb(H_GREEN));
-}
-
-void		ft_set_menu_config(t_data *data)
+void		ft_set_menu_config1(t_data *data)
 {
 	SDL_Rect	rect;
 	char		*speed_str;
 	char		*sens_str;
-	char		*light_str;
-	char		*zoom_str;
 
 	if (!(speed_str = ft_itoa((int)(data->player.speed * 100))))
 		ft_failure_exit("wolf3d: out of memory", data);
@@ -45,6 +34,14 @@ void		ft_set_menu_config(t_data *data)
 	rect = (SDL_Rect){500, 350, 500, 30};
 	ft_set_string(rect, sens_str, ft_hex_to_rgb(H_GREEN), data);
 	ft_strdel(&sens_str);
+}
+
+void		ft_set_menu_config2(t_data *data)
+{
+	SDL_Rect	rect;
+	char		*light_str;
+	char		*zoom_str;
+
 	if (!(light_str = ft_itoa(data->lightshade)))
 		ft_failure_exit("wolf3d: out of memory", data);
 	rect = (SDL_Rect){230, 400, 500, 30};
@@ -63,13 +60,11 @@ void		ft_set_menu_config(t_data *data)
 	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
 }
 
-void		ft_dev_mode(t_data *data)
+void		ft_dev_mode2(t_data *data)
 {
 	SDL_Rect	rect;
 	char		*fps_str;
 	char		*posx_str;
-	char		*posy_str;
-	char		*dir_str;
 
 	if (!(fps_str = ft_itoa(data->fps)))
 		ft_failure_exit("wolf3d: out of memory", data);
@@ -87,6 +82,14 @@ void		ft_dev_mode(t_data *data)
 	rect = (SDL_Rect){160, 100, 150, 30};
 	ft_set_string(rect, posx_str, ft_hex_to_rgb(H_GREEN), data);
 	ft_strdel(&posx_str);
+}
+
+void		ft_dev_mode1(t_data *data)
+{
+	SDL_Rect	rect;
+	char		*posy_str;
+	char		*dir_str;
+
 	if (!(posy_str = ft_itoa(data->player.position.y * BLOC_SIZE)))
 		ft_failure_exit("wolf3d: out of memory", data);
 	rect = (SDL_Rect){20, 140, 150, 30};
@@ -116,7 +119,13 @@ void		ft_set_infos(t_data *data)
 	rect = (SDL_Rect){184, 18, 150, 15};
 	ft_set_string(rect, "3 dev", ft_set_color(data, 2), data);
 	if (data->dev_mode == 1)
-		ft_dev_mode(data);
+	{
+		ft_dev_mode1(data);
+		ft_dev_mode2(data);
+	}
 	if (data->setting == 1)
-		ft_set_menu_config(data);
+	{
+		ft_set_menu_config1(data);
+		ft_set_menu_config2(data);
+	}
 }

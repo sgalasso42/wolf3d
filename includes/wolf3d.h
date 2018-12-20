@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 20:30:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:47:21 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void    					ft_set_string(SDL_Rect rect, char *text,
 							SDL_Color color, t_data *data);
 Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_set_cursor(t_data *data);
+SDL_Color					ft_set_color(t_data *data, int i);
 
 void						ft_exit(t_data *data);
 void						ft_err_exit(char *msg);

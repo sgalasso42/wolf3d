@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:15:06 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:54:25 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int		ft_lateral_gaming(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-static int		ft_keyboard(t_data *data)
+static int		ft_keyboard1(t_data *data)
 {
 	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 		ft_exit(data);
@@ -110,7 +110,14 @@ static int		ft_keyboard(t_data *data)
 		data->player.sensibility -= (data->player.sensibility > 1) ? 1 : 0;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_DIVIDE)
 		data->player.sensibility += (data->player.sensibility < 10) ? 1 : 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_1)
+	else
+		return (0);
+	return (1);
+}
+
+static int		ft_keyboard2(t_data *data)
+{
+	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_1)
 		data->gamemode = 0;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_2)
 		data->gamemode = 1;
@@ -174,7 +181,7 @@ int				ft_get_events(t_data *data)
 		if (data->sdl.event.type == SDL_QUIT)
 			ft_exit(data);
 		else if (data->sdl.event.type == SDL_KEYDOWN)
-			ok = ft_keyboard(data);
+			ok = (ft_keyboard1(data) || ft_keyboard2(data));
 		SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 		if (data->gamemode == 1 && (data->mouse.x || data->mouse.y))
 			ok = ft_mouse_motion(data);

@@ -6,11 +6,20 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:22:46 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:48:14 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+SDL_Color	ft_set_color(t_data *data, int i)
+{
+	if ((data->gamemode == 0 && i == 0)
+	|| (data->gamemode == 1 && i == 1)
+	|| (data->dev_mode == 1 && i == 2))
+		return (ft_hex_to_rgb(H_RED));
+	return (ft_hex_to_rgb(H_GREEN));
+}
 
 void			ft_set_cursor(t_data *data)
 {
