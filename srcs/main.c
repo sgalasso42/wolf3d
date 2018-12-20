@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:06:54 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 11:53:26 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_exit(t_data *data)
 
 static void		ft_make_frame(t_data *data)
 {
+	data->nb_frame++;
 	data->time_last = clock();
 	ft_rc_wolfcalc(data);
 	if (data->gamemode == 1 || data->dev_mode == 1)

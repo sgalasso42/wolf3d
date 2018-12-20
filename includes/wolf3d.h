@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:06:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 11:53:09 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ struct						s_data
 	int					dev_mode;
 	t_coef				mouse;
 	clock_t				time_last;
+	int					nb_frame;
 	int					fps;
 };
 

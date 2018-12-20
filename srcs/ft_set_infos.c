@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 02:27:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:04:32 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,14 @@ void	ft_dev_mode(t_data *data)
 {
 	SDL_Rect	rect;
 	char		*fps_str;
+	char		*frame_str;
 	char		*posx_str;
 	char		*posy_str;
 	char		*dir_str;
 
 	if (!(fps_str = ft_itoa(data->fps)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(frame_str = ft_itoa(data->nb_frame)))
 		exit(EXIT_FAILURE); // recup exit
 	if (!(posx_str = ft_itoa(data->player.position.x * BLOC_SIZE)))
 		exit(EXIT_FAILURE); // recup exit
@@ -62,6 +65,8 @@ void	ft_dev_mode(t_data *data)
 	ft_set_string(rect, "fps : ", ft_hex_to_rgb(H_GREEN), data);
 	rect = (SDL_Rect){80,50,150,30};
 	ft_set_string(rect, fps_str, ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){160,50,150,30};
+	ft_set_string(rect, frame_str, ft_hex_to_rgb(H_GREEN), data);
 
 	rect = (SDL_Rect){20,100,150,30};
 	ft_set_string(rect, "position.x : ", ft_hex_to_rgb(H_GREEN), data);
@@ -79,6 +84,7 @@ void	ft_dev_mode(t_data *data)
 	ft_set_string(rect, dir_str, ft_hex_to_rgb(H_GREEN), data);
 	
 	ft_strdel(&fps_str);
+	ft_strdel(&frame_str);
 	ft_strdel(&posx_str);
 	ft_strdel(&posy_str);
 	ft_strdel(&dir_str);
