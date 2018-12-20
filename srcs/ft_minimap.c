@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:58:07 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 23:00:21 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void		ft_aff_ray(int i, int j, t_data *data)
 	vec.a = (t_pos){data->minimap.centre.x, data->minimap.centre.y};
 	vec.b.x = data->minimap.centre.x + step_x;
 	vec.b.y = data->minimap.centre.y + step_y;
-	draw_line(data, vec.a, vec.b, 0xFFBFFCFF, &(data->minimap.limit));
+	draw_line(data, &vec, 0xFFBFFCFF, &(data->minimap.limit));
 }
 
 static void		ft_set_player(t_data *data)

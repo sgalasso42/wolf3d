@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:55:56 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 22:38:45 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,4 @@ void	ft_init_data(char *map, t_data *data)
 	ft_init_fonts(data);
 	ft_get_map(map, data);
 	ft_make_texture(data);
-	// demo ---------------------
-	int i = -1;
-	int	j = -1;
-	while (++i < data->map_sz.h)
-	{
-		j = -1;
-		while (++j < data->map_sz.w)
-			printf("%d ", data->map[i][j]);
-		printf("\n");
-	}
-	// --------------------------
 }

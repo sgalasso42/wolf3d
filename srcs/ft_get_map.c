@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 22:06:31 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 22:39:23 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,59 +132,38 @@ void			ft_get_map(char *map, t_data *data)
 		ft_close_exit("wolf3d: error: bad map", data);
 	if ((fd = open(map, O_RDONLY)) == -1)
 		ft_close_exit("wolf3d: error: can't open the map", data);
-
 	if (!(data->map = (int **)(ft_memalloc(sizeof(int *) * (data->map_sz.h + 2)))))
-	{
-		close(fd);
-		ft_close_exit("wolf3d: error: out of memory", data);
-	}
+		ft_fdclose_exit(fd, 0, "wolf3d: error: out of memory", data);
 	if (!(data->map[0] = (int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-	{
-		close(fd);
-		ft_memdel((void *)(&data->map));
-		ft_close_exit("wolf3d: error: out of memory", data);
-	}
+		ft_fdclose_exit(fd, 1, "wolf3d: error: out of memory", data);
+
+
 	j = 0;
 	while (j < data->map_sz.w + 2)
 		data->map[0][j++] = 3;
-
-
 	while (i - 1 < data->map_sz.h)
 	{
 		if ((get_next_line(fd, &line)) == -1)
-		{
-			close(fd);
-			ft_freemap_exit("wolf3d: error: gnl error", data);
-		}
+			ft_fdclose_exit(fd, 1, "wolf3d: error: gnl error", data);
 		if (!(data->map[i] =
 		(int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-		{
-			close(fd);
-			ft_freemap_exit("wolf3d: error: out of memory", data);
-		}
+			ft_fdclose_exit(fd, 1, "wolf3d: error: out of memory", data);
 		if (!(ft_parse_line(i, line, data)))
-		{
-			close(fd);
-			ft_freemap_exit("wolf3d: error: out of memory", data);
-		}
+			ft_fdclose_exit(fd, 1, "wolf3d: error: out of memory", data);
 		free(line);
 		i++;
 	}
 	if (!(data->map[i] =
 	(int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-	{
-		close(fd);
-		ft_freemap_exit("wolf3d: error: out of memory", data);
-	}
+		ft_fdclose_exit(fd, 1, "wolf3d: error: out of memory", data);
+
+
 	j = 0;
 	while (j < data->map_sz.w + 2)
 		data->map[i][j++] = 3;
 	data->map_sz.w += 2;
 	data->map_sz.h += 2;
 	if (data->player.position.x == -1)
-	{
-		close(fd);
-		ft_freemap_exit("wolf3d: error: spawn", data);
-	}
+		ft_fdclose_exit(fd, 1, "wolf3d: error: spawn", data);
 	close(fd);
 }

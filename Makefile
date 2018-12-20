@@ -6,7 +6,7 @@
 #    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/20 19:42:17 by sgalasso         ###   ########.fr        #
+#    Updated: 2018/12/20 23:09:59 by sgalasso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,14 @@ SRC_NAME 	= main.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
+			  ft_events_actions.c \
+			  ft_events_utils.c \
 			  ft_rc_wolfcalc.c \
 			  ft_check_error.c \
 			  ft_minimap.c \
 			  ft_utils.c \
+			  ft_utils2.c \
+			  ft_utils3.c \
 			  ft_set_infos.c \
 			  ft_set_interface.c \
 

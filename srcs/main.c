@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:59:07 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 22:49:38 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void			ft_exit(t_data *data)
 	SDL_FreeSurface(data->object[2].img_srf);
 	SDL_FreeSurface(data->object[3].img_srf);
 	while (i < data->map_sz.h)
-	{
-		ft_memdel((void *)(&(data->map[i])));
-		i++;
-	}
+		ft_memdel((void *)(&(data->map[i++])));
 	ft_memdel((void *)(data->map));
 	SDL_DestroyRenderer(data->sdl.renderer);
 	SDL_DestroyWindow(data->sdl.window);

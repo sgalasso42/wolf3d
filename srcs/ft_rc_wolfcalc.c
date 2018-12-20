@@ -6,16 +6,11 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 21:46:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 23:18:14 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-double				ft_pythagore(int a, int b)
-{
-	return (sqrt(a * a + b * b));
-}
 
 int			ft_is_inwall(t_pos *pos, t_data *data)
 {
