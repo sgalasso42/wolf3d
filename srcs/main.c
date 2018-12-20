@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 00:08:39 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 01:15:50 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void	ft_exit(t_data *data)
 {
-	// free surfaces de textures
+	SDL_FreeSurface(data->object[0].img_srf);
+	SDL_FreeSurface(data->object[1].img_srf);
+	SDL_FreeSurface(data->object[2].img_srf);
+	SDL_FreeSurface(data->object[3].img_srf);
 	SDL_DestroyRenderer(data->sdl.renderer);
 	SDL_DestroyWindow(data->sdl.window);
 	TTF_CloseFont(data->font);
 	TTF_Quit();
 	SDL_Quit();
+	//while (1)
+	//	;
 	exit(EXIT_SUCCESS);
 }
 
@@ -39,14 +44,14 @@ void	ft_set_cursor(t_data *data)
 void	ft_game_loop(t_data *data)
 {
 	ft_rc_wolfcalc(data);
-	//if (data->gamemode == 1 || data->dev_mode == 1)
-	//	ft_minimap(data);
-	//ft_set_interface(data);
+	if (data->gamemode == 1 || data->dev_mode == 1)
+		ft_minimap(data);
+	ft_set_interface(data);
 	data->texture = SDL_CreateTextureFromSurface(
 	data->sdl.renderer, data->surface);
 	SDL_FreeSurface(data->surface);
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
-	//ft_set_infos(data);
+	ft_set_infos(data);
 	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
@@ -54,16 +59,16 @@ void	ft_game_loop(t_data *data)
 		{
 			SDL_RenderClear(data->sdl.renderer);
 			ft_rc_wolfcalc(data);
-			//if (data->gamemode == 1 || data->dev_mode == 1)
-			//	ft_minimap(data);
-			//ft_set_interface(data);
+			if (data->gamemode == 1 || data->dev_mode == 1)
+				ft_minimap(data);
+			ft_set_interface(data);
 			if (data->gamemode == 1)
 				ft_set_cursor(data);
 			data->texture = SDL_CreateTextureFromSurface(
 			data->sdl.renderer, data->surface);
 			SDL_FreeSurface(data->surface);
 			SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
-			//ft_set_infos(data);
+			ft_set_infos(data);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
 	}
