@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:04:21 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 03:02:57 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,37 +37,49 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 	if (axis == 1) // y
 	{
 		if (angle_d >= 0 && angle_d <= 180)
-		{
 			color = ft_getpixel(data->object[0].img_srf, x, y);
-			color |= 0xFF000000;
-		}
 		else
-		{
 			color = ft_getpixel(data->object[1].img_srf, x, y);
-			color |= 0xFF000000;
-		}
+		color |= 0xFF000000;
 	}
 	else if (axis == 2) // x
 	{
 		if (angle_d >= 90 && angle_d <= 270)
-		{
 			color = ft_getpixel(data->object[2].img_srf, x, y);
-			color |= 0xFF000000;
-		}
 		else
-		{
 			color = ft_getpixel(data->object[3].img_srf, x, y);
-			color |= 0xFF000000;
-		}
+		color |= 0xFF000000;
 	}
 	return (color);
+}
+
+void		ft_get_raydata(int axis, t_pos pos,
+			t_pos player_pos, double alpha_r, int i, t_thread *thread)
+{
+	double	distance_x;
+	double	distance_y;
+
+	if (axis == 1) // y
+	{
+		distance_x = pos.x - player_pos.x;
+		distance_y = (int)pos.y - player_pos.y;
+	}
+	else // x
+	{
+		distance_x = (int)pos.x - player_pos.x;
+		distance_y = pos.y - player_pos.y;
+	}
+	thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
+	thread->ray[i].dist_minimap = thread->ray[i].distance;
+	thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
+	thread->ray[i].x = pos.x;
+	thread->ray[i].y = pos.y;
+	thread->ray[i].axis = axis;
 }
 
 void		ft_calc_distance(int i, int x, t_thread *thread)
 {
 	t_pos	player_pos;	// position calculee
-	double	distance_x;
-	double	distance_y;
 	double	alpha_d;	// angle entre direction et ray en degres
 	double	alpha_r;	// idem en radian
 	double	angle_r;	// angle radian
@@ -94,37 +106,13 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	{
 		if (ft_is_inwall(&pos, thread->data)) // y
 		{
-			distance_x = pos.x - player_pos.x;
-			distance_y = (int)pos.y - player_pos.y; //
-			thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
-			thread->ray[i].dist_minimap = thread->ray[i].distance;
-			// correction fisheye
-			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
-
-			// get color of wall
-			thread->ray[i].x = pos.x;
-			thread->ray[i].y = pos.y;
-			thread->ray[i].axis = 1;
-			//printf("x : %d\n ", thread->ray[i].x);
+			ft_get_raydata(1, pos, player_pos, alpha_r, i, thread);
 			return ;
 		}
-
 		pos.x += -cos(angle_r) * 1;
-
 		if (ft_is_inwall(&pos, thread->data)) // x
 		{
-			distance_x = (int)pos.x - player_pos.x;
-			distance_y = pos.y - player_pos.y;
-			thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
-			thread->ray[i].dist_minimap = thread->ray[i].distance;
-			// correction fisheye
-			thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
-
-			// get color of wall
-			thread->ray[i].x = (int)pos.x;
-			thread->ray[i].y = (int)pos.y;
-			thread->ray[i].axis = 2;
-			//printf("x : %d\n ", thread->ray[i].x);
+			ft_get_raydata(2, pos, player_pos, alpha_r, i, thread);
 			return ;
 		}
 		pos.y += -sin(angle_r) * 1;
@@ -133,17 +121,14 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	thread->ray[i].distance = -1;
 }
 
-void					ft_calc_ray(int i, int x, t_thread *thread)
+void					ft_calc_col(int i, int x, t_thread *thread)
 {
 	double	height;
 
 	height = 0;
 	ft_calc_distance(i, x, thread);
-	//printf("dir : %f : dist : %f\n", data->player.direction, ray.distance);
-
 	if (thread->ray[i].distance >= 0)
 		height = (BLOC_SIZE / thread->ray[i].distance) * DIST_SCREEN;
-
 	thread->ray[i].wall_top = (WIN_H - height) / 2;
 	thread->ray[i].wall_bot = WIN_H - ((WIN_H - height) / 2);
 }
@@ -161,7 +146,7 @@ void					*ft_calc_frame(void *arg)
 	while (x < WIN_W)
 	{
 		y = 0;
-		ft_calc_ray(i, x, thread);
+		ft_calc_col(i, x, thread);
 		while (y < WIN_H)
 		{
 			if (y < thread->ray[i].wall_top)

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:34:31 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 02:19:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void						ft_draw_rect(SDL_Rect rect, Uint32 color,
 							t_limit *limit, t_data *data);
 void						ft_draw_border(SDL_Rect rect, Uint32 color,
 							t_data *data);
-SDL_Color					ft_hex_to_rgb(int hexa); // to remove si non utilise
+SDL_Color					ft_hex_to_rgb(int hexa);
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);
 Uint32						ft_getpixel(SDL_Surface *surface, int x, int y);

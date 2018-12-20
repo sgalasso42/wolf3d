@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 01:36:37 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/20 02:39:07 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,38 +41,33 @@ void	ft_set_cursor(t_data *data)
 	draw_line(data, a, b, 0xFF5BE50B, 0);
 }
 
-void	ft_game_loop(t_data *data)
+void	ft_make_frame(t_data *data)
 {
 	data->time_last = clock();
 	ft_rc_wolfcalc(data);
 	if (data->gamemode == 1 || data->dev_mode == 1)
 		ft_minimap(data);
 	ft_set_interface(data);
+	if (data->gamemode == 1 && data->setting == 0)
+		ft_set_cursor(data);
 	data->texture = SDL_CreateTextureFromSurface(
 	data->sdl.renderer, data->surface);
 	SDL_FreeSurface(data->surface);
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
 	ft_set_infos(data);
+}
+
+void	ft_game_loop(t_data *data)
+{
+	ft_make_frame(data);
 	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
 		if (ft_get_events(data))
 		{
 			SDL_RenderClear(data->sdl.renderer);
-			data->time_last = clock();
-			ft_rc_wolfcalc(data);
-			if (data->gamemode == 1 || data->dev_mode == 1)
-				ft_minimap(data);
-			ft_set_interface(data);
-			if (data->gamemode == 1)
-				ft_set_cursor(data);
-			data->texture = SDL_CreateTextureFromSurface(
-			data->sdl.renderer, data->surface);
-			SDL_FreeSurface(data->surface);
-			SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
-			data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
-			ft_set_infos(data);
+			ft_make_frame(data);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
 	}
