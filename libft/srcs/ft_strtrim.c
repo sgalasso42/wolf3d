@@ -19,7 +19,7 @@ static int		ft_isw(char c)
 
 static char		*ft_transfert_trim(char *str, char *s, int i, int temp)
 {
-	if (!(str = ft_strnew(i - (i - temp))))
+	if (!(str = (char *)ft_memalloc(sizeof(char) * (i - (i - temp)))))
 		return (0);
 	i = 0;
 	while (i < temp)

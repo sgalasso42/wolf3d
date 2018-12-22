@@ -170,20 +170,28 @@ void					*ft_calc_frame(void *arg)
 					x_textr = (thread->ray[i].x)
 					% (thread->data->object[0].img_srf->w);
 
-					x_textr = (x_textr * thread->data->object[0].img_srf->w)
-					/ (BLOC_SIZE);
-
+					x_textr = (x_textr
+					* thread->data->object[0].img_srf->w) / (BLOC_SIZE);
 					x_textr /= 8;
 				}
 				else
 				{
-					x_textr =
-					(thread->ray[i].y) % (thread->data->object[0].img_srf->w);
-					//x_textr =
-					//(x_textr * thread->data->object[0].img_srf->w) / (BLOC_SIZE);
-					/*x_textr = (thread->ray[i].y) % BLOC_SIZE;
-					x_textr *= 5.5;*/
+					x_textr = (thread->ray[i].y)
+					% (thread->data->object[0].img_srf->w);
 				}
+				/*if (thread->ray[i].axis == 1)
+				{
+					x_textr = (thread->ray[i].x) % BLOC_SIZE;
+					x_textr = (x_textr * (thread->data->object[0].img_srf->w))
+					/ (BLOC_SIZE);
+				}
+				else
+				{
+					//x_textr =
+					//(thread->ray[i].y) % (thread->data->object[0].img_srf->w);
+					x_textr = 5;
+				
+				}*/
 				color = ft_get_color(thread->ray[i].axis,
 				thread->ray[i].angle_d, x_textr, y_textr, thread->data);
 				
