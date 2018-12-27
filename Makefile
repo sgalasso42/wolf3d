@@ -1,7 +1,7 @@
 NAME 		= wolf3d
 
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
 
 ID_UN 		= $(shell id -un)
 SRC_PATH 	= ./srcs/
@@ -19,11 +19,11 @@ GREEN       = "\\033[32m"
 BOLD        = "\\033[1m"
 PINK        = "\\033[95m"
 
-INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.9/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.9/include/SDL2/ \
+INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/SDL2/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/2.0.14/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/2.0.4/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/2.0.4/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/2.0.3/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/2.0.2_3/include/ \
 
 SRC_NAME 	= main.c \
 			  ft_get_map.c \
