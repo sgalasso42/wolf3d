@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/27 11:14:24 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:15:04 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,8 @@ static SDL_Surface		*ft_new_surface(int height, int width)
 	color[1] = 0x0000ff00;
 	color[2] = 0x00ff0000;
 	color[3] = 0xff000000;
-	if (!(surface = SDL_CreateRGBSurface(
-	0, width, height, 32, color[0], color[1], color[2], color[3])))
+	if (!(surface = lt_push(SDL_CreateRGBSurface(
+	0, width, height, 32, color[0], color[1], color[2], color[3]), ft_srfdel)))
 	{
 		SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
 		exit(EXIT_FAILURE); // recup exit

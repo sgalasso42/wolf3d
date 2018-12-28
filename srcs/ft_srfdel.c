@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 20:02:03 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/27 20:15:13 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:12:39 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	ft_srfdel(void **ap)
 {
+	SDL_Surface		*surface;
+
+	surface = (SDL_Surface *)(*ap);
 	if (ap && *ap)
 	{
-		SDL_FreeSurface(*ap);
-		free(*ap);
-		*ap = 0;
+		SDL_FreeSurface(surface);
+		surface = 0;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 11:32:23 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:17:47 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ void	ft_init_fonts(t_data *data)
 void	ft_make_texture(t_data *data)
 {
 	if (!(data->object[0].img_srf =
-	/*lt_push(*/IMG_Load("ressources/img/crate.png")/*, ft_srfdel)*/))
+	lt_push(IMG_Load("ressources/img/crate.png"), ft_srfdel)))
 		ft_err_exit("wolf3d: error: bad textures", data);
 	if (!(data->object[1].img_srf =
-	/*lt_push(*/IMG_Load("ressources/img/stone.png")/*, ft_srfdel)*/))
+	lt_push(IMG_Load("ressources/img/stone.png"), ft_srfdel)))
 		ft_err_exit("wolf3d: error: bad textures", data);
 	if (!(data->object[2].img_srf =
-	/*lt_push(*/IMG_Load("ressources/img/BrownFloor.png")/*, ft_srfdel)*/))
+	lt_push(IMG_Load("ressources/img/BrownFloor.png"), ft_srfdel)))
 		ft_err_exit("wolf3d: error: bad textures", data);
 	if (!(data->object[3].img_srf =
-	/*lt_push(*/IMG_Load("ressources/img/unnamed.png")/*, ft_srfdel)*/))
+	lt_push(IMG_Load("ressources/img/unnamed.png"), ft_srfdel)))
 		ft_err_exit("wolf3d: error: bad textures", data);
 }
 

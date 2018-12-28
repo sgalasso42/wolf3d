@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 11:31:14 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:13:18 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void		ft_make_frame(t_data *data)
 		ft_set_cursor(data);
 	data->texture = SDL_CreateTextureFromSurface(
 	data->sdl.renderer, data->surface);
-	SDL_FreeSurface(data->surface); // free avec lifetime
+	lt_release(data->surface);
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
 	ft_set_infos(data);
