@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:46:12 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 14:56:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	delta > 0.9 ? delta = 0.9 : 0;
 	delta /= 1.50;
 	c |= 0xFF000000;
-	color.r = c >> 24;
-	color.g = c >> 16;
-	color.b = c >> 8;
-	color.a = c;
+	color = (SDL_Color){c >> 24, c >> 16, c >> 8, c};
 	ft_remove_light(&color.r, delta, 24);
 	ft_remove_light(&color.g, delta, 16);
 	ft_remove_light(&color.b, delta, 8);

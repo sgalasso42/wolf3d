@@ -6,11 +6,17 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:43:16 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:24:07 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int				ft_is_inmap(t_pos *pos, t_data *data)
+{
+	return (pos->x > 0 && pos->x < data->map_sz.w * BLOC_SIZE
+	&& pos->y > 0 && pos->y < data->map_sz.h * BLOC_SIZE);
+}
 
 void			ft_movement(double angle_r, int dir, t_data *data)
 {
@@ -27,9 +33,9 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 		pos_v.y = (data->player.position.y * BLOC_SIZE)
 		- sin(angle_r) * (data->player.speed * 150);
 
-		if (!ft_is_inwall(&pos_v, data))
+		if (ft_is_inmap(&pos_v, data) && !(ft_is_inwall(&pos_v, data)))
 			data->player.position.y += -sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
+		if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
 			data->player.position.x += -cos(angle_r) * data->player.speed;
 	}
 	else
@@ -42,9 +48,9 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 		pos_v.y = (data->player.position.y * BLOC_SIZE)
 		+ sin(angle_r) * (data->player.speed * 150);
 
-		if (!ft_is_inwall(&pos_v, data))
+		if (ft_is_inmap(&pos_v, data) &&!(ft_is_inwall(&pos_v, data)))
 			data->player.position.y += sin(angle_r) * data->player.speed;
-		if (!ft_is_inwall(&pos_h, data))
+		if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
 			data->player.position.x += cos(angle_r) * data->player.speed;
 	}
 }

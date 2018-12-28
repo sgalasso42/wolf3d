@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:41:14 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:16:23 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	while (pos.x > 0 && pos.x < thread->data->map_sz.w * BLOC_SIZE
 	&& pos.y > 0 && pos.y < thread->data->map_sz.h * BLOC_SIZE)
 	{
-		if (ft_is_inwall(&pos, thread->data)) // y
+		if ((ft_is_inwall(&pos, thread->data)) == 1) // y
 		{
 			thread->ray[i].axis = 1;
 			ft_get_raydata(pos, player_pos, alpha_r, i, thread);
 			return ;
 		}
 		pos.x += -cos(angle_r) * 1;
-		if (ft_is_inwall(&pos, thread->data)) // x
+		if ((ft_is_inwall(&pos, thread->data)) == 1) // x
 		{
 			thread->ray[i].axis = 2;
 			ft_get_raydata(pos, player_pos, alpha_r, i, thread);
