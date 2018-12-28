@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 22:34:59 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/04/06 21:20:48 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/27 14:09:52 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char		*ft_itoa(int n)
 		ng = 1;
 	}
 	c = ft_byten(temp);
-	if (!(str = (char *)(malloc(sizeof(char) * (c + 2 + ng)))))
+	if (!(str = (char *)(ft_memalloc_lt(sizeof(char) * (c + 2 + ng)))))
 		return (0);
 	if (ng == 1)
 		str[i++] = '-';

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:06:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:53:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,6 @@
 
 # define H_GREEN		0x00FF00FF
 # define H_RED			0xFF0000FF
-
-# define C_NONE         "\033[0m"
-# define C_BOLD         "\033[1m"
-# define C_BLACK        "\033[30m"
-# define C_RED          "\033[31m"
-# define C_GREEN        "\033[32m"
-# define C_BROWN        "\033[33m"
-# define C_BLUE         "\033[34m"
-# define C_MAGENTA      "\033[35m"
-# define C_CYAN         "\033[36m"
-# define C_GRAY         "\033[37m"
 
 # define WIN_H 700
 # define WIN_W 1000
@@ -122,6 +111,8 @@ struct						s_player
 	double				direction;
 	int					cam_height;
 	int					visual_field;
+	int					sensibility;
+	double				speed;
 };
 
 struct						s_minimap
@@ -138,6 +129,7 @@ struct						s_minimap
 struct						s_data
 {
 	t_sdl				sdl;
+	int					endinitsdl;
 	TTF_Font			*font;
 	int					**map;
 	t_object			object[4];
@@ -152,13 +144,15 @@ struct						s_data
 	int					setting;
 	int					dev_mode;
 	t_coef				mouse;
-	clock_t				time_last;
+	Uint32				time_last;
+	int					nb_frame;
 	int					fps;
 };
 
 void						ft_init_data(char *map, t_data *data);
 void						ft_get_map(char *map, t_data *data);
 
+void						ft_srfdel(void **ap);
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);
 void						ft_draw_rect(SDL_Rect rect, Uint32 color,
@@ -175,6 +169,8 @@ Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_set_cursor(t_data *data);
 
 void						ft_exit(t_data *data);
+void						ft_err_exit(char *msg, t_data *data);
+
 int							ft_is_inwall(t_pos *pos, t_data *data);
 int							ft_get_events(t_data *data);
 void						ft_rc_wolfcalc(t_data *data);
@@ -184,12 +180,5 @@ void						ft_set_interface(t_data *data);
 void						ft_set_config(t_data *data);
 void						ft_set_menu_config(t_data *data);
 void						ft_dev_mode(t_data *data);
-void						ft_err_malloc(void);
-void						ft_err_malloc_free(char *line, int fd, t_data *data);
-void						ft_arg_invalid(void);
-void						ft_map_invalid(void);
-void						ft_map_invalid_free(char *line, int fd, t_data *data);
-int							ft_isspace(int c);
-void						ft_check_valid_map(char *line, int fd);
 
 #endif

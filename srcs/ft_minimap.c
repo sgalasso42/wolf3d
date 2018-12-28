@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:03:55 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/27 19:15:20 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,39 @@ static void		ft_init_minimap(t_data *data)
 	data->minimap.limit.b = WIN_H / 4 + 10;
 }
 
-static void		ft_set_player(t_data *data)
+static void		ft_draw_background(t_data *data)
+{
+	SDL_Rect	rect;
+
+	rect = (SDL_Rect){data->minimap.origin.x,
+	data->minimap.origin.y, WIN_W / 4, WIN_H / 4};
+	ft_draw_border(rect, 0xFFFFFFFF, data);
+	ft_draw_rect(rect, 0xFF000000, &(data->minimap.limit), data);
+}
+
+static void		ft_draw_ray(int i, int j, t_data *data)
+{
+	double		angle_r;
+	t_pos		step;
+	t_pos		a;
+	t_pos		b;
+
+	angle_r = (data->thread[i].ray[j].angle_d) * M_PI / 180;
+	step.x = -cos(angle_r) * (data->thread[i].ray[j].dist_minimap)
+	* data->minimap.mnp_size / 50;
+	step.y = -sin(angle_r) * (data->thread[i].ray[j].dist_minimap)
+	* data->minimap.mnp_size / 50;
+	a = (t_pos){data->minimap.centre.x, data->minimap.centre.y};
+	b.x = data->minimap.centre.x + step.x;
+	b.y = data->minimap.centre.y + step.y;
+	draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
+}
+
+static void		ft_draw_player(t_data *data)
 {
 	SDL_Rect	player;
-	double	angle_r;
-	double	step_x;
-	double	step_y;
-	int		i;
-	int		j;
-	t_pos	a;
-	t_pos	b;
+	int			i;
+	int			j;
 
 	i = 0;
 	while (i < 8)
@@ -47,68 +70,40 @@ static void		ft_set_player(t_data *data)
 		j = 0;
 		while (j < WIN_W / 8)
 		{
-			angle_r = (data->thread[i].ray[j].angle_d) * M_PI / 180;
-
-			step_x = -cos(angle_r) * (data->thread[i].ray[j].dist_minimap)
-			* data->minimap.mnp_size / 50;
-			step_y = -sin(angle_r) * (data->thread[i].ray[j].dist_minimap)
-			* data->minimap.mnp_size / 50;
-
-			a.x = data->minimap.centre.x;
-			a.y = data->minimap.centre.y;
-			b.x = data->minimap.centre.x + step_x;
-			b.y = data->minimap.centre.y + step_y;
-
-			draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
+			ft_draw_ray(i, j, data);
 			j++;
 		}
 		i++;
 	}
-	player.x = data->minimap.centre.x - 5;
-	player.y = data->minimap.centre.y - 5;
-	player.w = 10;
-	player.h = 10;
+	player = (SDL_Rect){data->minimap.centre.x - 5,
+	data->minimap.centre.y - 5, 10, 10};
 	ft_draw_rect(player, 0x0, 0, data);
 }
 
 void	ft_minimap(t_data *data)
 {
-	SDL_Rect	border;
-	SDL_Rect	bloc;
+	SDL_Rect	rect;
 	int			i;
 	int			j;
 
 	ft_init_minimap(data);
-
-	border.x = data->minimap.origin.x;
-	border.y = data->minimap.origin.y;
-	border.w = WIN_W / 4;
-	border.h = WIN_H / 4;
-
-	// border rect
-	ft_draw_border(border, 0xFFFFFFFF, data);
-
-	// background
-	ft_draw_rect(border, 0xFF000000, &(data->minimap.limit), data);
-
-	// map
+	ft_draw_background(data);
 	i = 0;
 	while (i < data->map_sz.h)
 	{
 		j = 0;
 		while (j < data->map_sz.w)
 		{
-			bloc.x = data->minimap.diff.x + (j * data->minimap.mnp_size);
-			bloc.y = data->minimap.diff.y + (i * data->minimap.mnp_size);
-			bloc.w = data->minimap.mnp_size;
-			bloc.h = data->minimap.mnp_size;
+			rect = (SDL_Rect){data->minimap.diff.x + (j * data->minimap.mnp_size),
+			data->minimap.diff.y + (i * data->minimap.mnp_size),
+			data->minimap.mnp_size, data->minimap.mnp_size};
 			if (data->map[i][j] == 1)
-				ft_draw_rect(bloc, 0xFF5C4424, &(data->minimap.limit), data);
+				ft_draw_rect(rect, 0xFF5C4424, &(data->minimap.limit), data);
 			else if (data->map[i][j] == 0 || data->map[i][j] == 2)
-				ft_draw_rect(bloc, 0xFFADADAD, &(data->minimap.limit), data);
+				ft_draw_rect(rect, 0xFFADADAD, &(data->minimap.limit), data);
 			j++;
 		}
 		i++;
 	}
-	ft_set_player(data);	
+	ft_draw_player(data);
 }

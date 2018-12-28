@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:10:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:16:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 
-	surface	= TTF_RenderText_Blended(data->font, text, color);
+	surface	= lt_push(TTF_RenderText_Blended(data->font, text, color), ft_srfdel);
 	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
 	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
-	SDL_FreeSurface(surface);
+	lt_release(surface);
 	if (SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect)) < 0)
 		exit(EXIT_FAILURE); // exit proprement todo
 }

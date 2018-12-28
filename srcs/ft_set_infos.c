@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 02:27:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:15:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,64 @@ SDL_Color	ft_set_color(t_data *data, int i)
 void	ft_set_menu_config(t_data *data)
 {
 	SDL_Rect	rect;
+	char		*speed_str;
+	char		*sens_str;
+	char		*light_str;
+	char		*zoom_str;
 
-	rect = (SDL_Rect){230,300,500,30};
-	ft_set_string(rect, "Speed", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,350,500,30};
-	ft_set_string(rect, "[ * ] [ / ]   Sensibility", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,400,500,30};
-	ft_set_string(rect, "[ l ]         Light shading", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,450,500,30};
-	ft_set_string(rect, "[ + ] [ - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){230,500,500,30};
-	ft_set_string(rect, "[ Esc ]     Exit", ft_hex_to_rgb(H_GREEN), data);
+	if (!(speed_str = ft_itoa((int)(data->player.speed * 100))))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(sens_str = ft_itoa(data->player.sensibility)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(light_str = ft_itoa(data->lightshade)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(zoom_str = ft_itoa(data->minimap.mnp_size)))
+		exit(EXIT_FAILURE); // recup exit
+
 	rect = (SDL_Rect){230,230,500,50};
 	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,300,500,30};
+	ft_set_string(rect, "[ 8 9 ]  Speed", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,300,500,30};
+	ft_set_string(rect, speed_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,350,500,30};
+	ft_set_string(rect, "[ * / ]  Sensibility", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,350,500,30};
+	ft_set_string(rect, sens_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,400,500,30};
+	ft_set_string(rect, "[ l ]  Light shading", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,400,500,30};
+	ft_set_string(rect, light_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,450,500,30};
+	ft_set_string(rect, "[ + - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,450,500,30};
+	ft_set_string(rect, zoom_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,500,500,30};
+	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
+
+	lt_release(speed_str);
+	lt_release(sens_str);
+	lt_release(light_str);
+	lt_release(zoom_str);
 }
 
 void	ft_dev_mode(t_data *data)
 {
 	SDL_Rect	rect;
 	char		*fps_str;
+	char		*frame_str;
 	char		*posx_str;
 	char		*posy_str;
 	char		*dir_str;
 
 	if (!(fps_str = ft_itoa(data->fps)))
+		exit(EXIT_FAILURE); // recup exit
+	if (!(frame_str = ft_itoa(data->nb_frame)))
 		exit(EXIT_FAILURE); // recup exit
 	if (!(posx_str = ft_itoa(data->player.position.x * BLOC_SIZE)))
 		exit(EXIT_FAILURE); // recup exit
@@ -62,6 +96,8 @@ void	ft_dev_mode(t_data *data)
 	ft_set_string(rect, "fps : ", ft_hex_to_rgb(H_GREEN), data);
 	rect = (SDL_Rect){80,50,150,30};
 	ft_set_string(rect, fps_str, ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){160,50,150,30};
+	ft_set_string(rect, frame_str, ft_hex_to_rgb(H_GREEN), data);
 
 	rect = (SDL_Rect){20,100,150,30};
 	ft_set_string(rect, "position.x : ", ft_hex_to_rgb(H_GREEN), data);
@@ -78,10 +114,11 @@ void	ft_dev_mode(t_data *data)
 	rect = (SDL_Rect){160,180,150,30};
 	ft_set_string(rect, dir_str, ft_hex_to_rgb(H_GREEN), data);
 	
-	ft_strdel(&fps_str);
-	ft_strdel(&posx_str);
-	ft_strdel(&posy_str);
-	ft_strdel(&dir_str);
+	lt_release(fps_str);
+	lt_release(frame_str);
+	lt_release(posx_str);
+	lt_release(posy_str);
+	lt_release(dir_str);
 }
 
 void	ft_set_infos(t_data *data)

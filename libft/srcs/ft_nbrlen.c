@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 22:24:15 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/04/09 13:59:12 by sgalasso         ###   ########.fr       */
+/*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
+/*   Updated: 2018/12/20 19:18:00 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memalloc(size_t size)
+int		ft_nbrlen(int nb, int base)
 {
-	void	*str;
+	int	c;
 
-	if (!(str = (void *)(malloc(size))))
-		return (0);
-	ft_bzero(str, size);
-	return (str);
+	c = 1;
+	while (nb >= base)
+	{
+		nb /= base;
+		c++;
+	}
+	return (c);
 }

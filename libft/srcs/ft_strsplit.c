@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 22:34:39 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/10/17 11:54:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/27 16:44:08 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_nbwords(char *str, char c)
+static int		ft_getnbwords(char *str, char c)
 {
 	int i;
 	int cpt;
@@ -40,8 +40,8 @@ char			**ft_strsplit(char const *str, char c)
 
 	i = 0;
 	index = 0;
-	if (!str || !(dest = (char **)(malloc(sizeof(char *)
-	* (ft_nbwords((char *)str, c) + 1)))))
+	if (!str || !(dest = (char **)(ft_memalloc_lt(sizeof(char *)
+	* (ft_getnbwords((char *)str, c) + 1)))))
 		return (0);
 	while (str[i])
 	{
@@ -55,6 +55,5 @@ char			**ft_strsplit(char const *str, char c)
 			if (!(dest[index++] = ft_strsub(str, start, end - start)))
 				return (0);
 	}
-	dest[index] = 0;
 	return (dest);
 }

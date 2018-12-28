@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 15:20:56 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/10/22 15:21:40 by sgalasso         ###   ########.fr       */
+/*   Created: 2018/04/03 21:44:23 by sgalasso          #+#    #+#             */
+/*   Updated: 2018/12/27 14:10:26 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-double		ft_abs(double a)
+char	*ft_strdup(const char *s)
 {
-	return (a < 0 ? -a : a);
+	char	*cpy;
+
+	if (!(cpy = (char *)ft_memalloc_lt(sizeof(char) * (ft_strlen(s) + 1))))
+		return (0);
+	return (ft_strcpy(cpy, s));
 }

@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sq.c                                            :+:      :+:    :+:   */
+/*   ft_srfdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/17 11:30:41 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/10/17 11:34:41 by sgalasso         ###   ########.fr       */
+/*   Created: 2018/12/27 20:02:03 by sgalasso          #+#    #+#             */
+/*   Updated: 2018/12/28 12:12:39 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "wolf3d.h"
 
-double		ft_sq(double a)
+void	ft_srfdel(void **ap)
 {
-	return (a * a);
+	SDL_Surface		*surface;
+
+	surface = (SDL_Surface *)(*ap);
+	if (ap && *ap)
+	{
+		SDL_FreeSurface(surface);
+		surface = 0;
+	}
 }

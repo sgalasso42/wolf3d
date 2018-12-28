@@ -6,53 +6,29 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/19 14:48:01 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:51:08 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static int		ft_nbwords(char *line)
+static void		ft_parsing_exit(int fd, char *msg, t_data *data)
 {
-	int		i;
-	int		c;
-
-	i = 0;
-	c = 0;
-	while (line[i])
-	{
-		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-			i++;
-		if (line[i])
-			c++;
-		i++;
-	}
-	return (c);
+	if (fd > -1)
+		close(fd);
+	ft_err_exit(msg, data);
 }
 
-static void		ft_get_size_map(char *map, t_data *data)
+static void		ft_get_mapsize(int fd, char *line, t_data *data)
 {
-	char	*line;
-	int		fd;
-
-	data->map_sz.w = 0;
-	data->map_sz.h = 0;
-	if ((fd = open(map, O_RDONLY)) == -1)
-		ft_map_invalid();
-	if (get_next_line(fd, &line) > 0)
-		data->map_sz.w = ft_nbwords(line);
-	else
-		ft_map_invalid();
-	data->map_sz.h++;
-	free(line);
-	while (get_next_line(fd, &line) > 0)
-	{
-		if (ft_nbwords(line) != data->map_sz.w)
-			ft_map_invalid_free(line, fd, data);
-		data->map_sz.h++;
-		free(line);
-	}
-	close(fd);
+	if (!(*line))
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
+	else if (ft_nbwords(line) != 2)
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
+	else if (!(data->map_sz.w = ft_atoi(line)))
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
+	else if (!(data->map_sz.h = ft_atoi(line + ft_nbrlen(data->map_sz.w, 10))))
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 }
 
 static void		ft_parse_line(int fd, int index, char *line, t_data *data)
@@ -63,27 +39,25 @@ static void		ft_parse_line(int fd, int index, char *line, t_data *data)
 
 	i = 0;
 	j = 0;
-	val = 0;
-	data->map[index][j++] = 3;
 	while (line[i])
 	{
-		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-			i++;
-		if (line[i])
+		if (line[i] == '2')
 		{
-			val = ft_atoi(&(line[i]));
-			if (val == 2 && data->player.position.x != -1)
-				ft_map_invalid_free(line, fd, data);
-			else if (val == 2)
-			{
-				data->player.position.x = j + 0.5;
-				data->player.position.y = index + 0.5;
-			}
-			data->map[index][j++] = val;
-			i++;
+			if (data->player.position.x != -1)
+				ft_parsing_exit(fd, "wolf3d: parsing error: bad spawn", data);
+			data->player.position.x = j + 0.5;
+			data->player.position.y = index + 0.5;
 		}
+		if (line[i] == '0' || line[i] == '1' || line[i] == '2' || line[i] == '3')
+		{
+			if ((val = ft_atoi(line + i)) > 9)
+				ft_parsing_exit(fd, "wolf3d: parsing error: bad bloc index", data);
+			data->map[index][j++] = ft_atoi(line + i);
+		}
+		else if (line[i] != ' ')
+			ft_parsing_exit(fd, "wolf3d: parsing error: bad bloc index1", data);
+		i++;
 	}
-	data->map[index][j] = 3;
 }
 
 void			ft_get_map(char *map, t_data *data)
@@ -91,43 +65,32 @@ void			ft_get_map(char *map, t_data *data)
 	char	*line;
 	int		fd;
 	int		i;
-	int		j;
 
-	i = 1;
-	ft_get_size_map(map, data);
+	i = 0;
 	if ((fd = open(map, O_RDONLY)) == -1)
-		ft_map_invalid(); // recup exit
-
+		ft_parsing_exit(-1, "wolf3d: parsing error: can't open the map", data);
+	if ((get_next_line(fd, &line)) < 1)
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
+	printf("line : %s\n", line);
+	ft_get_mapsize(fd, line, data);
+	printf("map.w : %d\n", data->map_sz.w);
+	printf("map.h : %d\n", data->map_sz.h);
+	lt_release((void *)line);
 	if (!(data->map =
-	(int **)(ft_memalloc(sizeof(int *) * (data->map_sz.h + 2)))))
-		ft_err_malloc(); // recup exit
-	if (!(data->map[0] =
-	(int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-		exit(EXIT_FAILURE); // recup exit
-	j = 0;
-	while (j < data->map_sz.w + 2)
-		data->map[0][j++] = 3;
-
-	while (i - 1 < data->map_sz.h)
+	(int **)(ft_memalloc_lt(sizeof(int *) * (data->map_sz.h)))))
+		ft_parsing_exit(fd, "wolf3d: parsing error: out of memory", data);
+	while ((get_next_line(fd, &line)) > 0)
 	{
-		get_next_line(fd, &line);
-		ft_check_valid_map(line, fd);
+		if (i > data->map_sz.h || ft_nbwords(line) != data->map_sz.w)
+			ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 		if (!(data->map[i] =
-		(int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-			ft_err_malloc_free(line, fd, data); // recup exit
+		(int *)(ft_memalloc_lt(sizeof(int) * (data->map_sz.w)))))
+			ft_parsing_exit(fd, "wolf3d: parsing error: out of memory", data);
 		ft_parse_line(fd, i, line, data);
-		free(line);
+		lt_release((void *)line);
 		i++;
 	}
-	if (!(data->map[i] =
-	(int *)(ft_memalloc(sizeof(int) * (data->map_sz.w + 2)))))
-		exit(EXIT_FAILURE); // recup exit
-	j = 0;
-	while (j < data->map_sz.w + 2)
-		data->map[i][j++] = 3;
-	data->map_sz.w += 2;
-	data->map_sz.h += 2;
-	if (data->player.position.x == -1)
-		ft_map_invalid_free(line, fd, data);
+	if (i != data->map_sz.h || data->player.position.x == -1)
+		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 	close(fd);
 }

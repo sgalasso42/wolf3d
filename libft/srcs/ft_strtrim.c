@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 22:33:19 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/10/17 11:53:48 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/27 14:11:14 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int		ft_isw(char c)
 
 static char		*ft_transfert_trim(char *str, char *s, int i, int temp)
 {
-	if (!(str = ft_strnew(i - (i - temp))))
+	if (!(str = (char *)ft_memalloc_lt(sizeof(char) * (i - (i - temp)))))
 		return (0);
 	i = 0;
 	while (i < temp)

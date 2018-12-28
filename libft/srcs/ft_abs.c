@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 22:31:34 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/04/07 17:42:02 by sgalasso         ###   ########.fr       */
+/*   Created: 2018/10/22 15:20:56 by sgalasso          #+#    #+#             */
+/*   Updated: 2018/10/22 15:21:40 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+double		ft_abs(double a)
 {
-	size_t	i;
-	char	*str;
-
-	if (s)
-	{
-		i = 0;
-		if (!(str = (char *)(ft_memalloc(sizeof(char) * (len + 1)))))
-			return (0);
-		while (i < len)
-		{
-			str[i] = s[start];
-			start++;
-			i++;
-		}
-		return (str);
-	}
-	return (0);
+	return (a < 0 ? -a : a);
 }

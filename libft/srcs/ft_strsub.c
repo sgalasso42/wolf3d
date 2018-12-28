@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 21:44:23 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/04/04 13:37:45 by sgalasso         ###   ########.fr       */
+/*   Created: 2018/04/03 22:31:34 by sgalasso          #+#    #+#             */
+/*   Updated: 2018/12/27 14:11:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char	*cpy;
+	size_t	i;
+	char	*str;
 
-	if (!(cpy = (char *)ft_memalloc(sizeof(char) * (ft_strlen(s) + 1))))
-		return (NULL);
-	return (ft_strcpy(cpy, s));
+	if (s)
+	{
+		i = 0;
+		if (!(str = (char *)(ft_memalloc_lt(sizeof(char) * (len + 1)))))
+			return (0);
+		while (i < len)
+		{
+			str[i] = s[start];
+			start++;
+			i++;
+		}
+		return (str);
+	}
+	return (0);
 }

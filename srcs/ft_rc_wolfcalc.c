@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 03:03:46 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:15:04 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,21 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 	Uint32		color;
 
 	color = 0;
-	if (axis == 1) // y
+	if (axis == 1)
 	{
-		if (angle_d >= 0 && angle_d <= 180)
+		if ((angle_d >= 0 && angle_d <= 180) || angle_d >= 360)
 			color = ft_getpixel(data->object[0].img_srf, x, y);
 		else
 			color = ft_getpixel(data->object[1].img_srf, x, y);
-		color |= 0xFF000000;
 	}
-	else if (axis == 2) // x
+	else if (axis == 2)
 	{
 		if (angle_d >= 90 && angle_d <= 270)
 			color = ft_getpixel(data->object[2].img_srf, x, y);
 		else
 			color = ft_getpixel(data->object[3].img_srf, x, y);
-		color |= 0xFF000000;
 	}
-	return (color);
+	return (color | 0xFF000000);
 }
 
 void		ft_get_raydata(int axis, t_pos pos,
@@ -72,8 +70,8 @@ void		ft_get_raydata(int axis, t_pos pos,
 	thread->ray[i].distance = ft_pythagore(distance_x, distance_y);
 	thread->ray[i].dist_minimap = thread->ray[i].distance;
 	thread->ray[i].distance = thread->ray[i].distance * cos(alpha_r);
-	thread->ray[i].x = pos.x;
-	thread->ray[i].y = pos.y;
+	thread->ray[i].x = pos.x * 8;
+	thread->ray[i].y = pos.y * 8;
 	thread->ray[i].axis = axis;
 }
 
@@ -166,24 +164,34 @@ void					*ft_calc_frame(void *arg)
 				y_pixel = (y - thread->ray[i].wall_top);
 				h_textr = thread->data->object[0].img_srf->h;
 				h_wall = thread->ray[i].wall_bot - thread->ray[i].wall_top;
-
 				y_textr = h_textr * y_pixel / h_wall;
-
-				/*x_textr = ft_abs(thread->data->object[0].img_srf->w
-				- thread->ray[i].x);
-				x_textr %= thread->data->object[0].img_srf->w;*/
-				
 				if (thread->ray[i].axis == 1)
 				{
-					x_textr = (thread->ray[i].x) % (BLOC_SIZE);
-					x_textr *= 5.5;
+					x_textr = (thread->ray[i].x)
+					% (thread->data->object[0].img_srf->w);
+
+					x_textr = (x_textr
+					* thread->data->object[0].img_srf->w) / (BLOC_SIZE);
+					x_textr /= 8;
 				}
 				else
 				{
-					x_textr = (thread->ray[i].y) % (BLOC_SIZE);
-					x_textr *= 5.5;
+					x_textr = (thread->ray[i].y)
+					% (thread->data->object[0].img_srf->w);
 				}
-
+				/*if (thread->ray[i].axis == 1)
+				{
+					x_textr = (thread->ray[i].x) % BLOC_SIZE;
+					x_textr = (x_textr * (thread->data->object[0].img_srf->w))
+					/ (BLOC_SIZE);
+				}
+				else
+				{
+					//x_textr =
+					//(thread->ray[i].y) % (thread->data->object[0].img_srf->w);
+					x_textr = 5;
+				
+				}*/
 				color = ft_get_color(thread->ray[i].axis,
 				thread->ray[i].angle_d, x_textr, y_textr, thread->data);
 				
@@ -207,14 +215,15 @@ void					*ft_calc_frame(void *arg)
 
 static SDL_Surface		*ft_new_surface(int height, int width)
 {
-	SDL_Surface *surface;
-	Uint32 r, g, b, a;
+	SDL_Surface		*surface;
+	Uint32			color[4];
 
-	r = 0x000000ff;
-	g = 0x0000ff00;
-	b = 0x00ff0000;
-	a = 0xff000000;
-	if (!(surface = SDL_CreateRGBSurface(0, width, height, 32, r, g, b, a)))
+	color[0] = 0x000000ff;
+	color[1] = 0x0000ff00;
+	color[2] = 0x00ff0000;
+	color[3] = 0xff000000;
+	if (!(surface = lt_push(SDL_CreateRGBSurface(
+	0, width, height, 32, color[0], color[1], color[2], color[3]), ft_srfdel)))
 	{
 		SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
 		exit(EXIT_FAILURE); // recup exit

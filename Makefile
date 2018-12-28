@@ -1,44 +1,40 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: abaille <marvin@42.fr>                     +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/01/25 00:22:44 by abaille           #+#    #+#              #
-#    Updated: 2018/12/19 22:11:28 by sgalasso         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME 		= wolf3d
 
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
-LIBFT 		= ./libft
 
 ID_UN 		= $(shell id -un)
-SRC_PATH 	= ./srcs/
-OBJ_PATH 	= ./objs/
-INC_PATH	= ./includes/ \
-			  ./libft/
+SRC_PATH 	= srcs/
+OBJ_PATH 	= objs/
+INC_PATH	= includes/ libft/includes/
+LIBFT 		= libft/
 
-INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/SDL2/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/2.0.14/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/2.0.3/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/2.0.2_3/include/ \
-			   -F -framework Cocoa 
+YELLOW      = "\\033[33m"
+BLUE        = "\\033[34m"
+RED         = "\\033[31m"
+WHITE       = "\\033[0m"
+CYAN        = "\\033[36m"
+GREEN       = "\\033[32m"
+BOLD        = "\\033[1m"
+PINK        = "\\033[95m"
 
-FRK			= -framework
-OPEN 		= OpenGL
-APPK 		= AppKit
+SDL_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2/ | tail -1)
+TTF_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/ | tail -1)
+IMG_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_image/ | tail -1)
+MIX_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/ | tail -1)
+
+INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/SDL2/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/$(TTF_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/$(IMG_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/$(MIX_NUM)/include/ \
 
 SRC_NAME 	= main.c \
+			  ft_srfdel.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
 			  ft_rc_wolfcalc.c \
-			  ft_check_error.c \
 			  ft_minimap.c \
 			  ft_utils.c \
 			  ft_set_infos.c \
@@ -54,29 +50,29 @@ INC = $(addprefix -I, $(INC_PATH))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(FRK) $(OPEN) $(FRK) $(APPK) -o $(NAME) \
-	-L$(LIBFT) -lft $(INC) $(LSDL2)
+	@make -C $(LIBFT)
+	@printf "$(CYAN)[WAIT]$(WHITE) Compiling into %-50s\r" $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L$(LIBFT) -lft $(INC) $(LSDL2)
+	@printf "$(GREEN)[OK]$(WHITE) %s has been well compiled\n" $(NAME)
 
 $(OBJ) : | $(OBJ_PATH)
 
 $(OBJ_PATH) :
-	mkdir objs
+	@mkdir objs
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c Makefile
-	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+	@printf "$(CYAN)[WAIT]$(WHITE) Compiling into .o %-50s\r" $@
+	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 clean:
-	make -C $(LIBFT) clean
-	rm -rf $(OBJ_PATH)
-	rm -rf $(NAME).dSYM/
+	@make -C $(LIBFT) clean
+	@rm -rf $(OBJ_PATH)
+	@printf "$(GREEN)[OK]$(WHITE) Clean done\n"
 
 fclean: clean
-	make -C $(LIBFT) fclean
-	rm -f $(NAME)
-
-run : all
-	./wolf3d ./maps/map1
+	@make -C $(LIBFT) fclean
+	@rm -f $(NAME)
+	@printf "$(GREEN)[OK]$(WHITE) Fclean done\n"
 
 re: fclean all
 
