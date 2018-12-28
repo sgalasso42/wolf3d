@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 15:16:23 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:48:00 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,28 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 	return (color | 0xFF000000);
 }
 
+Uint32		ft_get_color2(int axis, int angle_d)
+{
+	Uint32		color;
+
+	color = 0;
+	if (axis == 1)
+	{
+		if ((angle_d >= 0 && angle_d <= 180) || angle_d >= 360)
+			color = 0xFF5454E5;
+		else
+			color = 0xFF86D865;
+	}
+	else if (axis == 2)
+	{
+		if (angle_d >= 90 && angle_d <= 270)
+			color = 0xFFD8815F;
+		else
+			color = 0xFF89EFFF;
+	}
+	return (color);
+}
+
 Uint32					ft_calc_col(int y, int i, t_thread *thread)
 {
 	Uint32	color;
@@ -137,16 +159,13 @@ Uint32					ft_calc_col(int y, int i, t_thread *thread)
 		x_textr = (thread->ray[i].y) % (thread->data->object[0].img_srf->w);
 	color = ft_get_color(thread->ray[i].axis,
 	thread->ray[i].angle_d, x_textr, y_textr, thread->data);
-				
-	// light shading
-	if (thread->data->lightshade == 1)
-		color = ft_light_shade(thread->ray[i].distance, color);
 	return (color);
 }
 
 void					*ft_calc_frame(void *arg)
 {
 	t_thread	*thread;
+	Uint32		color;
 	double		x;
 	double		y;
 	int			i;
@@ -161,11 +180,21 @@ void					*ft_calc_frame(void *arg)
 		while (y < WIN_H)
 		{
 			if (y < thread->ray[i].wall_top)
-				ft_setpixel(thread->data->surface, x, y, 0xFFFFFED6);
+				color = 0xFFFFFED6;
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
-				ft_setpixel(thread->data->surface, x, y, ft_calc_col(y, i, thread));
+			{
+				if (thread->data->texturing)
+					color = ft_calc_col(y, i, thread);
+				else
+					color = ft_get_color2(thread->ray[i].axis,
+					thread->ray[i].angle_d);
+			}
 			else
-				ft_setpixel(thread->data->surface, x, y, 0x0);
+				color = 0x0;
+			// light shading
+			if (thread->data->lightshade == 1)
+				color = ft_light_shade(thread->ray[i].distance, color);
+			ft_setpixel(thread->data->surface, x, y, color);
 			y++;
 		}
 		x += 8;

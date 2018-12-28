@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:06:18 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:35:11 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ struct						s_data
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 	t_minimap			minimap;
+	int					texturing;
 	int					lightshade;
 	int					gamemode;
 	int					setting;

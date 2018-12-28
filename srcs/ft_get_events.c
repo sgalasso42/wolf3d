@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 15:24:07 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:35:55 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ static int		ft_keyboard(t_data *data)
 		data->gamemode = 1;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_3)
 		data->dev_mode = (data->dev_mode) ? 0 : 1;
+	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_T)
+		data->texturing = (data->texturing) ? 0 : 1;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_L)
 		data->lightshade = (data->lightshade) ? 0 : 1;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
