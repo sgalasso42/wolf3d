@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:46:59 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:45:37 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 16:41:02 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	ft_set_interface(t_data *data)
 	ft_draw_border(rect, 0xFFFFFFFF, data);
 	if (data->setting == 1)
 		ft_set_config(data);
-	else if (data->gamemode == 1)
+	if (data->gamemode == 1 && data->setting == 0)
 		ft_set_cursor(data);
-	if (data->dev_mode == 1)
+	if (data->dev_mode == 1 && data->setting == 0)
 		ft_bloc_devmode(data);
 }

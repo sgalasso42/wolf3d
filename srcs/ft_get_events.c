@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 15:35:55 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 16:27:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,14 +185,14 @@ int				ft_get_events(t_data *data)
 	}
 	state = SDL_GetKeyboardState(0);
 	SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
-	if (data->gamemode == 0)
+	if (data->gamemode == 0 && data->setting == 0)
 	{
 		if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN])
 			ok = (ft_movement_normal(state, data)) ? 1 : ok;
 		if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT])
 			ok = (ft_rotation_normal(state, data)) ? 1 : ok;
 	}
-	else
+	else if (data->setting == 0)
 	{
 		if (data->mouse.x || data->mouse.y)
 			ok = (ft_mouse_motion(data)) ? 1 : ok;

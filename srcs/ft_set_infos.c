@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:45:25 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 16:40:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_set_menu_config(t_data *data)
 	char		*speed_str;
 	char		*sens_str;
 	char		*light_str;
+	char		*txtr_str;
 	char		*zoom_str;
 
 	if (!(speed_str = ft_itoa((int)(data->player.speed * 100))))
@@ -35,38 +36,46 @@ void	ft_set_menu_config(t_data *data)
 		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(light_str = ft_itoa(data->lightshade)))
 		ft_err_exit("wolf3d: error: itoa, out of memory", data);
+	if (!(txtr_str = ft_itoa(data->texturing)))
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(zoom_str = ft_itoa(data->minimap.mnp_size)))
 		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 
-	rect = (SDL_Rect){230,230,500,50};
+	rect = (SDL_Rect){230,240,500,35};
 	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
 
-	rect = (SDL_Rect){230,300,500,30};
+	rect = (SDL_Rect){230,300,500,25};
 	ft_set_string(rect, "[ 8 9 ]  Speed", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){500,300,500,30};
+	rect = (SDL_Rect){500,300,500,25};
 	ft_set_string(rect, speed_str, ft_hex_to_rgb(H_GREEN), data);
 
-	rect = (SDL_Rect){230,350,500,30};
+	rect = (SDL_Rect){230,340,500,25};
 	ft_set_string(rect, "[ * / ]  Sensibility", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){500,350,500,30};
+	rect = (SDL_Rect){500,340,500,25};
 	ft_set_string(rect, sens_str, ft_hex_to_rgb(H_GREEN), data);
 
-	rect = (SDL_Rect){230,400,500,30};
+	rect = (SDL_Rect){230,380,500,25};
 	ft_set_string(rect, "[ l ]  Light shading", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){500,400,500,30};
+	rect = (SDL_Rect){500,380,500,25};
 	ft_set_string(rect, light_str, ft_hex_to_rgb(H_GREEN), data);
 
-	rect = (SDL_Rect){230,450,500,30};
+	rect = (SDL_Rect){230,420,500,25};
+	ft_set_string(rect, "[ t ]  Texturing", ft_hex_to_rgb(H_GREEN), data);
+	rect = (SDL_Rect){500,420,500,25};
+	ft_set_string(rect, txtr_str, ft_hex_to_rgb(H_GREEN), data);
+
+	rect = (SDL_Rect){230,460,500,25};
 	ft_set_string(rect, "[ + - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
-	rect = (SDL_Rect){500,450,500,30};
+	rect = (SDL_Rect){500,460,500,25};
 	ft_set_string(rect, zoom_str, ft_hex_to_rgb(H_GREEN), data);
 
-	rect = (SDL_Rect){230,500,500,30};
+	rect = (SDL_Rect){230,500,500,25};
 	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
 
 	lt_release(speed_str);
 	lt_release(sens_str);
 	lt_release(light_str);
+	lt_release(txtr_str);
 	lt_release(zoom_str);
 }
 
@@ -133,8 +142,8 @@ void	ft_set_infos(t_data *data)
 	ft_set_string(rect, "SETTINGS : [ i ]", ft_set_color(data, 3), data);
 	rect = (SDL_Rect){184,18,150,15};
 	ft_set_string(rect, "3 dev", ft_set_color(data, 2), data);
-	if (data->dev_mode == 1)
-		ft_dev_mode(data);
 	if (data->setting == 1)
 		ft_set_menu_config(data);
+	else if (data->dev_mode == 1)
+		ft_dev_mode(data);
 }
