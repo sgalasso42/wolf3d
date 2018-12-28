@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 22:40:39 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/10/22 15:22:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:21:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int			get_next_line(const int fd, char **line);
 
 char		*ft_strdup(const char *s);
 void		*ft_memalloc(size_t size);
+void		*ft_memalloc_lt(size_t size);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strtrim(char const *s);
@@ -110,12 +111,13 @@ typedef struct s_lt	t_lt;
 
 struct				s_lt
 {
+	void	(*f)(void **);
 	void	*ptr;
 	t_lt	*next;
 };
 
 t_lt				*get_lifetime(t_lt	*new_ptr);
-void				*lt_push(void *ptr);
+void				*lt_push(void *ptr, void (*f)(void **));
 void				lt_release(void *ptr);
 void				lt_destroy(void);
 

@@ -50,6 +50,7 @@ SRCS_NAME =	ft_memset.c \
 			ft_strtrim.c \
 			ft_strsplit.c \
 			ft_memalloc.c \
+			ft_memalloc_lt.c \
 			ft_strdup.c \
 			ft_putchar.c \
 			ft_putstr.c \

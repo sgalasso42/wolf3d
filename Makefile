@@ -4,11 +4,10 @@ CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
 
 ID_UN 		= $(shell id -un)
-SRC_PATH 	= ./srcs/
-OBJ_PATH 	= ./objs/
-INC_PATH	= ./includes/ \
-			  ./libft/includes/
-LIBFT 		= ./libft
+SRC_PATH 	= srcs/
+OBJ_PATH 	= objs/
+INC_PATH	= includes/ libft/includes/
+LIBFT 		= libft/
 
 YELLOW      = "\\033[33m"
 BLUE        = "\\033[34m"
@@ -19,18 +18,23 @@ GREEN       = "\\033[32m"
 BOLD        = "\\033[1m"
 PINK        = "\\033[95m"
 
-INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2/2.0.8/include/SDL2/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/2.0.14/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/2.0.3/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/2.0.2_3/include/ \
+SDL_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2/ | tail -1)
+TTF_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/ | tail -1)
+IMG_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_image/ | tail -1)
+MIX_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/ | tail -1)
+
+INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/SDL2/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/$(TTF_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/$(IMG_NUM)/include/ \
+			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/$(MIX_NUM)/include/ \
 
 SRC_NAME 	= main.c \
+			  ft_srfdel.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
 			  ft_rc_wolfcalc.c \
-			  ft_check_error.c \
 			  ft_minimap.c \
 			  ft_utils.c \
 			  ft_set_infos.c \

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 18:07:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:43:06 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ static int		ft_mouse_motion(t_data *data)
 	{ // mouse left
 		data->player.direction = (int)(data->player.direction
 		+ abs(data->mouse.x) / data->player.sensibility) % 360;
+		return (1);
 	}
 	else if (data->mouse.x < 0)
 	{ // mouse_right
@@ -156,10 +157,9 @@ static int		ft_mouse_motion(t_data *data)
 			- abs(data->mouse.x) / data->player.sensibility);
 		else
 			data->player.direction = 360;
+		return (1);
 	}
-	else
-		return (0);
-	return (1);
+	return (0);
 }
 
 int				ft_get_events(t_data *data)
@@ -171,50 +171,27 @@ int				ft_get_events(t_data *data)
 	if (SDL_PollEvent(&(data->sdl.event)) == 1)
 	{
 		if (data->sdl.event.type == SDL_QUIT)
-		{
-			SDL_FlushEvent(SDL_KEYDOWN | SDL_KEYUP | SDL_MOUSEMOTION);
 			ft_exit(data);
-		}
-		else if (data->sdl.event.type == SDL_KEYDOWN && ft_keyboard(data))
-			ok = 1;
-		if (data->gamemode == 1)
-		{
-			SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
-			if (data->mouse.x || data->mouse.y)
-			{
-				ft_mouse_motion(data);
-				ok = 1;
-			}
-		}
+		else if (data->sdl.event.type == SDL_KEYDOWN)
+			ok = (ft_keyboard(data)) ? 1 : ok;
 	}
 	state = SDL_GetKeyboardState(0);
+	SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 	if (data->gamemode == 0)
 	{
 		if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN])
-		{
-			ft_movement_normal(state, data);
-			ok = 1;
-		}
+			ok = (ft_movement_normal(state, data)) ? 1 : ok;
 		if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT])
-		{
-			ft_rotation_normal(state, data);
-			ok = 1;
-		}
+			ok = (ft_rotation_normal(state, data)) ? 1 : ok;
 	}
 	else
 	{
+		if (data->mouse.x || data->mouse.y)
+			ok = (ft_mouse_motion(data)) ? 1 : ok;
 		if (state[SDL_SCANCODE_W] || state[SDL_SCANCODE_S])
-		{
-			ft_movement_gaming(state, data);
-			ok = 1;
-		}
+			ok = (ft_movement_gaming(state, data)) ? 1 : ok;
 		if (state[SDL_SCANCODE_A] || state[SDL_SCANCODE_D])
-		{
-			ft_lateral_gaming(state, data);
-			ok = 1;
-		}	
+			ok = (ft_lateral_gaming(state, data)) ? 1 : ok;
 	}
-	if (ok == 1)
-		return (1);
-	return (0);
+	return (ok);
 }

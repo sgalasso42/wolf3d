@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 19:16:12 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:53:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ struct						s_minimap
 struct						s_data
 {
 	t_sdl				sdl;
+	int					endinitsdl;
 	TTF_Font			*font;
 	int					**map;
 	t_object			object[4];
@@ -151,6 +152,7 @@ struct						s_data
 void						ft_init_data(char *map, t_data *data);
 void						ft_get_map(char *map, t_data *data);
 
+void						ft_srfdel(void **ap);
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);
 void						ft_draw_rect(SDL_Rect rect, Uint32 color,
@@ -167,10 +169,7 @@ Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_set_cursor(t_data *data);
 
 void						ft_exit(t_data *data);
-void						ft_err_exit(char *msg);
-void						ft_close_exit(char *msg, t_data *data);
-void						ft_freemap_exit(char *msg, t_data *data);
-void						ft_failure_exit(char *msg, t_data *data);
+void						ft_err_exit(char *msg, t_data *data);
 
 int							ft_is_inwall(t_pos *pos, t_data *data);
 int							ft_get_events(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 16:46:37 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:47:07 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	ft_set_menu_config(t_data *data)
 	rect = (SDL_Rect){230,500,500,30};
 	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
 
-	ft_strdel(&speed_str);
-	ft_strdel(&sens_str);
-	ft_strdel(&light_str);
-	ft_strdel(&zoom_str);
+	lt_release(speed_str);
+	lt_release(sens_str);
+	lt_release(light_str);
+	lt_release(zoom_str);
 }
 
 void	ft_dev_mode(t_data *data)
@@ -114,11 +114,11 @@ void	ft_dev_mode(t_data *data)
 	rect = (SDL_Rect){160,180,150,30};
 	ft_set_string(rect, dir_str, ft_hex_to_rgb(H_GREEN), data);
 	
-	ft_strdel(&fps_str);
-	ft_strdel(&frame_str);
-	ft_strdel(&posx_str);
-	ft_strdel(&posy_str);
-	ft_strdel(&dir_str);
+	lt_release(fps_str);
+	lt_release(frame_str);
+	lt_release(posx_str);
+	lt_release(posy_str);
+	lt_release(dir_str);
 }
 
 void	ft_set_infos(t_data *data)

@@ -6,23 +6,35 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/20 18:38:41 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 11:31:14 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_exit(t_data *data)
+void	ft_sdl_quit(t_data *data)
 {
-	SDL_FreeSurface(data->object[0].img_srf);
-	SDL_FreeSurface(data->object[1].img_srf);
-	SDL_FreeSurface(data->object[2].img_srf);
-	SDL_FreeSurface(data->object[3].img_srf);
 	SDL_DestroyRenderer(data->sdl.renderer);
 	SDL_DestroyWindow(data->sdl.window);
 	TTF_CloseFont(data->font);
 	TTF_Quit();
 	SDL_Quit();
+}
+
+void	ft_err_exit(char *msg, t_data *data)
+{
+	if (msg)
+		ft_putendl_fd(msg, 2);
+	lt_destroy();
+	if (data->endinitsdl)
+		ft_sdl_quit(data);
+	exit(EXIT_FAILURE);
+}
+
+void	ft_exit(t_data *data)
+{
+	lt_destroy();
+	ft_sdl_quit(data);
 	exit(EXIT_SUCCESS);
 }
 
@@ -38,7 +50,7 @@ static void		ft_make_frame(t_data *data)
 		ft_set_cursor(data);
 	data->texture = SDL_CreateTextureFromSurface(
 	data->sdl.renderer, data->surface);
-	SDL_FreeSurface(data->surface);
+	SDL_FreeSurface(data->surface); // free avec lifetime
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
 	ft_set_infos(data);
@@ -65,7 +77,7 @@ int		main(int argc, char **argv)
 	t_data			data;
 
 	if (argc != 2)
-		ft_err_exit("usage: ./wolf3d <map>");
+		ft_err_exit("usage: ./wolf3d <map>", &data);
 	ft_init_data(argv[1], &data);
 	ft_game_loop(&data);
 	return (0);
