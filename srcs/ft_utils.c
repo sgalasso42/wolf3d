@@ -6,11 +6,16 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 12:16:44 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 14:56:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+double		ft_pythagore(int a, int b)
+{
+	return (sqrt(a * a + b * b));
+}
 
 void		ft_set_cursor(t_data *data)
 {
@@ -34,8 +39,7 @@ void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
 	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
 	lt_release(surface);
-	if (SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect)) < 0)
-		exit(EXIT_FAILURE); // exit proprement todo
+	SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect));
 }
 
 SDL_Color	ft_hex_to_rgb(int hexa)
@@ -62,10 +66,7 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	delta > 0.9 ? delta = 0.9 : 0;
 	delta /= 1.50;
 	c |= 0xFF000000;
-	color.r = c >> 24;
-	color.g = c >> 16;
-	color.b = c >> 8;
-	color.a = c;
+	color = (SDL_Color){c >> 24, c >> 16, c >> 8, c};
 	ft_remove_light(&color.r, delta, 24);
 	ft_remove_light(&color.g, delta, 16);
 	ft_remove_light(&color.b, delta, 8);

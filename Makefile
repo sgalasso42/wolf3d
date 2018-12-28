@@ -9,14 +9,9 @@ OBJ_PATH 	= objs/
 INC_PATH	= includes/ libft/includes/
 LIBFT 		= libft/
 
-YELLOW      = "\\033[33m"
-BLUE        = "\\033[34m"
-RED         = "\\033[31m"
 WHITE       = "\\033[0m"
 CYAN        = "\\033[36m"
 GREEN       = "\\033[32m"
-BOLD        = "\\033[1m"
-PINK        = "\\033[95m"
 
 SDL_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2/ | tail -1)
 TTF_NUM		= $(shell ls /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/ | tail -1)

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 11:53:44 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:35:11 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ struct						s_data
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 	t_minimap			minimap;
+	int					texturing;
 	int					lightshade;
 	int					gamemode;
 	int					setting;
@@ -152,6 +153,7 @@ struct						s_data
 void						ft_init_data(char *map, t_data *data);
 void						ft_get_map(char *map, t_data *data);
 
+double						ft_pythagore(int a, int b);
 void						ft_srfdel(void **ap);
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);

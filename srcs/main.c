@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 12:13:18 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 14:56:15 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,12 @@ static void		ft_make_frame(t_data *data)
 	data->nb_frame++;
 	data->time_last = clock();
 	ft_rc_wolfcalc(data);
-	if (data->gamemode == 1 || data->dev_mode == 1)
-		ft_minimap(data);
 	ft_set_interface(data);
-	if (data->gamemode == 1 && data->setting == 0)
-		ft_set_cursor(data);
-	data->texture = SDL_CreateTextureFromSurface(
-	data->sdl.renderer, data->surface);
+	data->texture = SDL_CreateTextureFromSurface(data->sdl.renderer, data->surface);
 	lt_release(data->surface);
 	SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0);
 	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
-	ft_set_infos(data);
+	ft_set_infos(data); // blit au dessus
 }
 
 static void		ft_game_loop(t_data *data)
@@ -77,7 +72,7 @@ int		main(int argc, char **argv)
 	t_data			data;
 
 	if (argc != 2)
-		ft_err_exit("usage: ./wolf3d <map>", &data);
+		ft_err_exit("usage: ./wolf3d [map]", &data);
 	ft_init_data(argv[1], &data);
 	ft_game_loop(&data);
 	return (0);
