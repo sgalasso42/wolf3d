@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 11:51:08 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 12:39:32 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ void			ft_get_map(char *map, t_data *data)
 		ft_parsing_exit(-1, "wolf3d: parsing error: can't open the map", data);
 	if ((get_next_line(fd, &line)) < 1)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
-	printf("line : %s\n", line);
 	ft_get_mapsize(fd, line, data);
-	printf("map.w : %d\n", data->map_sz.w);
-	printf("map.h : %d\n", data->map_sz.h);
 	lt_release((void *)line);
 	if (!(data->map =
 	(int **)(ft_memalloc_lt(sizeof(int *) * (data->map_sz.h)))))

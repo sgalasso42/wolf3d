@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 12:15:30 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/28 14:45:25 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	ft_set_menu_config(t_data *data)
 	char		*zoom_str;
 
 	if (!(speed_str = ft_itoa((int)(data->player.speed * 100))))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(sens_str = ft_itoa(data->player.sensibility)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(light_str = ft_itoa(data->lightshade)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(zoom_str = ft_itoa(data->minimap.mnp_size)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 
 	rect = (SDL_Rect){230,230,500,50};
 	ft_set_string(rect, "SETTINGS", ft_hex_to_rgb(H_GREEN), data);
@@ -80,15 +80,15 @@ void	ft_dev_mode(t_data *data)
 	char		*dir_str;
 
 	if (!(fps_str = ft_itoa(data->fps)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(frame_str = ft_itoa(data->nb_frame)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(posx_str = ft_itoa(data->player.position.x * BLOC_SIZE)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(posy_str = ft_itoa(data->player.position.y * BLOC_SIZE)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 	if (!(dir_str = ft_itoa(data->player.direction)))
-		exit(EXIT_FAILURE); // recup exit
+		ft_err_exit("wolf3d: error: itoa, out of memory", data);
 
 	rect = (SDL_Rect){20,18,150,15};
 	ft_set_string(rect, "1 normal", ft_set_color(data, 0), data);
