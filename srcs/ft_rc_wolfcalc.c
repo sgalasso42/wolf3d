@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 16:36:33 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 13:41:40 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,12 @@ void					*ft_calc_frame(void *arg)
 		while (y < WIN_H)
 		{
 			if (y < thread->ray[i].wall_top)
-				color = 0xFFFFFED6;
+			{
+				if (thread->data->lightshade == 1)
+					color = 0xFF46463B;
+				else
+					color = 0xFFFFFED6;
+			}
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 			{
 				if (thread->data->texturing)
@@ -188,12 +193,12 @@ void					*ft_calc_frame(void *arg)
 				else
 					color = ft_get_color2(thread->ray[i].axis,
 					thread->ray[i].angle_d);
+				// light shading
+				if (thread->data->lightshade == 1)
+					color = ft_light_shade(thread->ray[i].distance, color);
 			}
 			else
 				color = 0x0;
-			// light shading
-			if (thread->data->lightshade == 1)
-				color = ft_light_shade(thread->ray[i].distance, color);
 			ft_setpixel(thread->data->surface, x, y, color);
 			y++;
 		}

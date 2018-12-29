@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 17:25:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 13:40:41 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 	}
 }
 
-static int		ft_movement_normal(const Uint8 *state, t_data *data)
+/*static*/ int		ft_movement_normal(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
@@ -69,7 +69,7 @@ static int		ft_movement_normal(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-static int		ft_rotation_normal(const Uint8 *state, t_data *data)
+/*static*/ int		ft_rotation_normal(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_RIGHT])
 		data->player.direction = (int)(data->player.direction + 5) % 360;
@@ -85,7 +85,7 @@ static int		ft_rotation_normal(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-static int		ft_movement_gaming(const Uint8 *state, t_data *data)
+/*static*/ int		ft_movement_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
@@ -100,7 +100,7 @@ static int		ft_movement_gaming(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-static int		ft_lateral_gaming(const Uint8 *state, t_data *data)
+/*static*/ int		ft_lateral_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
@@ -115,11 +115,9 @@ static int		ft_lateral_gaming(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-static int		ft_keyboard(t_data *data)
+/*static*/ int		ft_keyboard(t_data *data)
 {
-	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-		ft_exit(data);
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_I)
+	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_I)
 		data->setting = (data->setting) ? 0 : 1;
 	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_8)
 		data->player.speed -= (data->player.speed > 0.04) ? 0.02 : 0;
@@ -150,7 +148,7 @@ static int		ft_keyboard(t_data *data)
 	return (1);
 }
 
-static int		ft_mouse_motion(t_data *data)
+/*static*/ int		ft_mouse_motion(t_data *data)
 {
 	if (data->mouse.x > 0)
 	{ // mouse left
@@ -178,13 +176,13 @@ int				ft_get_events(t_data *data)
 	ok = 0;
 	if (SDL_PollEvent(&(data->sdl.event)) == 1)
 	{
-		if (data->sdl.event.type == SDL_QUIT)
-			ft_exit(data);
-		else if (data->sdl.event.type == SDL_KEYDOWN)
+		if (data->sdl.event.type == SDL_KEYDOWN)
 			ok = (ft_keyboard(data)) ? 1 : ok;
 	}
 	state = SDL_GetKeyboardState(0);
 	SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
+	if (state[SDL_SCANCODE_ESCAPE])
+		ft_exit(data);
 	if (data->gamemode == 0 && data->setting == 0)
 	{
 		if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN])

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:56:15 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 13:47:57 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	ft_sdl_quit(t_data *data)
 {
+	clock_t last;
+	last = clock();
 	SDL_DestroyRenderer(data->sdl.renderer);
+	printf("time to destroy : %lu\n", clock() - last);
 	SDL_DestroyWindow(data->sdl.window);
 	TTF_CloseFont(data->font);
 	TTF_Quit();
@@ -54,6 +57,7 @@ static void		ft_make_frame(t_data *data)
 static void		ft_game_loop(t_data *data)
 {
 	ft_make_frame(data);
+	SDL_DestroyTexture(data->texture);
 	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
@@ -61,9 +65,10 @@ static void		ft_game_loop(t_data *data)
 		{
 			SDL_RenderClear(data->sdl.renderer);
 			ft_make_frame(data);
+			SDL_DestroyTexture(data->texture);
 			SDL_RenderPresent(data->sdl.renderer);
 		}
-		SDL_FlushEvent(SDL_KEYDOWN | SDL_KEYUP | SDL_MOUSEMOTION);
+		SDL_FlushEvent(SDL_KEYDOWN | SDL_MOUSEMOTION);
 	}
 }
 

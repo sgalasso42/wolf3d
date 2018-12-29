@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 16:58:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 13:44:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
 	lt_release(surface);
 	SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect));
+	SDL_DestroyTexture(texture);
 }
 
 SDL_Color	ft_hex_to_rgb(int hexa)
