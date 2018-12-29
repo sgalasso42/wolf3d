@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 15:56:52 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 16:48:22 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,16 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 	if (axis == 1)
 	{
 		if ((angle_d >= 0 && angle_d <= 180) || angle_d >= 360)
-			color = ft_getpixel(data->object[0].img_srf, x, y);
+			color = ft_getpixel(data->object[0].img_srf, x, y, data);
 		else
-			color = ft_getpixel(data->object[1].img_srf, x, y);
+			color = ft_getpixel(data->object[1].img_srf, x, y, data);
 	}
 	else if (axis == 2)
 	{
 		if (angle_d >= 90 && angle_d <= 270)
-			color = ft_getpixel(data->object[2].img_srf, x, y);
+			color = ft_getpixel(data->object[2].img_srf, x, y, data);
 		else
-			color = ft_getpixel(data->object[3].img_srf, x, y);
+			color = ft_getpixel(data->object[3].img_srf, x, y, data);
 	}
 	return (color | 0xFF000000);
 }

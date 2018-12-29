@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 13:44:10 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 16:46:45 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,15 @@ void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
 
-	surface	= lt_push(TTF_RenderText_Blended(data->font, text, color), ft_srfdel);
+	if (!(surface = lt_push(TTF_RenderText_Blended(data->font,
+	text, color), ft_srfdel)))
+		ft_err_exit("wolf3d: error: TTF_RenderText_Blended() failure", data);
 	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
-	texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface);
+	if (!(texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface)))
+		ft_err_exit("wolf3d: error: SDL_CreateTextureFromSurface() failure", data);
 	lt_release(surface);
-	SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect));
+	if ((SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect))) != 0)
+		ft_err_exit("wolf3d: error: SDL_RenderCopy() failure", data);
 	SDL_DestroyTexture(texture);
 }
 
@@ -112,13 +116,14 @@ void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	}
 }
 
-Uint32		ft_getpixel(SDL_Surface *surface, int x, int y)
+Uint32		ft_getpixel(SDL_Surface *surface, int x, int y, t_data *data)
 {
 	int				bpp;
 	Uint8			*p;
 	Uint32			ret;
 
-	SDL_LockSurface(surface);
+	if ((SDL_LockSurface(surface)) != 0)
+		ft_err_exit("wolf3d: error: SDL_LockSurface() failure", data);
 	x = ft_abs(--x);
 	y = ft_abs(--y);
 	bpp = surface->format->BytesPerPixel;
@@ -158,7 +163,7 @@ void		draw_line(t_data *data, t_pos p1, t_pos p2, Uint32 color, t_limit *limit)
 	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
 	{
 		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-					&& (int)p1.y > limit->t && (int)p1.y < limit->b))
+		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
 			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
 		e2 = tab[4];
 		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
@@ -186,7 +191,7 @@ void		ft_draw_rect(SDL_Rect rect, Uint32 color, t_limit *limit, t_data *data)
 		while (j < rect.w)
 		{
 			if (!limit || (rect.x + j > limit->l && rect.x + j < limit->r
-						&& rect.y + i > limit->t && rect.y + i < limit->b))
+			&& rect.y + i > limit->t && rect.y + i < limit->b))
 				ft_setpixel(data->surface, rect.x + j, rect.y + i, color);
 			j++;
 		}
