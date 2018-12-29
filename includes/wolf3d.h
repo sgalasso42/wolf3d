@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 15:35:11 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 13:54:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ struct						s_minimap
 	double				mnp_size;
 	t_pos				origin;
 	t_limit				limit;
-	t_size				map_size; // calculee
-	t_pos				pos_play; // calculee
+	t_size				map_size;
+	t_pos				pos_play;
 	t_pos				centre;
 	t_pos				diff;
 };

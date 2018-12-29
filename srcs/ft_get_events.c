@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 13:40:41 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 15:59:08 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,19 +150,18 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 
 /*static*/ int		ft_mouse_motion(t_data *data)
 {
-	if (data->mouse.x > 0)
-	{ // mouse left
-		data->player.direction = (int)(data->player.direction
+	if (data->mouse.x > 0.0)
+	{
+		data->player.direction = (int)(data->player.direction 
 		+ abs(data->mouse.x) / data->player.sensibility) % 360;
 		return (1);
 	}
-	else if (data->mouse.x < 0)
-	{ // mouse_right
-		if (data->player.direction - 5 > 0)
-			data->player.direction = (int)(data->player.direction
-			- abs(data->mouse.x) / data->player.sensibility);
-		else
-			data->player.direction = 360;
+	else if (data->mouse.x < 0.0)
+	{
+		data->player.direction = (int)(data->player.direction
+		- abs(data->mouse.x) / data->player.sensibility) % 360;
+		if (data->player.direction < 0)
+			data->player.direction = 360 + data->player.direction;
 		return (1);
 	}
 	return (0);

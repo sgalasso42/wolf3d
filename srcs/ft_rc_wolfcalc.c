@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 13:41:40 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/29 15:56:52 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 
 	thread->ray[i].angle_d =
 	(thread->data->player.direction - 30) + (x * (60.0 / WIN_W));
+
 	angle_r = thread->ray[i].angle_d * M_PI / 180;
 	alpha_r = (fabs(thread->data->player.direction
 	- thread->ray[i].angle_d)) * M_PI / 180;
