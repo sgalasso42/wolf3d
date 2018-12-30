@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 12:39:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 15:32:47 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,29 @@ static void		ft_parsing_exit(int fd, char *msg, t_data *data)
 	ft_err_exit(msg, data);
 }
 
+static int		ft_strdigit(char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_isdigit(line[i]) && line[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void		ft_get_mapsize(int fd, char *line, t_data *data)
 {
 	if (!(*line))
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
-	else if (ft_nbwords(line) != 2)
+	else if (ft_nbwords(line) != 2 || !ft_strdigit(line))
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
-	else if (!(data->map_sz.w = ft_atoi(line)))
+	else if ((data->map_sz.w = ft_atoi(line)) <= 1)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
-	else if (!(data->map_sz.h = ft_atoi(line + ft_nbrlen(data->map_sz.w, 10))))
+	else if ((data->map_sz.h = ft_atoi(line + ft_nbrlen(data->map_sz.w, 10))) <= 1)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 }
 
@@ -78,7 +92,7 @@ void			ft_get_map(char *map, t_data *data)
 		ft_parsing_exit(fd, "wolf3d: parsing error: out of memory", data);
 	while ((get_next_line(fd, &line)) > 0)
 	{
-		if (i > data->map_sz.h || ft_nbwords(line) != data->map_sz.w)
+		if (i >= data->map_sz.h || ft_nbwords(line) != data->map_sz.w)
 			ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 		if (!(data->map[i] =
 		(int *)(ft_memalloc_lt(sizeof(int) * (data->map_sz.w)))))

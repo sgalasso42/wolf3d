@@ -1,7 +1,7 @@
 NAME 		= wolf3d
 
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g -fsanitize=address
 
 ID_UN 		= $(shell id -un)
 SRC_PATH 	= srcs/
@@ -25,15 +25,16 @@ INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/$(MIX_NUM)/include/ \
 
 SRC_NAME 	= main.c \
-			  ft_srfdel.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
 			  ft_rc_wolfcalc.c \
 			  ft_minimap.c \
-			  ft_utils.c \
 			  ft_set_infos.c \
 			  ft_set_interface.c \
+			  ft_utils.c \
+			  ft_highlvl_graphics.c \
+			  ft_lowlvl_graphics.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer

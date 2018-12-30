@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/28 14:42:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 13:55:31 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,12 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 	a = (t_pos){data->minimap.centre.x, data->minimap.centre.y};
 	b.x = data->minimap.centre.x + step.x;
 	b.y = data->minimap.centre.y + step.y;
-	draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
+	if (data->dev_mode == 1)
+		draw_line(data, a, b,
+		ft_get_color2(data->thread[i].ray[j].axis, data->thread[i].ray[j].angle_d),
+		&(data->minimap.limit));
+	else
+		draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
 }
 
 static void		ft_draw_player(t_data *data)
