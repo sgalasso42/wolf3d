@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 16:25:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 12:34:49 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_sdl_quit(t_data *data)
 {
-	clock_t last;
-	last = clock();
+	clock_t last; // to remove
+	last = clock(); // to remove
 	SDL_DestroyRenderer(data->sdl.renderer);
-	printf("time to destroy : %lu\n", clock() - last);
+	printf("time to destroy : %lu\n", clock() - last); // to remove
 	SDL_DestroyWindow(data->sdl.window);
 	TTF_CloseFont(data->font);
 	TTF_Quit();

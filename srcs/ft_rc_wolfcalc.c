@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 16:48:22 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 13:23:03 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 	thread->ray[i].distance = -1;
 }
 
-void					ft_trace_ray(int i, int x, t_thread *thread)
+void					ft_calc_walls(int i, int x, t_thread *thread)
 {
 	double	height;
 
@@ -167,8 +167,8 @@ void					*ft_calc_frame(void *arg)
 {
 	t_thread	*thread;
 	Uint32		color;
-	double		x;
-	double		y;
+	int			x;
+	int			y;
 	int			i;
 
 	i = -1;
@@ -177,50 +177,25 @@ void					*ft_calc_frame(void *arg)
 	while (x < WIN_W)
 	{
 		y = 0;
-		ft_trace_ray(++i, x, thread);
+		ft_calc_walls(++i, x, thread);
 		while (y < WIN_H)
 		{
+			color = 0x0;
 			if (y < thread->ray[i].wall_top)
-			{
-				if (thread->data->lightshade == 1)
-					color = 0xFF46463B;
-				else
-					color = 0xFFFFFED6;
-			}
+				color = (thread->data->lightshade) ? 0xFF46463B : 0xFFFFFED6;
 			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 			{
-				if (thread->data->texturing)
-					color = ft_calc_col(y, i, thread);
-				else
-					color = ft_get_color2(thread->ray[i].axis,
-					thread->ray[i].angle_d);
-				// light shading
+				color =  (thread->data->texturing) ? ft_calc_col(y, i, thread)
+				: ft_get_color2(thread->ray[i].axis, thread->ray[i].angle_d);
 				if (thread->data->lightshade == 1)
 					color = ft_light_shade(thread->ray[i].distance, color);
 			}
-			else
-				color = 0x0;
 			ft_setpixel(thread->data->surface, x, y, color);
 			y++;
 		}
 		x += 8;
 	}
 	pthread_exit(0);
-}
-
-static SDL_Surface		*ft_new_surface(int height, int width, t_data *data)
-{
-	SDL_Surface		*surface;
-	Uint32			color[4];
-
-	color[0] = 0x000000ff;
-	color[1] = 0x0000ff00;
-	color[2] = 0x00ff0000;
-	color[3] = 0xff000000;
-	if (!(surface = lt_push(SDL_CreateRGBSurface(
-	0, width, height, 32, color[0], color[1], color[2], color[3]), ft_srfdel)))
-		ft_err_exit("wolf3d: error: SDL_CreateRGBSurface() failed", data);
-	return (surface);
 }
 
 void				ft_rc_wolfcalc(t_data *data)

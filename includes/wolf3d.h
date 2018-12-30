@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/29 16:38:57 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 13:16:04 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <pthread.h>
 # include <time.h>
 
-# define H_GREEN		0x00FF00FF
-# define H_RED			0xFF0000FF
+# define H_GREEN 0x00FF00FF
+# define H_RED 0xFF0000FF
 
 # define WIN_H 700
 # define WIN_W 1000
@@ -97,7 +97,7 @@ struct						s_thread
 	pthread_t			th;
 	t_data				*data;
 	int					x_start;
-	t_ray				ray[WIN_W / 8];
+	t_ray				ray[WIN_W / 8]; // to norme
 };
 
 struct						s_object
@@ -153,6 +153,8 @@ struct						s_data
 void						ft_init_data(char *map, t_data *data);
 void						ft_get_map(char *map, t_data *data);
 
+Uint32						ft_get_color2(int axis, int angle_d);
+SDL_Surface					*ft_new_surface(int height, int width, t_data *data);
 double						ft_pythagore(int a, int b);
 void						ft_srfdel(void **ap);
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
