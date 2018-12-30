@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 13:16:04 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 14:05:03 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ struct						s_ray
 	double				dist_minimap;
 	double				wall_top;
 	double				wall_bot;
-	double				wall_color; // to remove if not use
-	Uint32				color; // to remove if not use
 };
 
 struct						s_thread
@@ -150,40 +148,63 @@ struct						s_data
 	int					fps;
 };
 
-void						ft_init_data(char *map, t_data *data);
-void						ft_get_map(char *map, t_data *data);
+/*
+** main.c
+*/
 
+void						ft_exit(t_data *data);
+void						ft_err_exit(char *msg, t_data *data);
+
+/*
+** ft_get_map.c -- ft_init_data.c
+*/
+
+void						ft_get_map(char *map, t_data *data);
+void						ft_init_data(char *map, t_data *data);
+
+/*
+** ft_get_events.c
+*/
+
+int							ft_get_events(t_data *data);
+
+/*
+** ft_rc_wolfcalc.c
+*/
+
+int							ft_is_inwall(t_pos *pos, t_data *data);
 Uint32						ft_get_color2(int axis, int angle_d);
-SDL_Surface					*ft_new_surface(int height, int width, t_data *data);
+void						ft_rc_wolfcalc(t_data *data);
+
+/*
+** ft_set_infos.c -- ft_set_interface.c -- ft_minimap.c
+*/
+
+void						ft_set_infos(t_data *data);
+void						ft_set_interface(t_data *data);
+void						ft_minimap(t_data *data);
+
+/*
+** ft_utils.c -- ft_highlvl_graphics.c -- ft_lowlvl_graphics.c
+*/
+
 double						ft_pythagore(int a, int b);
+void						ft_set_cursor(t_data *data);
+Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_srfdel(void **ap);
+SDL_Color					ft_hex_to_rgb(int hexa);
 void						draw_line(t_data *data, t_pos p1, t_pos p2,
 							Uint32 color, t_limit *limit);
 void						ft_draw_rect(SDL_Rect rect, Uint32 color,
 							t_limit *limit, t_data *data);
 void						ft_draw_border(SDL_Rect rect, Uint32 color,
 							t_data *data);
-SDL_Color					ft_hex_to_rgb(int hexa);
+SDL_Surface					*ft_new_surface(int height, int width, t_data *data);
+void    					ft_set_string(SDL_Rect rect, char *text,
+							SDL_Color color, t_data *data);
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);
 Uint32						ft_getpixel(SDL_Surface *surface,
 							int x, int y, t_data *data);
-void    					ft_set_string(SDL_Rect rect, char *text,
-							SDL_Color color, t_data *data);
-Uint32						ft_light_shade(double distance, Uint32 color);
-void						ft_set_cursor(t_data *data);
-
-void						ft_exit(t_data *data);
-void						ft_err_exit(char *msg, t_data *data);
-
-int							ft_is_inwall(t_pos *pos, t_data *data);
-int							ft_get_events(t_data *data);
-void						ft_rc_wolfcalc(t_data *data);
-void						ft_minimap(t_data *data);
-void						ft_set_infos(t_data *data);
-void						ft_set_interface(t_data *data);
-void						ft_set_config(t_data *data);
-void						ft_set_menu_config(t_data *data);
-void						ft_dev_mode(t_data *data);
 
 #endif

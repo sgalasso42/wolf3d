@@ -25,7 +25,6 @@ INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/$(MIX_NUM)/include/ \
 
 SRC_NAME 	= main.c \
-			  ft_srfdel.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \

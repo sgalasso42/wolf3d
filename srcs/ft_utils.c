@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 13:28:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 13:52:17 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ static void		ft_remove_light(Uint8 *component, double delta, int arg)
 		*component = (*component * (1 - delta) + ((0x0 >> arg) * delta));
 }
 
-static int		ft_apply_shade(Uint32 c, double delta)
+Uint32		ft_light_shade(double distance, Uint32 hexa)
 {
 	SDL_Color color;
+	double  delta;
 
+	delta = distance / 300;
 	delta > 0.9 ? delta = 0.9 : 0;
 	delta /= 1.50;
-	c |= 0xFF000000;
-	color = (SDL_Color){c >> 24, c >> 16, c >> 8, c};
+	hexa |= 0xFF000000;
+	color = (SDL_Color){hexa >> 24, hexa >> 16, hexa >> 8, hexa};
 	ft_remove_light(&color.r, delta, 24);
 	ft_remove_light(&color.g, delta, 16);
 	ft_remove_light(&color.b, delta, 8);
@@ -51,10 +53,14 @@ static int		ft_apply_shade(Uint32 c, double delta)
 	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
 }
 
-Uint32		ft_light_shade(double distance, Uint32 color)
+void	ft_srfdel(void **ap)
 {
-	double  delta;
+	SDL_Surface		*surface;
 
-	delta = distance / 300;
-	return (ft_apply_shade(color, delta));
+	surface = (SDL_Surface *)(*ap);
+	if (ap && *ap)
+	{
+		SDL_FreeSurface(surface);
+		surface = 0;
+	}
 }

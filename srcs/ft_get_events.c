@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 12:38:13 by sgalasso         ###   ########.fr       */
+/*   Updated: 2018/12/30 14:31:05 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,35 @@ int				ft_is_inmap(t_pos *pos, t_data *data)
 
 void			ft_movement(double angle_r, int dir, t_data *data)
 {
+	double		move_x;
+	double		move_y;
 	t_pos		pos_h;
 	t_pos		pos_v;
 
+	move_y = sin(angle_r) * data->player.speed;
+	move_x = cos(angle_r) * data->player.speed;
 	if (dir == 1)
-	{ // ^
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		- cos(angle_r) * (data->player.speed * 150);
+	{
+
+		pos_h.x = (data->player.position.x * BLOC_SIZE) - move_x * 150;
 		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
 		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		- sin(angle_r) * (data->player.speed * 150);
-
-		if (ft_is_inmap(&pos_v, data) && !(ft_is_inwall(&pos_v, data)))
-			data->player.position.y += -sin(angle_r) * data->player.speed;
-		if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
-			data->player.position.x += -cos(angle_r) * data->player.speed;
+		pos_v.y = (data->player.position.y * BLOC_SIZE) - move_y * 150;
+		move_y = -move_y;
+		move_x = -move_x;
 	}
 	else
-	{ // v
-		pos_h.x = (data->player.position.x * BLOC_SIZE)
-		+ cos(angle_r) * (data->player.speed * 150);
+	{
+		pos_h.x = (data->player.position.x * BLOC_SIZE) + move_x * 150;
 		pos_h.y = (data->player.position.y * BLOC_SIZE);
-
 		pos_v.x = (data->player.position.x * BLOC_SIZE);
-		pos_v.y = (data->player.position.y * BLOC_SIZE)
-		+ sin(angle_r) * (data->player.speed * 150);
+		pos_v.y = (data->player.position.y * BLOC_SIZE) + move_y * 150;
 
-		if (ft_is_inmap(&pos_v, data) &&!(ft_is_inwall(&pos_v, data)))
-			data->player.position.y += sin(angle_r) * data->player.speed;
-		if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
-			data->player.position.x += cos(angle_r) * data->player.speed;
 	}
+	if (ft_is_inmap(&pos_v, data) &&!(ft_is_inwall(&pos_v, data)))
+		data->player.position.y += move_y;
+	if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
+		data->player.position.x += move_x;
 }
 
 /*static*/ int		ft_movement_normal(const Uint8 *state, t_data *data)
@@ -74,7 +70,7 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 	if (state[SDL_SCANCODE_RIGHT])
 		data->player.direction = (int)(data->player.direction + 5) % 360;
 	else if (state[SDL_SCANCODE_LEFT])
-	{ // <
+	{
 		if (data->player.direction - 5 > 0)
 			data->player.direction = (int)(data->player.direction - 5);
 		else
@@ -115,33 +111,31 @@ void			ft_movement(double angle_r, int dir, t_data *data)
 	return (1);
 }
 
-/*static*/ int		ft_keyboard(t_data *data)
+/*static*/ int		ft_keyboard(const Uint8 *state, t_data *data)
 {
-	if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_I)
+	if (state[SDL_SCANCODE_I])
 		data->setting = (data->setting) ? 0 : 1;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_8)
+	else if (state[SDL_SCANCODE_KP_8])
 		data->player.speed -= (data->player.speed > 0.04) ? 0.02 : 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_9)
+	else if (state[SDL_SCANCODE_KP_9])
 		data->player.speed += (data->player.speed < 0.3) ? 0.02 : 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_MULTIPLY)
+	else if (state[SDL_SCANCODE_KP_MULTIPLY])
 		data->player.sensibility -= (data->player.sensibility > 1) ? 1 : 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_DIVIDE)
+	else if (state[SDL_SCANCODE_KP_DIVIDE])
 		data->player.sensibility += (data->player.sensibility < 10) ? 1 : 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_1)
+	else if (state[SDL_SCANCODE_1])
 		data->gamemode = 0;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_2)
+	else if (state[SDL_SCANCODE_2])
 		data->gamemode = 1;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_3)
+	else if (state[SDL_SCANCODE_3])
 		data->dev_mode = (data->dev_mode) ? 0 : 1;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_T)
+	else if (state[SDL_SCANCODE_T])
 		data->texturing = (data->texturing) ? 0 : 1;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_L)
+	else if (state[SDL_SCANCODE_L])
 		data->lightshade = (data->lightshade) ? 0 : 1;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS
-	&& data->minimap.mnp_size * ZOOM_P < 50)
+	else if (state[SDL_SCANCODE_KP_PLUS] && data->minimap.mnp_size * ZOOM_P < 50)
 		data->minimap.mnp_size *= ZOOM_P;
-	else if (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS
-	&& data->minimap.mnp_size * ZOOM_L > 10)
+	else if (state[SDL_SCANCODE_KP_MINUS] && data->minimap.mnp_size * ZOOM_L > 10)
 		data->minimap.mnp_size *= ZOOM_L;
 	else
 		return (0);
@@ -173,15 +167,13 @@ int				ft_get_events(t_data *data)
 	int			ok;
 	
 	ok = 0;
-	if (SDL_PollEvent(&(data->sdl.event)) == 1)
-	{
-		if (data->sdl.event.type == SDL_KEYDOWN)
-			ok = (ft_keyboard(data)) ? 1 : ok;
-	}
+	SDL_PollEvent(&(data->sdl.event));
 	state = SDL_GetKeyboardState(0);
 	SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 	if (state[SDL_SCANCODE_ESCAPE])
 		ft_exit(data);
+	if (data->sdl.event.type == SDL_KEYDOWN)
+		ok = (ft_keyboard(state, data)) ? 1 : ok;
 	if (data->gamemode == 0 && data->setting == 0)
 	{
 		if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN])
