@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 14:05:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/01/24 16:00:10 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ struct						s_data
 	int					gamemode;
 	int					setting;
 	int					dev_mode;
+	int					jump;
 	t_coef				mouse;
 	Uint32				time_last;
 	int					nb_frame;

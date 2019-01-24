@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 15:21:39 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/01/24 16:13:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,8 @@ void					*ft_calc_frame(void *arg)
 				if (thread->data->lightshade == 1)
 					color = ft_light_shade(thread->ray[i].distance, color);
 			}
-			ft_setpixel(thread->data->surface, x, y, color);
+			ft_setpixel(thread->data->surface,
+			x, (int)(y + thread->data->jump / (thread->ray[i].distance / 100)) % WIN_H, color);
 			y++;
 		}
 		x += 8;
