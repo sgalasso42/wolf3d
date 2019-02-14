@@ -1,7 +1,7 @@
 # Wold3d
 A wolf3d like, made with raycating
 ## demo
-<img src="wolf3d_demo.gif" width="300"></img>
+<img src="wolf3d_demo.gif" width="400"></img>
 ## Built with
 C language, Mlx library
 ## Installing
