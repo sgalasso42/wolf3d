@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:10:19 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:16:26 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:38:32 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-Uint32			ft_calc_col(int y, int i, t_thread *thread)
+static Uint32	ft_calc_col(int y, int i, t_thread *thread)
 {
 	Uint32	color;
 	double	y_pixel;

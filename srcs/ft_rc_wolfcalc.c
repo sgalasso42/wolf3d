@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:19:36 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:43:19 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void			ft_calc_walls(int i, int x, t_thread *thread)
+static void		ft_calc_walls(int i, int x, t_thread *thread)
 {
 	double	height;
 
@@ -24,7 +24,7 @@ void			ft_calc_walls(int i, int x, t_thread *thread)
 	thread->ray[i].wall_bot = WIN_H - ((WIN_H - height) / 2);
 }
 
-void			*ft_calc_frame(void *arg)
+static void		*ft_calc_frame(void *arg)
 {
 	t_thread	*thread;
 	int			x;

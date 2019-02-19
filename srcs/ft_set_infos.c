@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 15:45:36 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:46:26 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-SDL_Color	ft_set_color(t_data *data, int i)
+static SDL_Color	ft_set_color(t_data *data, int i)
 {
 	if ((data->gamemode == 0 && i == 0)
 	|| (data->gamemode == 1 && i == 1)
@@ -21,8 +21,8 @@ SDL_Color	ft_set_color(t_data *data, int i)
 	return (ft_hex_to_rgb(H_GREEN));
 }
 
-void		ft_set_nbrstring(int value, SDL_Rect rect,
-			Uint32 color, t_data *data)
+static void			ft_set_nbrstring(int value, SDL_Rect rect,
+					Uint32 color, t_data *data)
 {
 	char	*str;
 
@@ -32,7 +32,7 @@ void		ft_set_nbrstring(int value, SDL_Rect rect,
 	lt_release(str);
 }
 
-void		ft_set_menu_config(t_data *data)
+static void			ft_set_menu_config(t_data *data)
 {
 	SDL_Rect	rect;
 
@@ -60,7 +60,7 @@ void		ft_set_menu_config(t_data *data)
 	ft_set_nbrstring(data->minimap.mnp_size, rect, H_GREEN, data);
 }
 
-void		ft_dev_mode(t_data *data)
+static void			ft_dev_mode(t_data *data)
 {
 	SDL_Rect	rect;
 
@@ -88,7 +88,7 @@ void		ft_dev_mode(t_data *data)
 	ft_set_nbrstring(data->player.direction, rect, H_GREEN, data);
 }
 
-void		ft_set_infos(t_data *data)
+void				ft_set_infos(t_data *data)
 {
 	SDL_Rect	rect;
 

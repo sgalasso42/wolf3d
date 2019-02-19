@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 15:41:08 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 15:41:43 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:35:21 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void			ft_sdl_quit(t_data *data)
+static void		ft_sdl_quit(t_data *data)
 {
 	SDL_DestroyRenderer(data->sdl.renderer);
 	SDL_DestroyWindow(data->sdl.window);

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:17:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:19:33 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:45:59 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int				ft_is_inwall(t_pos *pos, t_data *data)
 	return (0);
 }
 
-void			ft_get_raydata(t_pos pos,
+static void		ft_get_raydata(t_pos pos,
 				double alpha_r, int i, t_thread *thread)
 {
 	t_pos	player_pos;
@@ -45,7 +45,7 @@ void			ft_get_raydata(t_pos pos,
 	thread->ray[i].y = pos.y * 8;
 }
 
-int				ft_iterate_ray(int i, t_pos *pos, t_thread *thread)
+static int		ft_iterate_ray(int i, t_pos *pos, t_thread *thread)
 {
 	double	angle_r;
 	double	alpha_r;

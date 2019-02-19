@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:24:52 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:41:27 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_sdl_err_exit(char *msg, t_data *data)
+static void	ft_sdl_err_exit(char *msg, t_data *data)
 {
 	ft_putendl(SDL_GetError());
 	ft_putendl(TTF_GetError());
@@ -27,7 +27,7 @@ void	ft_sdl_err_exit(char *msg, t_data *data)
 	ft_err_exit(msg, data);
 }
 
-void	ft_init_sdl(t_data *data)
+static void	ft_init_sdl(t_data *data)
 {
 	data->sdl.window = 0;
 	data->sdl.renderer = 0;
@@ -47,13 +47,13 @@ void	ft_init_sdl(t_data *data)
 	SDL_RaiseWindow(data->sdl.window);
 }
 
-void	ft_init_fonts(t_data *data)
+static void	ft_init_fonts(t_data *data)
 {
 	if (!(data->font = TTF_OpenFont("ressources/fonts/Arial.ttf", 100)))
 		ft_err_exit("wolf3d: error: font failure", data);
 }
 
-void	ft_make_texture(t_data *data)
+static void	ft_make_texture(t_data *data)
 {
 	if (!(data->object[0].img_srf =
 	lt_push(IMG_Load("ressources/img/crate.png"), ft_srfdel)))
@@ -69,7 +69,7 @@ void	ft_make_texture(t_data *data)
 		ft_err_exit("wolf3d: error: bad textures", data);
 }
 
-void	ft_init_data(char *map, t_data *data)
+void		ft_init_data(char *map, t_data *data)
 {
 	ft_bzero(data, sizeof(t_data));
 	data->player.position.x = -1;

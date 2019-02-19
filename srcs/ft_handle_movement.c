@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 16:16:17 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 16:19:14 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:40:02 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int				ft_is_inmap(t_pos *pos, t_data *data)
+static int		ft_is_inmap(t_pos *pos, t_data *data)
 {
 	return (pos->x > 0 && pos->x < data->map_sz.w * BLOC_SIZE
 	&& pos->y > 0 && pos->y < data->map_sz.h * BLOC_SIZE);

@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 16:14:30 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 17:36:32 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int				ft_keyboard1(const Uint8 *state, t_data *data)
+static int		ft_keyboard1(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_I] && data->setting == 1)
 	{
@@ -37,7 +37,7 @@ int				ft_keyboard1(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-int				ft_keyboard2(const Uint8 *state, t_data *data)
+static int		ft_keyboard2(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_1])
 		data->gamemode = 0;
@@ -60,7 +60,7 @@ int				ft_keyboard2(const Uint8 *state, t_data *data)
 	return (1);
 }
 
-int				ft_mouse_motion(t_data *data)
+static int		ft_mouse_motion(t_data *data)
 {
 	if (data->mouse.x > 0.0)
 	{
@@ -79,7 +79,7 @@ int				ft_mouse_motion(t_data *data)
 	return (0);
 }
 
-int				ft_move_events(const Uint8 *state, t_data *data)
+static int		ft_move_events(const Uint8 *state, t_data *data)
 {
 	int		ok;
 
