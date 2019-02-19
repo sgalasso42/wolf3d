@@ -35,6 +35,7 @@ SRC_NAME 	= main.c \
 			  ft_utils.c \
 			  ft_highlvl_graphics.c \
 			  ft_lowlvl_graphics.c \
+			  ft_exit.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image

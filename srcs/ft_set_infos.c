@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 13:41:45 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:38:41 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:45:36 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void		ft_set_menu_config(t_data *data)
 	ft_set_string(rect, "[ + - ]  Minimap zoom", ft_hex_to_rgb(H_GREEN), data);
 	rect = (SDL_Rect){500, 460, 500, 25};
 	ft_set_nbrstring(data->minimap.mnp_size, rect, H_GREEN, data);
-	rect = (SDL_Rect){230, 500, 500, 25};
-	ft_set_string(rect, "[ Esc ]  Exit", ft_hex_to_rgb(H_GREEN), data);
 }
 
 void		ft_dev_mode(t_data *data)
