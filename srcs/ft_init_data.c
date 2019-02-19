@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:49:26 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 13:45:02 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:24:52 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_init_sdl(t_data *data)
 	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, 0)))
 		ft_sdl_err_exit(0, data);
 	if (!(data->sdl.renderer = SDL_CreateRenderer(data->sdl.window, -1,
-	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_ACCELERATED)))
+	SDL_RENDERER_TARGETTEXTURE | SDL_RENDERER_SOFTWARE)))
 		ft_sdl_err_exit(0, data);
 	if (SDL_SetRenderDrawBlendMode(data->sdl.renderer, SDL_BLENDMODE_BLEND) < 0)
 		ft_sdl_err_exit(0, data);

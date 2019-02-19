@@ -6,16 +6,16 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 13:34:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 13:54:30 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:33:12 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-SDL_Surface      *ft_new_surface(int height, int width, t_data *data)
+SDL_Surface		*ft_new_surface(int height, int width, t_data *data)
 {
-	SDL_Surface     *surface;
-	Uint32          color[4];
+	SDL_Surface		*surface;
+	Uint32			color[4];
 
 	color[0] = 0x000000ff;
 	color[1] = 0x0000ff00;
@@ -27,7 +27,8 @@ SDL_Surface      *ft_new_surface(int height, int width, t_data *data)
 	return (surface);
 }
 
-void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
+void			ft_set_string(SDL_Rect rect, char *text,
+				SDL_Color color, t_data *data)
 {
 	SDL_Surface			*surface;
 	SDL_Texture			*texture;
@@ -35,16 +36,17 @@ void		ft_set_string(SDL_Rect rect, char *text, SDL_Color color, t_data *data)
 	if (!(surface = lt_push(TTF_RenderText_Blended(data->font,
 						text, color), ft_srfdel)))
 		ft_err_exit("wolf3d: error: TTF_RenderText_Blended() failure", data);
-	rect.w = (rect.h * surface->w) / surface->h; // largeur relative
+	rect.w = (rect.h * surface->w) / surface->h;
 	if (!(texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface)))
-		ft_err_exit("wolf3d: error: SDL_CreateTextureFromSurface() failure", data);
+		ft_err_exit(
+		"wolf3d: error: SDL_CreateTextureFromSurface() failure", data);
 	lt_release(surface);
 	if ((SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect))) != 0)
 		ft_err_exit("wolf3d: error: SDL_RenderCopy() failure", data);
 	SDL_DestroyTexture(texture);
 }
 
-void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+void			ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
 	int			bpp;
 	Uint8		*p;
@@ -73,7 +75,7 @@ void		ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	}
 }
 
-Uint32		ft_getpixel(SDL_Surface *surface, int x, int y, t_data *data)
+Uint32			ft_getpixel(SDL_Surface *surface, int x, int y, t_data *data)
 {
 	int				bpp;
 	Uint8			*p;

@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:46:59 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 14:03:18 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:39:39 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_set_config(t_data *data)
 	SDL_Rect	rect;
 
 	rect = (SDL_Rect){200, 200, 560, 372};
-	ft_draw_rect(rect,  0x10000000, 0, data);
+	ft_draw_rect(rect, 0x10000000, 0, data);
 	ft_draw_border(rect, 0xFFFFFFFF, data);
 }
 
@@ -44,7 +44,7 @@ void	ft_set_interface(t_data *data)
 	if (data->gamemode == 1 || data->dev_mode == 1)
 		ft_minimap(data);
 	rect = (SDL_Rect){15, 15, 138, 20};
-	ft_draw_rect(rect,  0x00000000, 0, data);
+	ft_draw_rect(rect, 0x00000000, 0, data);
 	ft_draw_border(rect, 0xFFFFFFFF, data);
 	rect = (SDL_Rect){170, 15, 60, 20};
 	ft_draw_rect(rect, 0xFF000000, 0, data);

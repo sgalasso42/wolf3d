@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:56:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 15:32:47 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:18:34 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void		ft_get_mapsize(int fd, char *line, t_data *data)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 	else if ((data->map_sz.w = ft_atoi(line)) <= 1)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
-	else if ((data->map_sz.h = ft_atoi(line + ft_nbrlen(data->map_sz.w, 10))) <= 1)
+	else if ((data->map_sz.h =
+	ft_atoi(line + ft_nbrlen(data->map_sz.w, 10))) <= 1)
 		ft_parsing_exit(fd, "wolf3d: parsing error: bad map format", data);
 }
 
@@ -62,10 +63,12 @@ static void		ft_parse_line(int fd, int index, char *line, t_data *data)
 			data->player.position.x = j + 0.5;
 			data->player.position.y = index + 0.5;
 		}
-		if (line[i] == '0' || line[i] == '1' || line[i] == '2' || line[i] == '3')
+		if (line[i] == '0' || line[i] == '1'
+		|| line[i] == '2' || line[i] == '3')
 		{
 			if ((val = ft_atoi(line + i)) > 9)
-				ft_parsing_exit(fd, "wolf3d: parsing error: bad bloc index", data);
+				ft_parsing_exit(fd,
+				"wolf3d: parsing error: bad bloc index", data);
 			data->map[index][j++] = ft_atoi(line + i);
 		}
 		else if (line[i] != ' ')

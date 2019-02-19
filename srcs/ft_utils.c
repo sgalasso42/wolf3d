@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 13:52:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:40:56 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ void		ft_set_cursor(t_data *data)
 	t_pos	a;
 	t_pos	b;
 
-	a = (t_pos){WIN_W / 2 - 10,WIN_H / 2};
-	b = (t_pos){WIN_W / 2 + 10,WIN_H / 2};
+	a = (t_pos){WIN_W / 2 - 10, WIN_H / 2};
+	b = (t_pos){WIN_W / 2 + 10, WIN_H / 2};
 	draw_line(data, a, b, 0xFF5BE50B, 0);
-	a = (t_pos){WIN_W / 2,WIN_H / 2 - 10};
-	b = (t_pos){WIN_W / 2,WIN_H / 2 + 10};
+	a = (t_pos){WIN_W / 2, WIN_H / 2 - 10};
+	b = (t_pos){WIN_W / 2, WIN_H / 2 + 10};
 	draw_line(data, a, b, 0xFF5BE50B, 0);
 }
 
-static void		ft_remove_light(Uint8 *component, double delta, int arg)
+static void	ft_remove_light(Uint8 *component, double delta, int arg)
 {
 	if (*component > 0)
 		*component = (*component * (1 - delta) + ((0x0 >> arg) * delta));
@@ -38,8 +38,8 @@ static void		ft_remove_light(Uint8 *component, double delta, int arg)
 
 Uint32		ft_light_shade(double distance, Uint32 hexa)
 {
-	SDL_Color color;
-	double  delta;
+	SDL_Color	color;
+	double		delta;
 
 	delta = distance / 300;
 	delta > 0.9 ? delta = 0.9 : 0;
@@ -53,7 +53,7 @@ Uint32		ft_light_shade(double distance, Uint32 hexa)
 	return ((color.r << 24) + (color.g << 16) + (color.b << 8) + (color.a));
 }
 
-void	ft_srfdel(void **ap)
+void		ft_srfdel(void **ap)
 {
 	SDL_Surface		*surface;
 

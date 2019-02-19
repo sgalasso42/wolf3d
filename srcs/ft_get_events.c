@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 13:27:17 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:17:26 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 		pos_v.x = (data->player.position.x * BLOC_SIZE);
 		pos_v.y = (data->player.position.y * BLOC_SIZE) + move_y * 150;
 	}
-	if (ft_is_inmap(&pos_v, data) &&!(ft_is_inwall(&pos_v, data)))
+	if (ft_is_inmap(&pos_v, data) && !(ft_is_inwall(&pos_v, data)))
 		data->player.position.y += move_y;
-	if (ft_is_inmap(&pos_h, data) &&!(ft_is_inwall(&pos_h, data)))
+	if (ft_is_inmap(&pos_h, data) && !(ft_is_inwall(&pos_h, data)))
 		data->player.position.x += move_x;
 	return (1);
 }
 
-/*static*/ int		ft_movement_normal(const Uint8 *state, t_data *data)
+int				ft_movement_normal(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
@@ -62,7 +62,7 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 	return (0);
 }
 
-/*static*/ int		ft_rotation_normal(const Uint8 *state, t_data *data)
+int				ft_rotation_normal(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_RIGHT])
 	{
@@ -80,12 +80,11 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 	return (0);
 }
 
-/*static*/ int		ft_movement_gaming(const Uint8 *state, t_data *data)
+int				ft_movement_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
 	angle_r = data->player.direction * M_PI / 180;
-
 	if (state[SDL_SCANCODE_W])
 		return (ft_movement(angle_r, 1, data));
 	else if (state[SDL_SCANCODE_S])
@@ -93,12 +92,11 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 	return (0);
 }
 
-/*static*/ int		ft_lateral_gaming(const Uint8 *state, t_data *data)
+int				ft_lateral_gaming(const Uint8 *state, t_data *data)
 {
 	double		angle_r;
 
 	angle_r = (data->player.direction + 90) * M_PI / 180;
-
 	if (state[SDL_SCANCODE_D])
 		return (ft_movement(angle_r, 1, data));
 	else if (state[SDL_SCANCODE_A])
@@ -106,7 +104,7 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 	return (0);
 }
 
-/*static*/ int		ft_keyboard(const Uint8 *state, t_data *data)
+int				ft_keyboard(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_I])
 	{
@@ -139,20 +137,22 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 		data->texturing = (data->texturing) ? 0 : 1;
 	else if (state[SDL_SCANCODE_L])
 		data->lightshade = (data->lightshade) ? 0 : 1;
-	else if (state[SDL_SCANCODE_KP_PLUS] && data->minimap.mnp_size * ZOOM_P < 50)
+	else if (state[SDL_SCANCODE_KP_PLUS]
+	&& data->minimap.mnp_size * ZOOM_P < 50)
 		data->minimap.mnp_size *= ZOOM_P;
-	else if (state[SDL_SCANCODE_KP_MINUS] && data->minimap.mnp_size * ZOOM_L > 10)
+	else if (state[SDL_SCANCODE_KP_MINUS]
+	&& data->minimap.mnp_size * ZOOM_L > 10)
 		data->minimap.mnp_size *= ZOOM_L;
 	else
 		return (0);
 	return (1);
 }
 
-/*static*/ int		ft_mouse_motion(t_data *data)
+int				ft_mouse_motion(t_data *data)
 {
 	if (data->mouse.x > 0.0)
 	{
-		data->player.direction = (int)(data->player.direction 
+		data->player.direction = (int)(data->player.direction
 		+ abs(data->mouse.x) / data->player.sensibility) % 360;
 		return (1);
 	}
@@ -171,7 +171,7 @@ int				ft_get_events(t_data *data)
 {
 	const Uint8 *state;
 	int			ok;
-	
+
 	ok = 0;
 	SDL_PollEvent(&(data->sdl.event));
 	state = SDL_GetKeyboardState(0);

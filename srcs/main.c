@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 13:45:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:13:20 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_sdl_quit(t_data *data)
+void			ft_sdl_quit(t_data *data)
 {
 	SDL_DestroyRenderer(data->sdl.renderer);
 	SDL_DestroyWindow(data->sdl.window);
@@ -21,7 +21,7 @@ void	ft_sdl_quit(t_data *data)
 	SDL_Quit();
 }
 
-void	ft_err_exit(char *msg, t_data *data)
+void			ft_err_exit(char *msg, t_data *data)
 {
 	if (msg)
 		ft_putendl_fd(msg, 2);
@@ -31,7 +31,7 @@ void	ft_err_exit(char *msg, t_data *data)
 	exit(EXIT_FAILURE);
 }
 
-void	ft_exit(t_data *data)
+void			ft_exit(t_data *data)
 {
 	lt_destroy();
 	ft_sdl_quit(data);
@@ -44,12 +44,13 @@ static void		ft_make_frame(t_data *data)
 	data->time_last = clock();
 	ft_rc_wolfcalc(data);
 	ft_set_interface(data);
-	data->texture = SDL_CreateTextureFromSurface(data->sdl.renderer, data->surface);
+	data->texture =
+	SDL_CreateTextureFromSurface(data->sdl.renderer, data->surface);
 	lt_release(data->surface);
 	if ((SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0)) != 0)
 		ft_err_exit("wolf3d: error: RenderCopy failure", data);
 	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
-	ft_set_infos(data); // blit au dessus
+	ft_set_infos(data);
 }
 
 static void		ft_game_loop(t_data *data)
@@ -71,7 +72,7 @@ static void		ft_game_loop(t_data *data)
 	}
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_data			data;
 

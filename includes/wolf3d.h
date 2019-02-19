@@ -6,14 +6,12 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 14:05:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:45:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
-
-# include <stdio.h>
 
 # include "libft.h"
 # include <SDL2/SDL.h>
@@ -74,15 +72,15 @@ struct						s_coef
 struct						s_sdl
 {
 	SDL_Event			event;
-	SDL_Window      	*window;
-	SDL_Renderer    	*renderer;
+	SDL_Window			*window;
+	SDL_Renderer		*renderer;
 };
- 
+
 struct						s_ray
 {
-	int					x;		// intersection x
-	int					y;		// intersection y
-	int					axis;	// axe d'intersection
+	int					x;
+	int					y;
+	int					axis;
 	double				angle_d;
 	double				distance;
 	double				dist_minimap;
@@ -95,7 +93,7 @@ struct						s_thread
 	pthread_t			th;
 	t_data				*data;
 	int					x_start;
-	t_ray				ray[WIN_W / 8]; // to norme
+	t_ray				ray[WIN_W / 8];
 };
 
 struct						s_object
@@ -199,8 +197,9 @@ void						ft_draw_rect(SDL_Rect rect, Uint32 color,
 							t_limit *limit, t_data *data);
 void						ft_draw_border(SDL_Rect rect, Uint32 color,
 							t_data *data);
-SDL_Surface					*ft_new_surface(int height, int width, t_data *data);
-void    					ft_set_string(SDL_Rect rect, char *text,
+SDL_Surface					*ft_new_surface(int height,
+							int width, t_data *data);
+void						ft_set_string(SDL_Rect rect, char *text,
 							SDL_Color color, t_data *data);
 void						ft_setpixel(SDL_Surface *surface,
 							int x, int y, Uint32 pixel);

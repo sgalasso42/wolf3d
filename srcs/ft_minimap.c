@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 13:55:31 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 14:34:35 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 	b.y = data->minimap.centre.y + step.y;
 	if (data->dev_mode == 1)
 		draw_line(data, a, b,
-		ft_get_color2(data->thread[i].ray[j].axis, data->thread[i].ray[j].angle_d),
+		ft_get_color2(data->thread[i].ray[j].axis,
+		data->thread[i].ray[j].angle_d),
 		&(data->minimap.limit));
 	else
 		draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
@@ -85,7 +86,7 @@ static void		ft_draw_player(t_data *data)
 	ft_draw_rect(player, 0x0, 0, data);
 }
 
-void	ft_minimap(t_data *data)
+void			ft_minimap(t_data *data)
 {
 	SDL_Rect	rect;
 	int			i;
@@ -99,7 +100,8 @@ void	ft_minimap(t_data *data)
 		j = 0;
 		while (j < data->map_sz.w)
 		{
-			rect = (SDL_Rect){data->minimap.diff.x + (j * data->minimap.mnp_size),
+			rect = (SDL_Rect){data->minimap.diff.x
+			+ (j * data->minimap.mnp_size),
 			data->minimap.diff.y + (i * data->minimap.mnp_size),
 			data->minimap.mnp_size, data->minimap.mnp_size};
 			if (data->map[i][j] == 1)
