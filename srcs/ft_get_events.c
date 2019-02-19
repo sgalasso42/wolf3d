@@ -6,100 +6,11 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 16:03:44 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 16:14:30 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-int				ft_is_inmap(t_pos *pos, t_data *data)
-{
-	return (pos->x > 0 && pos->x < data->map_sz.w * BLOC_SIZE
-	&& pos->y > 0 && pos->y < data->map_sz.h * BLOC_SIZE);
-}
-
-int				ft_movement(double angle_r, int dir, t_data *data)
-{
-	t_pos		move;
-	t_pos		pos_h;
-	t_pos		pos_v;
-
-	move.y = sin(angle_r) * data->player.speed;
-	move.x = cos(angle_r) * data->player.speed;
-	pos_h.y = (data->player.position.y * BLOC_SIZE);
-	pos_v.x = (data->player.position.x * BLOC_SIZE);
-	if (dir == 1)
-	{
-		pos_h.x = (data->player.position.x * BLOC_SIZE) - move.x * 150;
-		pos_v.y = (data->player.position.y * BLOC_SIZE) - move.y * 150;
-		move.y = -move.y;
-		move.x = -move.x;
-	}
-	else
-	{
-		pos_h.x = (data->player.position.x * BLOC_SIZE) + move.x * 150;
-		pos_v.y = (data->player.position.y * BLOC_SIZE) + move.y * 150;
-	}
-	if (ft_is_inmap(&pos_v, data) && !(ft_is_inwall(&pos_v, data)))
-		data->player.position.y += move.y;
-	if (ft_is_inmap(&pos_h, data) && !(ft_is_inwall(&pos_h, data)))
-		data->player.position.x += move.x;
-	return (1);
-}
-
-int				ft_movement_normal(const Uint8 *state, t_data *data)
-{
-	double		angle_r;
-
-	angle_r = data->player.direction * M_PI / 180;
-	if (state[SDL_SCANCODE_UP])
-		return (ft_movement(angle_r, 1, data));
-	else if (state[SDL_SCANCODE_DOWN])
-		return (ft_movement(angle_r, 0, data));
-	return (0);
-}
-
-int				ft_rotation_normal(const Uint8 *state, t_data *data)
-{
-	if (state[SDL_SCANCODE_RIGHT])
-	{
-		data->player.direction = (int)(data->player.direction + 5) % 360;
-		return (1);
-	}
-	else if (state[SDL_SCANCODE_LEFT])
-	{
-		if (data->player.direction - 5 > 0)
-			data->player.direction = (int)(data->player.direction - 5);
-		else
-			data->player.direction = 360;
-		return (1);
-	}
-	return (0);
-}
-
-int				ft_movement_gaming(const Uint8 *state, t_data *data)
-{
-	double		angle_r;
-
-	angle_r = data->player.direction * M_PI / 180;
-	if (state[SDL_SCANCODE_W])
-		return (ft_movement(angle_r, 1, data));
-	else if (state[SDL_SCANCODE_S])
-		return (ft_movement(angle_r, 0, data));
-	return (0);
-}
-
-int				ft_lateral_gaming(const Uint8 *state, t_data *data)
-{
-	double		angle_r;
-
-	angle_r = (data->player.direction + 90) * M_PI / 180;
-	if (state[SDL_SCANCODE_D])
-		return (ft_movement(angle_r, 1, data));
-	else if (state[SDL_SCANCODE_A])
-		return (ft_movement(angle_r, 0, data));
-	return (0);
-}
 
 int				ft_keyboard1(const Uint8 *state, t_data *data)
 {

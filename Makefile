@@ -28,6 +28,8 @@ SRC_NAME 	= main.c \
 			  ft_get_map.c \
 			  ft_init_data.c \
 			  ft_get_events.c \
+			  ft_handle_events.c \
+			  ft_handle_movement.c \
 			  ft_rc_wolfcalc.c \
 			  ft_minimap.c \
 			  ft_set_infos.c \

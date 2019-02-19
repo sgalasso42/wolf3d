@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 15:24:41 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 16:17:47 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,45 +153,26 @@ struct						s_data
 	int					fps;
 };
 
-/*
-** main.c
-*/
-
 void						ft_exit(t_data *data);
 void						ft_err_exit(char *msg, t_data *data);
-
-/*
-** ft_get_map.c -- ft_init_data.c
-*/
 
 void						ft_get_map(char *map, t_data *data);
 void						ft_init_data(char *map, t_data *data);
 
-/*
-** ft_get_events.c
-*/
-
+int							ft_movement(double angle_r, int dir, t_data *data);
+int							ft_movement_gaming(const Uint8 *state, t_data *data);
+int							ft_lateral_gaming(const Uint8 *state, t_data *data);
+int							ft_movement_normal(const Uint8 *state, t_data *data);
+int							ft_rotation_normal(const Uint8 *state, t_data *data);
 int							ft_get_events(t_data *data);
-
-/*
-** ft_rc_wolfcalc.c
-*/
 
 int							ft_is_inwall(t_pos *pos, t_data *data);
 Uint32						ft_get_color2(int axis, int angle_d);
 void						ft_rc_wolfcalc(t_data *data);
 
-/*
-** ft_set_infos.c -- ft_set_interface.c -- ft_minimap.c
-*/
-
 void						ft_set_infos(t_data *data);
 void						ft_set_interface(t_data *data);
 void						ft_minimap(t_data *data);
-
-/*
-** ft_utils.c -- ft_highlvl_graphics.c -- ft_lowlvl_graphics.c
-*/
 
 double						ft_pythagore(int a, int b);
 void						ft_set_cursor(t_data *data);
