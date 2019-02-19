@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/01/24 16:09:00 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/01/24 16:18:42 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 		data->minimap.mnp_size *= ZOOM_L;
 	else if (state[SDL_SCANCODE_SPACE])
 		data->jump = 100;
+	else if (state[SDL_SCANCODE_LSHIFT])
+		data->jump = -100;
 	else
 		return (0);
 	return (1);
@@ -174,7 +176,8 @@ int				ft_get_events(t_data *data)
 	if (data->sdl.event.type == SDL_KEYDOWN)
 		ok = (ft_keyboard(state, data)) ? 1 : ok;
 	if (data->sdl.event.type == SDL_KEYUP
-	&& data->sdl.event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+	&& (data->sdl.event.key.keysym.scancode == SDL_SCANCODE_SPACE
+	|| data->sdl.event.key.keysym.scancode == SDL_SCANCODE_LSHIFT))
 	{
 		data->jump = 0;
 		ok = 1;
