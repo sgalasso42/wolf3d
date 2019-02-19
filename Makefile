@@ -30,6 +30,8 @@ SRC_NAME 	= main.c \
 			  ft_get_events.c \
 			  ft_handle_events.c \
 			  ft_handle_movement.c \
+			  ft_handle_color.c \
+			  ft_raycast.c \
 			  ft_rc_wolfcalc.c \
 			  ft_minimap.c \
 			  ft_set_infos.c \
