@@ -1,12 +1,13 @@
 NAME 		= wolf3d
 
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -g
 
 ID_UN 		= $(shell id -un)
 SRC_PATH 	= srcs/
 OBJ_PATH 	= objs/
-INC_PATH	= includes/ libft/includes/
+INC_PATH	= includes/ \
+			  libft/includes/
 LIBFT 		= libft/
 
 WHITE       = "\\033[0m"
@@ -22,7 +23,6 @@ INC_PATH	+= /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/SDL2/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2_ttf/$(TTF_NUM)/include/ \
 			   /Users/$(ID_UN)/.brew/Cellar/sdl2_image/$(IMG_NUM)/include/ \
-			   /Users/$(ID_UN)/.brew/Cellar/sdl2_mixer/$(MIX_NUM)/include/ \
 
 SRC_NAME 	= main.c \
 			  ft_get_map.c \
@@ -37,7 +37,7 @@ SRC_NAME 	= main.c \
 			  ft_lowlvl_graphics.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
+LSDL2 	 = -L/Users/$(ID_UN)/.brew/lib/ -lSDL2 -lSDL2_ttf -lSDL2_image
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
