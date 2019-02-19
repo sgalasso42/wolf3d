@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 13:35:21 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:29:07 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:38:58 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,28 @@ static void		bresenham_tab(int *tab, t_pos p1, t_pos p2)
 	tab[4] = (tab[0] > tab[2] ? tab[0] : -tab[2]) / 2;
 }
 
-void			draw_line(t_data *data, t_pos p1, t_pos p2,
+void			draw_line(t_data *data, t_vec vec,
 				Uint32 color, t_limit *limit)
 {
 	int e2;
 	int tab[5];
 
-	bresenham_tab(tab, p1, p2);
-	while (!((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y))
+	bresenham_tab(tab, vec.p1, vec.p2);
+	while (!((int)vec.p1.x == (int)vec.p2.x && (int)vec.p1.y == (int)vec.p2.y))
 	{
-		if (!limit || ((int)p1.x > limit->l && (int)p1.x < limit->r
-		&& (int)p1.y > limit->t && (int)p1.y < limit->b))
-			ft_setpixel(data->surface, (int)p1.x, (int)p1.y, color);
+		if (!limit || ((int)vec.p1.x > limit->l && (int)vec.p1.x < limit->r
+		&& (int)vec.p1.y > limit->t && (int)vec.p1.y < limit->b))
+			ft_setpixel(data->surface, (int)vec.p1.x, (int)vec.p1.y, color);
 		e2 = tab[4];
-		if (e2 > -tab[0] && (int)p1.x != (int)p2.x)
+		if (e2 > -tab[0] && (int)vec.p1.x != (int)vec.p2.x)
 		{
 			tab[4] -= tab[2];
-			p1.x = (int)p1.x + tab[1];
+			vec.p1.x = (int)vec.p1.x + tab[1];
 		}
-		if (e2 < tab[2] && (int)p1.y != (int)p2.y)
+		if (e2 < tab[2] && (int)vec.p1.y != (int)vec.p2.y)
 		{
 			tab[4] += tab[0];
-			p1.y = (int)p1.y + tab[3];
+			vec.p1.y = (int)vec.p1.y + tab[3];
 		}
 	}
 }
@@ -81,17 +81,19 @@ void			ft_draw_rect(SDL_Rect rect, Uint32 color,
 
 void			ft_draw_border(SDL_Rect rect, Uint32 color, t_data *data)
 {
-	t_pos p1;
-	t_pos p2;
-	t_pos p3;
-	t_pos p4;
+	t_vec vec1;
+	t_vec vec2;
+	t_vec vec3;
+	t_vec vec4;
 
-	p1 = (t_pos){rect.x, rect.y};
-	p2 = (t_pos){rect.x + rect.w, rect.y};
-	p3 = (t_pos){rect.x, rect.y + rect.h};
-	p4 = (t_pos){rect.x + rect.w, rect.y + rect.h};
-	draw_line(data, p1, p2, color, 0);
-	draw_line(data, p1, p3, color, 0);
-	draw_line(data, p2, p4, color, 0);
-	draw_line(data, p3, p4, color, 0);
+	vec1 = (t_vec){(t_pos){rect.x, rect.y}, (t_pos){rect.x + rect.w, rect.y}};
+	vec2 = (t_vec){(t_pos){rect.x, rect.y}, (t_pos){rect.x, rect.y + rect.h}};
+	vec3 = (t_vec){(t_pos){rect.x + rect.w, rect.y},
+	(t_pos){rect.x + rect.w, rect.y + rect.h}};
+	vec4 = (t_vec){(t_pos){rect.x, rect.y + rect.h},
+	(t_pos){rect.x + rect.w, rect.y + rect.h}};
+	draw_line(data, vec1, color, 0);
+	draw_line(data, vec2, color, 0);
+	draw_line(data, vec3, color, 0);
+	draw_line(data, vec4, color, 0);
 }

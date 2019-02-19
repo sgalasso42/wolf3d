@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:56:50 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:40:56 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:28:56 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ double		ft_pythagore(int a, int b)
 
 void		ft_set_cursor(t_data *data)
 {
-	t_pos	a;
-	t_pos	b;
+	t_vec	vec;
 
-	a = (t_pos){WIN_W / 2 - 10, WIN_H / 2};
-	b = (t_pos){WIN_W / 2 + 10, WIN_H / 2};
-	draw_line(data, a, b, 0xFF5BE50B, 0);
-	a = (t_pos){WIN_W / 2, WIN_H / 2 - 10};
-	b = (t_pos){WIN_W / 2, WIN_H / 2 + 10};
-	draw_line(data, a, b, 0xFF5BE50B, 0);
+	vec = (t_vec){(t_pos){WIN_W / 2 - 10, WIN_H / 2},
+	(t_pos){WIN_W / 2 + 10, WIN_H / 2}};
+	draw_line(data, vec, 0xFF5BE50B, 0);
+	vec = (t_vec){(t_pos){WIN_W / 2, WIN_H / 2 - 10},
+	(t_pos){WIN_W / 2, WIN_H / 2 + 10}};
+	draw_line(data, vec, 0xFF5BE50B, 0);
 }
 
 static void	ft_remove_light(Uint8 *component, double delta, int arg)

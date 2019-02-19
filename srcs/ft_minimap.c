@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:34:35 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:27:29 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 {
 	double		angle_r;
 	t_pos		step;
+	t_vec		vec;
 	t_pos		a;
 	t_pos		b;
 
@@ -55,13 +56,12 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 	a = (t_pos){data->minimap.centre.x, data->minimap.centre.y};
 	b.x = data->minimap.centre.x + step.x;
 	b.y = data->minimap.centre.y + step.y;
+	vec = (t_vec){a, b};
 	if (data->dev_mode == 1)
-		draw_line(data, a, b,
-		ft_get_color2(data->thread[i].ray[j].axis,
-		data->thread[i].ray[j].angle_d),
-		&(data->minimap.limit));
+		draw_line(data, vec, ft_get_color2(data->thread[i].ray[j].axis,
+		data->thread[i].ray[j].angle_d), &(data->minimap.limit));
 	else
-		draw_line(data, a, b, 0xFFBFFCFF, &(data->minimap.limit));
+		draw_line(data, vec, 0xFFBFFCFF, &(data->minimap.limit));
 }
 
 static void		ft_draw_player(t_data *data)

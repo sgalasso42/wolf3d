@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:45:29 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:24:41 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 typedef struct s_limit		t_limit;
 typedef struct s_pos		t_pos;
+typedef struct s_vec		t_vec;
 typedef struct s_size		t_size;
 typedef struct s_coef		t_coef;
 typedef struct s_ray		t_ray;
@@ -55,6 +56,12 @@ struct						s_pos
 {
 	double				x;
 	double				y;
+};
+
+struct						s_vec
+{
+	t_pos				p1;
+	t_pos				p2;
 };
 
 struct						s_size
@@ -191,7 +198,7 @@ void						ft_set_cursor(t_data *data);
 Uint32						ft_light_shade(double distance, Uint32 color);
 void						ft_srfdel(void **ap);
 SDL_Color					ft_hex_to_rgb(int hexa);
-void						draw_line(t_data *data, t_pos p1, t_pos p2,
+void						draw_line(t_data *data, t_vec vec,
 							Uint32 color, t_limit *limit);
 void						ft_draw_rect(SDL_Rect rect, Uint32 color,
 							t_limit *limit, t_data *data);

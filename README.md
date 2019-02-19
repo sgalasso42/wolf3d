@@ -3,7 +3,7 @@
 * *A graphic project of 42 school*
 
 ## demo
-<img src="wolf3d_demo.gif" width="400"></img>
+<img src="ressources/img/wolf3d_demo.gif" width="400"></img>
 
 ## Built with
 

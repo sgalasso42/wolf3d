@@ -6,13 +6,13 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 14:35:00 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 15:12:49 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int			ft_is_inwall(t_pos *pos, t_data *data)
+int				ft_is_inwall(t_pos *pos, t_data *data)
 {
 	int		x2;
 	int		y2;
@@ -26,8 +26,8 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 	return (0);
 }
 
-void		ft_get_raydata(t_pos pos,
-t_pos player_pos, double alpha_r, int i, t_thread *thread)
+void			ft_get_raydata(t_pos pos,
+				t_pos player_pos, double alpha_r, int i, t_thread *thread)
 {
 	double	distance_x;
 	double	distance_y;
@@ -42,36 +42,33 @@ t_pos player_pos, double alpha_r, int i, t_thread *thread)
 	thread->ray[i].y = pos.y * 8;
 }
 
-void		ft_calc_distance(int i, int x, t_thread *thread)
+void			ft_calc_distance(int i, int x, t_thread *thread)
 {
-	t_pos	player_pos;	// position calculee
-	double	alpha_r;	// angle entre direction et ray
-	double	angle_r;	// angle radian
+	t_pos	player_pos;
+	double	alpha_r;
+	double	angle_r;
 	t_pos	pos;
 
 	player_pos.x = thread->data->player.position.x * BLOC_SIZE;
 	player_pos.y = thread->data->player.position.y * BLOC_SIZE;
-
 	thread->ray[i].angle_d =
 	(thread->data->player.direction - 30) + (x * (60.0 / WIN_W));
-
 	angle_r = thread->ray[i].angle_d * M_PI / 180;
 	alpha_r = (fabs(thread->data->player.direction
 	- thread->ray[i].angle_d)) * M_PI / 180;
-
 	pos.x = player_pos.x;
 	pos.y = player_pos.y;
 	while (pos.x > 0 && pos.x < thread->data->map_sz.w * BLOC_SIZE
 	&& pos.y > 0 && pos.y < thread->data->map_sz.h * BLOC_SIZE)
 	{
-		if ((ft_is_inwall(&pos, thread->data)) == 1) // y
+		if ((ft_is_inwall(&pos, thread->data)) == 1)
 		{
 			thread->ray[i].axis = 1;
 			ft_get_raydata(pos, player_pos, alpha_r, i, thread);
 			return ;
 		}
 		pos.x += -cos(angle_r) * 1;
-		if ((ft_is_inwall(&pos, thread->data)) == 1) // x
+		if ((ft_is_inwall(&pos, thread->data)) == 1)
 		{
 			thread->ray[i].axis = 2;
 			ft_get_raydata(pos, player_pos, alpha_r, i, thread);
@@ -79,11 +76,10 @@ void		ft_calc_distance(int i, int x, t_thread *thread)
 		}
 		pos.y += -sin(angle_r) * 1;
 	}
-	// out of map
 	thread->ray[i].distance = -1;
 }
 
-void					ft_calc_walls(int i, int x, t_thread *thread)
+void			ft_calc_walls(int i, int x, t_thread *thread)
 {
 	double	height;
 
@@ -95,7 +91,7 @@ void					ft_calc_walls(int i, int x, t_thread *thread)
 	thread->ray[i].wall_bot = WIN_H - ((WIN_H - height) / 2);
 }
 
-Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
+Uint32			ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 {
 	Uint32		color;
 
@@ -117,7 +113,7 @@ Uint32		ft_get_color(int axis, int angle_d, int x, int y, t_data *data)
 	return (color | 0xFF000000);
 }
 
-Uint32		ft_get_color2(int axis, int angle_d)
+Uint32			ft_get_color2(int axis, int angle_d)
 {
 	Uint32		color;
 
@@ -139,7 +135,7 @@ Uint32		ft_get_color2(int axis, int angle_d)
 	return (color);
 }
 
-Uint32					ft_calc_col(int y, int i, t_thread *thread)
+Uint32			ft_calc_col(int y, int i, t_thread *thread)
 {
 	Uint32	color;
 	double	y_pixel;
@@ -165,7 +161,7 @@ Uint32					ft_calc_col(int y, int i, t_thread *thread)
 	return (color);
 }
 
-void					*ft_calc_frame(void *arg)
+void			*ft_calc_frame(void *arg)
 {
 	t_thread	*thread;
 	Uint32		color;
@@ -185,9 +181,10 @@ void					*ft_calc_frame(void *arg)
 			color = 0x0;
 			if (y < thread->ray[i].wall_top)
 				color = (thread->data->lightshade) ? 0xFF46463B : 0xFFFFFED6;
-			else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
+			else if (y >= thread->ray[i].wall_top
+			&& y <= thread->ray[i].wall_bot)
 			{
-				color =  (thread->data->texturing) ? ft_calc_col(y, i, thread)
+				color = (thread->data->texturing) ? ft_calc_col(y, i, thread)
 				: ft_get_color2(thread->ray[i].axis, thread->ray[i].angle_d);
 				if (thread->data->lightshade == 1)
 					color = ft_light_shade(thread->ray[i].distance, color);
@@ -200,14 +197,14 @@ void					*ft_calc_frame(void *arg)
 	pthread_exit(0);
 }
 
-void				ft_rc_wolfcalc(t_data *data)
+void			ft_rc_wolfcalc(t_data *data)
 {
 	int i;
 
 	i = 0;
 	data->surface = ft_new_surface(WIN_H, WIN_W, data);
 	while (i < 8)
-	{	
+	{
 		data->thread[i].x_start = i;
 		data->thread[i].data = data;
 		ft_bzero(data->thread[i].ray, sizeof(t_ray) * (WIN_W / 8));
