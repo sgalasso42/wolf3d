@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 15:21:39 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 13:00:58 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ int			ft_is_inwall(t_pos *pos, t_data *data)
 
 	x2 = pos->x / BLOC_SIZE;
 	y2 = pos->y / BLOC_SIZE;
+	if (x2 < 0 || x2 > data->map_sz.w || y2 < 0 || y2 > data->map_sz.h)
 	if (data->map[y2][x2] == 1 || data->map[y2][x2] == 3)
 		return (1);
 	return (0);
 }
 
 void		ft_get_raydata(t_pos pos,
-			t_pos player_pos, double alpha_r, int i, t_thread *thread)
+t_pos player_pos, double alpha_r, int i, t_thread *thread)
 {
 	double	distance_x;
 	double	distance_y;
