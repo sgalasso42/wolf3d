@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 10:03:00 by sgalasso          #+#    #+#             */
-/*   Updated: 2018/12/30 15:33:03 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/02/19 13:27:17 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 	move_x = cos(angle_r) * data->player.speed;
 	if (dir == 1)
 	{
-
 		pos_h.x = (data->player.position.x * BLOC_SIZE) - move_x * 150;
 		pos_h.y = (data->player.position.y * BLOC_SIZE);
 		pos_v.x = (data->player.position.x * BLOC_SIZE);
@@ -43,7 +42,6 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 		pos_h.y = (data->player.position.y * BLOC_SIZE);
 		pos_v.x = (data->player.position.x * BLOC_SIZE);
 		pos_v.y = (data->player.position.y * BLOC_SIZE) + move_y * 150;
-
 	}
 	if (ft_is_inmap(&pos_v, data) &&!(ft_is_inwall(&pos_v, data)))
 		data->player.position.y += move_y;
@@ -111,7 +109,18 @@ int				ft_movement(double angle_r, int dir, t_data *data)
 /*static*/ int		ft_keyboard(const Uint8 *state, t_data *data)
 {
 	if (state[SDL_SCANCODE_I])
-		data->setting = (data->setting) ? 0 : 1;
+	{
+		if (data->setting == 1)
+		{
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+			data->setting = 0;
+		}
+		else
+		{
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+			data->setting = 1;
+		}
+	}
 	else if (state[SDL_SCANCODE_KP_8])
 		data->player.speed -= (data->player.speed > 0.04) ? 0.02 : 0;
 	else if (state[SDL_SCANCODE_KP_9])
@@ -168,6 +177,8 @@ int				ft_get_events(t_data *data)
 	state = SDL_GetKeyboardState(0);
 	SDL_GetRelativeMouseState(&(data->mouse.x), &(data->mouse.y));
 	if (state[SDL_SCANCODE_ESCAPE])
+		ft_exit(data);
+	if (data->sdl.event.type == SDL_QUIT)
 		ft_exit(data);
 	if (data->sdl.event.type == SDL_KEYDOWN)
 		ok = (ft_keyboard(state, data)) ? 1 : ok;
