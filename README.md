@@ -1,6 +1,5 @@
 ## Wolf3d
 * *A wolf3d like game, made with raycasting*
-* *A graphic project of 42 school*
 
 ## demo
 <img src="ressources/img/wolf3d_demo.gif" width="400"></img>
