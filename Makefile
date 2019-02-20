@@ -1,5 +1,4 @@
 NAME 		= wolf3d
-
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror -g
 
@@ -51,7 +50,7 @@ INC = $(addprefix -I, $(INC_PATH))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@make -C $(LIBFT)
+	@Make -C $(LIBFT)
 	@printf "$(CYAN)[WAIT]$(WHITE) Compiling into %-50s\r" $(NAME)
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L$(LIBFT) -lft $(INC) $(LSDL2)
 	@printf "$(GREEN)[OK]$(WHITE) %s has been well compiled\n" $(NAME)
@@ -61,7 +60,7 @@ $(OBJ) : | $(OBJ_PATH)
 $(OBJ_PATH) :
 	@mkdir objs
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c Makefile
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC_PATH) Makefile
 	@printf "$(CYAN)[WAIT]$(WHITE) Compiling into .o %-50s\r" $@
 	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
