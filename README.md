@@ -5,31 +5,22 @@
 <img src="ressources/img/wolf3d_demo.gif" width="400"></img>
 
 ## Built with
+C language, SDL2 library, Raycasting method
 
-C language</br>
-SDL2 library</br>
-Raycasting method</br>
-
-## Installing
-
+## Make it work
 * Git clone http://github.com/sgalasso/wolf3d.git
 * Compile it with `make`
 
 ## Usage
+Run `./wolf3d [map]`
 
-`./wolf3d path/[map]`
+## Make a map
+First line : width height</br>
+Bloc 1 : wall</br>
+Bloc 0 : void</br>
+Bloc 2 : spawn
 
-## How to create a valid map
-
-* create map file
-* *first line* [w] [h]
-* builting:
-* *0 : void*
-* *1 : wall*
-* *2 : player spawn*
-* *separate with space*
-
-## Map exemple
+## Exemple
 
 ```
 4 4
@@ -39,14 +30,5 @@ Raycasting method</br>
 1 1 1 1
 ```
 
-## How to use it
-
-* show config `i`
-* changing mode :
-* *`1` normal*
-* *`2` gaming*
-* *`3` dev*
-
 ## Author
-**©Jeanne Sauron**</br>
 **©Simon Galasso**</br>
