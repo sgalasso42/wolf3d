@@ -7,11 +7,11 @@
 ## Built with
 C language, SDL2 library, Raycasting method
 
-## Make it work
+## Installing
 * Git clone http://github.com/sgalasso/wolf3d.git
 * Compile it with `make`
 
-## Usage
+## Make it work
 Run `./wolf3d [map]`
 
 ## Make a map
@@ -20,7 +20,7 @@ Bloc 1 : wall</br>
 Bloc 0 : void</br>
 Bloc 2 : spawn
 
-## Exemple
+## Map Exemple
 
 ```
 4 4
@@ -31,4 +31,4 @@ Bloc 2 : spawn
 ```
 
 ## Author
-**©Simon Galasso**</br>
+Simon Galasso
