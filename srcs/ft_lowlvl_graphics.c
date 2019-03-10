@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 13:34:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:41:40 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 19:06:33 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,16 @@ SDL_Surface		*ft_new_surface(int height, int width, t_data *data)
 void			ft_set_string(SDL_Rect rect, char *text,
 				SDL_Color color, t_data *data)
 {
+	SDL_Rect			sdl_rect;
 	SDL_Surface			*surface;
-	SDL_Texture			*texture;
 
-	if (!(surface = lt_push(TTF_RenderText_Blended(data->font,
-						text, color), ft_srfdel)))
-		ft_err_exit("wolf3d: error: TTF_RenderText_Blended() failure", data);
-	rect.w = (rect.h * surface->w) / surface->h;
-	if (!(texture = SDL_CreateTextureFromSurface(data->sdl.renderer, surface)))
-		ft_err_exit(
-		"wolf3d: error: SDL_CreateTextureFromSurface() failure", data);
-	lt_release(surface);
-	if ((SDL_RenderCopy(data->sdl.renderer, texture, NULL, &(rect))) != 0)
-		ft_err_exit("wolf3d: error: SDL_RenderCopy() failure", data);
-	SDL_DestroyTexture(texture);
+	sdl_rect = (SDL_Rect){rect.x, rect.y, rect.w, rect.h};
+	if (!(surface = TTF_RenderText_Blended(data->font, text, color)))
+		ft_err_exit("Wolf3d: Error while making surface", data);
+	sdl_rect.w = (sdl_rect.h * surface->w) / surface->h;
+	if ((SDL_BlitScaled(surface, 0, data->surface, &sdl_rect)) == -1)
+		ft_err_exit("Wolf3d: Error can't blit surface", data);
+	SDL_FreeSurface(surface);
 }
 
 void			ft_setpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)

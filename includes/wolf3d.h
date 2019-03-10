@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/20 15:22:32 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:01:48 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@
 
 # define WIN_H 700
 # define WIN_W 1000
-# define BLOC_SIZE 50
+# define BLOC_SIZE 200
 # define DIST_SCREEN 900
 
 # define ZOOM_P 1.1
 # define ZOOM_L 0.9
+
+# define VERTICAL_HIT 1
+# define HORIZONTAL_HIT 2
 
 typedef struct s_limit		t_limit;
 typedef struct s_pos		t_pos;
@@ -171,8 +174,6 @@ int							ft_rotation_normal(const Uint8 *state,
 int							ft_get_events(t_data *data);
 
 int							ft_is_inwall(t_pos *pos, t_data *data);
-Uint32						ft_get_color(int axis, int angle_d,
-							t_coef pos, t_data *data);
 Uint32						ft_get_color2(int axis, int angle_d);
 void						ft_assign_color(int x, int y,
 							int i, t_thread *thread);

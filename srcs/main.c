@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:45:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:44:58 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 19:07:44 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,24 @@ static void		ft_make_frame(t_data *data)
 {
 	data->nb_frame++;
 	data->time_last = clock();
+
 	ft_rc_wolfcalc(data);
 	ft_set_interface(data);
-	data->texture =
-	SDL_CreateTextureFromSurface(data->sdl.renderer, data->surface);
+	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
+	ft_set_infos(data);
+
+	data->texture = SDL_CreateTextureFromSurface(
+	data->sdl.renderer, data->surface);
 	lt_release(data->surface);
 	if ((SDL_RenderCopy(data->sdl.renderer, data->texture, 0, 0)) != 0)
 		ft_err_exit("wolf3d: error: RenderCopy failure", data);
-	data->fps = 1000 / (clock() / 10000 - data->time_last / 10000);
-	ft_set_infos(data);
+	SDL_DestroyTexture(data->texture);
+	SDL_RenderPresent(data->sdl.renderer);
 }
 
 static void		ft_game_loop(t_data *data)
 {
 	ft_make_frame(data);
-	SDL_DestroyTexture(data->texture);
-	SDL_RenderPresent(data->sdl.renderer);
 	while (1)
 	{
 		if (ft_get_events(data))
@@ -39,8 +41,6 @@ static void		ft_game_loop(t_data *data)
 			if ((SDL_RenderClear(data->sdl.renderer)) != 0)
 				ft_err_exit("wolf3d: error: RenderClear failure", data);
 			ft_make_frame(data);
-			SDL_DestroyTexture(data->texture);
-			SDL_RenderPresent(data->sdl.renderer);
 		}
 		SDL_FlushEvent(SDL_KEYDOWN | SDL_MOUSEMOTION);
 	}

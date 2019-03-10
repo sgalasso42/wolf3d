@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 23:55:04 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:43:19 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 19:08:24 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			ft_rc_wolfcalc(t_data *data)
 		data->thread[i].x_start = i;
 		data->thread[i].data = data;
 		ft_bzero(data->thread[i].ray, sizeof(t_ray) * (WIN_W / 8));
-		if ((pthread_create(&(data->thread[i].th), NULL,
+		if ((pthread_create(&(data->thread[i].th), 0,
 		ft_calc_frame, (void *)&(data->thread[i]))) != 0)
 			ft_err_exit("wolf3d: error: pthread_create failed", data);
 		i++;
