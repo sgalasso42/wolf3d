@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:10:19 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/03/10 20:57:34 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 22:05:02 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static SDL_Surface	*choose_texture(int i, t_thread *thread)
 {
+	SDL_Surface	*surface[4] = {
+	thread->data->object[0].img_srf, thread->data->object[1].img_srf,
+	thread->data->object[2].img_srf, thread->data->object[3].img_srf};
+
 	if (thread->ray[i].axis == VERTICAL_HIT)
 	{
-		if ((thread->ray[i].angle_d >= 0 && thread->ray[i].angle_d <= 180)
-		|| thread->ray[i].angle_d >= 360)
-			return (thread->data->object[0].img_srf);
-		else
-			return (thread->data->object[1].img_srf);
+		return (((thread->ray[i].angle_d >= 0 && thread->ray[i].angle_d <= 180)
+		|| thread->ray[i].angle_d >= 360) ? surface[0] : surface[1]);
 	}
-	if (thread->ray[i].angle_d >= 90 && thread->ray[i].angle_d <= 270)
-		return (thread->data->object[2].img_srf);
-	return (thread->data->object[3].img_srf);
+	return ((thread->ray[i].angle_d >= 90 && thread->ray[i].angle_d <= 270)
+	? surface[2] : surface[3]);
 }
 
 static Uint32		ft_calc_col(int y, int i, t_thread *thread)
@@ -52,26 +52,16 @@ static Uint32		ft_calc_col(int y, int i, t_thread *thread)
 	return (color);
 }
 
-Uint32				ft_get_color2(int axis, int angle_d)
+Uint32				ft_get_color(int axis, int angle_d)
 {
-	Uint32		color;
+	const Uint32	tab[4] = {0xFF5454E5, 0xFF86D865, 0xFFD8815F, 0xFF89EFFF};
 
-	color = 0;
-	if (axis == 1)
+	if (axis == VERTICAL_HIT)
 	{
-		if ((angle_d >= 0 && angle_d <= 180) || angle_d >= 360)
-			color = 0xFF5454E5;
-		else
-			color = 0xFF86D865;
+		return (((angle_d >= 0 && angle_d <= 180) || angle_d >= 360)
+		? tab[0] : tab[1]);
 	}
-	else if (axis == 2)
-	{
-		if (angle_d >= 90 && angle_d <= 270)
-			color = 0xFFD8815F;
-		else
-			color = 0xFF89EFFF;
-	}
-	return (color);
+	return ((angle_d >= 90 && angle_d <= 270) ? tab[2] : tab[3]);
 }
 
 void				ft_assign_color(int x, int y, int i, t_thread *thread)
@@ -84,7 +74,7 @@ void				ft_assign_color(int x, int y, int i, t_thread *thread)
 	else if (y >= thread->ray[i].wall_top && y <= thread->ray[i].wall_bot)
 	{
 		color = (thread->data->texturing) ? ft_calc_col(y, i, thread)
-			: ft_get_color2(thread->ray[i].axis, thread->ray[i].angle_d);
+		: ft_get_color(thread->ray[i].axis, thread->ray[i].angle_d);
 
 		// lightshading
 		if (thread->data->lightshade == 1)

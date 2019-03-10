@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 13:46:24 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/03/10 20:14:49 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 21:34:43 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int							ft_rotation_normal(const Uint8 *state,
 int							ft_get_events(t_data *data);
 
 int							ft_is_inwall(t_pos *pos, t_data *data);
-Uint32						ft_get_color2(int axis, int angle_d);
+Uint32						ft_get_color(int axis, int angle_d);
 void						ft_assign_color(int x, int y,
 							int i, t_thread *thread);
 void						ft_calc_distance(int i, int x, t_thread *thread);

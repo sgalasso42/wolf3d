@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/03/10 20:59:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 21:35:08 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 	b.y = data->minimap.centre.y + step.y;
 	vec = (t_vec){a, b};
 	if (data->dev_mode == 1)
-		draw_line(data, vec, ft_get_color2(data->thread[i].ray[j].axis,
+		draw_line(data, vec, ft_get_color(data->thread[i].ray[j].axis,
 		data->thread[i].ray[j].angle_d), &(data->minimap.limit));
 	else
 		draw_line(data, vec, 0xFFBFFCFF, &(data->minimap.limit));
