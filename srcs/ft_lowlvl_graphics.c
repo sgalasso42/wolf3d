@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 13:34:51 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/03/10 19:06:33 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:07:41 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ Uint32			ft_getpixel(SDL_Surface *surface, int x, int y, t_data *data)
 	else if (bpp == 3)
 	{
 		ret = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-			(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
+		(p[0] << 16 | p[1] << 8 | p[2]) : (p[0] | p[1] << 8 | p[2] << 16);
 	}
 	else if (bpp == 4)
 		ret = *(Uint32 *)p;
