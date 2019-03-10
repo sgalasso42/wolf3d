@@ -6,7 +6,7 @@
 /*   By: sgalasso <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 19:00:12 by sgalasso          #+#    #+#             */
-/*   Updated: 2019/02/19 17:41:51 by sgalasso         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:59:51 by sgalasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void		ft_draw_ray(int i, int j, t_data *data)
 
 	angle_r = (data->thread[i].ray[j].angle_d) * M_PI / 180;
 	step.x = -cos(angle_r) * (data->thread[i].ray[j].dist_minimap)
-	* data->minimap.mnp_size / 50;
+	* data->minimap.mnp_size / BLOC_SIZE;
 	step.y = -sin(angle_r) * (data->thread[i].ray[j].dist_minimap)
-	* data->minimap.mnp_size / 50;
+	* data->minimap.mnp_size / BLOC_SIZE;
 	a = (t_pos){data->minimap.centre.x, data->minimap.centre.y};
 	b.x = data->minimap.centre.x + step.x;
 	b.y = data->minimap.centre.y + step.y;
